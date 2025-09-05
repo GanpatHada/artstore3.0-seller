@@ -4,9 +4,11 @@ import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
 import Signup from "./pages/signup/Signup";
 import './App.css'
+import { Toaster } from "react-hot-toast";
 const App: React.FC = () => {
   return (
     <div id="app">
+      <Toaster/>
       <Router>
       <nav style={{ display: "flex", gap: "1rem", padding: "1rem" }}>
         <Link to="/">Home</Link>

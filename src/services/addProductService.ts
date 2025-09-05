@@ -24,7 +24,7 @@ const context = `
     });
 
     console.log("Generated Points:\n", response.text);
-    //return response.text;
+    return response.text
   } catch (err) {
     console.error("Error generating AI content:", err);
   }
