@@ -1,0 +1,88 @@
+#add-product-page{
+    display: flex;
+    flex-direction: column;
+    flex:1;
+    
+}
+#add-product-page > header{
+    position: sticky;
+    top: 0px;
+    z-index: 10;
+    border-bottom: 1px solid rgb(202, 202, 202);
+    background-color: white;
+}
+#add-product-page > main{
+    flex: 1;
+}
+#add-product-page > footer{
+    max-width: 1000px;
+    display: flex;
+    justify-content: space-between;
+    margin: auto;
+    margin-top: 1rem;
+}
+#add-product-page footer div{
+    display: flex;
+    gap: 1rem;
+}
+#add-product-page footer button{
+    background-color: rgb(87, 87, 87);
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    color: white;
+    font-family: inherit;
+    border-radius: 2px;
+}
+#add-product-page footer button#next-btn{
+    background-color: rgb(0, 124, 173);
+}
+.add-product-form{
+    max-width: 1000px;
+    width: 100vw;
+    background-color: white;
+    margin: auto;
+    border: 1px solid #c7c7c7;
+    border-top: 0px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.add-product-form input[type='text'],.add-product-form textarea{
+    display: block;
+    border: 1px solid rgb(199, 199, 199);
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: inherit;
+    padding: 0.5rem;
+    &:focus{
+        outline: 2px solid rgb(0, 121, 158);
+        border-color: transparent;
+    }
+    
+}
+.add-product-form textarea{
+    resize: vertical;
+    min-height: 4rem;
+}
+.form-group{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.add-product-form > main{
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+.add-product-form .error{
+    color: #d10000;
+}
+.add-product-form label{
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+

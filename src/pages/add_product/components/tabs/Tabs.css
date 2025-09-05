@@ -1,0 +1,26 @@
+#tabs{
+    
+    
+}
+#tabs ul{
+    display: flex;
+    list-style: none;
+    justify-content: center;
+}
+#tabs ul li{
+    padding: 0.85rem 1rem;
+    position: relative;
+    cursor: pointer;
+    &:hover{
+        background-color: whitesmoke;
+    }
+}
+#tabs ul li.active::after{
+    content: "";
+    position: absolute;
+    height: 5px;
+    width: 100%;
+    left: 0px;
+    bottom: 0px;
+    background-color: var(--primary-color);
+}

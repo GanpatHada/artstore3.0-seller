@@ -1,0 +1,132 @@
+#product-dimensions {
+  display: flex;
+  border-radius: 10px;
+  background-color: rgba(245, 245, 245, 0.5);
+  gap: 2rem;
+  padding: 2rem;
+  flex-wrap: wrap;
+}
+
+#product-dimensions > div {
+  display: flex;
+  flex: 1;
+}
+
+#product-dimensions > div > div {
+  border: 1px solid #bbbbbb;
+  border-radius: 5px;
+  display: flex;
+  background-color: white;
+  overflow: hidden;
+  padding: 0.25 0.5rem;
+  justify-content: space-between;
+}
+
+#product-dimensions > div > div:focus-within {
+  outline: 2px solid var(--primary-color);
+}
+#product-dimensions input{
+  border: none;
+}
+#product-dimensions select {
+  border: none;
+  background-color: whitesmoke;
+  border-left: 1px solid #bbbbbb;
+}
+
+#product-dimensions input:focus {
+  outline: none;
+  border: none;
+}
+
+#description-bullets {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+#description-bullets header {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+#description-bullets main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#description-bullets textarea {
+  background-color: rgb(255, 255, 235);
+}
+
+
+#ai-button-wrapper {
+  background-color: transparent;
+  padding: 2px;
+  border-radius: 8px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  overflow: hidden;
+  height: fit-content;
+}
+
+#ai-button-wrapper::before {
+  height: 220px;
+  width: 220px;
+  border-radius: 50%;
+  content: "";
+  position: absolute;
+  background: linear-gradient(yellow, #ff00ff);
+  z-index: 0;
+  animation: rotateBorder 4s linear infinite;
+}
+
+@keyframes rotateBorder {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+#ai-button-wrapper button {
+  position: relative;
+  z-index: 1;
+  background-color: white ;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  width: 200px;
+  color: rgb(0, 119, 255);
+  &:hover{
+    color: darkblue;
+  }
+   
+  
+}
+#ai-button-wrapper button span{
+  position: absolute;
+  right: 0px;
+  height: 100%;
+  aspect-ratio: 1/1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+#ai-button-wrapper:hover::before {
+  animation-play-state: paused;
+}
+
+
