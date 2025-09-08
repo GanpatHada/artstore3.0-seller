@@ -1,10 +1,11 @@
 import React, { useState, type JSX } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import "./Signup.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { fetchSellerRegistration } from "../../services/authService";
 import GuestLoginButton from "../../components/GuestLoginButton";
 import ArtstoreSellerLogo from '../../assets/Artstoreseller.svg'
+import toast from "react-hot-toast";
 
 type SignupInputs = {
   fullName: string;
@@ -17,6 +18,7 @@ type SignupInputs = {
 const Signup: React.FC = (): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const navigate=useNavigate()
 
   const {
     register,
@@ -36,8 +38,12 @@ const Signup: React.FC = (): JSX.Element => {
         data.phone,
         data.password
       );
-      console.log("Registration response:", result);
-    } finally {
+      navigate("/login", { state: { email: result.email } });
+      toast.success('Registration successfull')
+    } 
+    catch(err:any){
+      toast.error(err.message||"Something went wrong while registration")
+    }finally {
       setLoading(false);
     }
   };

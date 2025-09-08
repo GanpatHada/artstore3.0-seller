@@ -8,7 +8,7 @@ export interface Seller {
   accessToken: string;
 }
 
-interface SellerState {
+export interface SellerState {
   seller: Seller | null;
   loading: boolean;
 }

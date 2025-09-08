@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import "./Login.css";
-import { fetchSellerLogin } from "../../services/authService";
+import { fetchSellerLogin, type LoginResponse, type Seller } from "../../services/authService";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import GuestLoginButton from "../../components/GuestLoginButton";
 import ArtstoreSellerLogo from '../../assets/Artstoreseller.svg'
+import { useSeller } from "../../contexts/SellerContext";
 
 type LoginInputs = {
   emailOrPhone: string;
@@ -13,20 +14,37 @@ type LoginInputs = {
 };
 
 const Login: React.FC = () => {
+   const {login} = useSeller();
+  const location = useLocation();
+  const navigate= useNavigate();
+  const emailFromNav = location.state?.email ?? "";
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginInputs>();
+  } = useForm<LoginInputs>({
+    defaultValues: {
+      emailOrPhone: emailFromNav,
+      password: "",
+    },
+  });
 
   const [loading, setLoading] = useState(false);
 
   const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
     setLoading(true);
     try {
-      const result = await fetchSellerLogin(data.emailOrPhone, data.password);
+      const result:LoginResponse= await fetchSellerLogin(data.emailOrPhone, data.password);
       console.log("Login response:", result);
       toast.success("Login successful!");
+
+      const seller: Seller = {
+      ...result.seller,
+      accessToken: result.accessToken,
+    };
+      login(seller)
+      navigate("/")
     } catch (err: any) {
       toast.error(err.message || "Login failed");
     } finally {
@@ -37,7 +55,7 @@ const Login: React.FC = () => {
   return (
     <div id="login-page">
       <header>
-        <img src={ArtstoreSellerLogo} alt="" />
+        <img src={ArtstoreSellerLogo} alt="Artstore Seller Logo" />
       </header>
       <main>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -49,7 +67,7 @@ const Login: React.FC = () => {
             <input
               id="emailOrPhone"
               type="text"
-              autoComplete="username" // tells browser this is the username/email
+              autoComplete="username"
               {...register("emailOrPhone", {
                 required: "Email or phone is required",
                 validate: (value) => {
@@ -72,14 +90,16 @@ const Login: React.FC = () => {
             <input
               id="password"
               type="password"
-              autoComplete="current-password" // tells browser this is the password for the username
+              autoComplete="current-password"
               {...register("password", {
                 required: "Password is required",
                 validate: (value) =>
                   value.length >= 6 || "Password must be at least 6 characters",
               })}
             />
-            {errors.password && <p className="error">{errors.password.message}</p>}
+            {errors.password && (
+              <p className="error">{errors.password.message}</p>
+            )}
           </div>
 
           {/* Sign In Button */}
@@ -99,18 +119,13 @@ const Login: React.FC = () => {
           </p>
 
           <div>
-            <p>Do not have an account ?</p>
-            <Link to={"/signup"}>
-              Register
-            </Link>
+            <p>Do not have an account?</p>
+            <Link to={"/signup"}>Register</Link>
           </div>
-
-
 
           <GuestLoginButton />
         </form>
-        
-      </main>  
+      </main>
     </div>
   );
 };
