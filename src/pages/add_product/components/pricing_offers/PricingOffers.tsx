@@ -35,6 +35,7 @@ const PricingOffers: React.FC = () => {
             value={state.actualPrice ? state.actualPrice.toString() : ""}
             onChange={(e) => handleChange("actualPrice", e.target.value)}
           />
+          <p className="error">{state.errors['actualPrice']}</p>
         </div>
 
         {/* Discount */}
@@ -46,6 +47,7 @@ const PricingOffers: React.FC = () => {
             value={state.discount ? state.discount.toString() : ""}
             onChange={(e) => handleChange("discount", e.target.value)}
           />
+           <p className="error">{state.errors['discount']}</p>
         </div>
 
         {/* Calculated Price */}
@@ -63,6 +65,7 @@ const PricingOffers: React.FC = () => {
             value={state.stock ? state.stock.toString() : ""}
             onChange={(e) => handleChange("stock", e.target.value)}
           />
+           <p className="error">{state.errors['stock']}</p>
         </div>
       </main>
     </section>

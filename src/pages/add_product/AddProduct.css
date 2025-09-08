@@ -79,6 +79,7 @@
 }
 .add-product-form .error{
     color: #d10000;
+    font-weight: 500;
 }
 .add-product-form label{
     font-size: 0.9rem;

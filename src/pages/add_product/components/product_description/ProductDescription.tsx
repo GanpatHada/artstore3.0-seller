@@ -3,13 +3,14 @@ import "./ProductDescription.css";
 import { useProductFormContext } from "../../../../contexts/ProductFormContext";
 import { BsStars } from "react-icons/bs";
 import { generateBulletPointUsingAI } from "../../../../services/addProductService";
+import toast from "react-hot-toast";
+import spinner from '../../../../assets/spinner.svg'
 
 
 const DescriptionBullets = () => {
   const { state, dispatch } = useProductFormContext();
-
-
-  const handleGenerateWithAI=()=>{
+  const [loading,setLoading]=useState(false)
+  const handleGenerateWithAI=async()=>{
     const {title,category,dimensions:{height,width},weight,surface,medium}=state;
     const fields = [
     { name: "title", value: title },
@@ -26,10 +27,20 @@ const DescriptionBullets = () => {
     .map(({ name }) => name);
 
   if (missing.length > 0) {
-    console.log(`Please provide: ${missing.join(", ")} to use this feature`);
+    dispatch({type:'SET_ERROR',field:'descriptions',error:`Please provide: ${missing.join(", ")} to use this feature`});
     return;
   }
-  generateBulletPointUsingAI(title,category,height,width,weight.toString(),surface,medium)
+  try {
+    setLoading(true)
+    const descriptions =  await generateBulletPointUsingAI(title,category,height,width,weight.toString()||"",surface,medium);
+    dispatch({ type: "SET_ALL_DESCRIPTIONS", values: descriptions });
+    
+  } catch (error:any) {
+    toast.error(error.message || "unable to generate at the moment")
+  }
+  finally{
+    setLoading(false)
+  }
 
   }
 
@@ -54,10 +65,16 @@ const DescriptionBullets = () => {
              <h5>Bullet Points*</h5>
              </div>
              <div  id="ai-button-wrapper">
-              <button onClick={handleGenerateWithAI}>Auto Generate with AI <span><BsStars /></span></button>
+              <button 
+              disabled={loading} 
+              onClick={handleGenerateWithAI}>
+              Auto Generate with AI {loading?<span><img height="30px" src={spinner} alt="" /></span>:<span><BsStars/></span>}
+              </button>
              </div>
+             
       </header>
       <main>
+        <p className="error">{state.errors["descriptions"]}</p>
         {descriptionFields.map((desc, idx) => (
           <div className="form-group" key={idx}>
             <textarea
@@ -66,14 +83,11 @@ const DescriptionBullets = () => {
               value={desc}
               onChange={(e) => handleDescriptionChange(idx, e.target.value)}
               style={{
-                borderColor: state.errors[`descriptions.${idx}`]
+                borderColor: state.errors['descriptions']?.length>0&&desc.length===0||undefined
                   ? "#d10000"
                   : undefined,
               }}
             />
-            {state.errors[`descriptions.${idx}`] && (
-              <p className="error">{state.errors[`descriptions.${idx}`]}</p>
-            )}
           </div>
         ))}
       </main>

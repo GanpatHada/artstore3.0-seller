@@ -29,6 +29,8 @@ export type Action =
       value: number;
     }
   | { type: "SET_DESCRIPTION"; index: number; value: string }
+  | { type: "SET_ALL_DESCRIPTIONS"; values: string[] }
+
   | { type: "ADD_DESCRIPTION" }
   | { type: "REMOVE_DESCRIPTION"; index: number }
   | { type: "ADD_IMAGE"; value: string }
@@ -78,6 +80,12 @@ export function productFormReducer(
         descriptions: state.descriptions.map((d, i) =>
           i === action.index ? action.value : d
         ),
+      };
+
+       case "SET_ALL_DESCRIPTIONS":
+      return {
+        ...state,
+        descriptions: action.values,
       };
 
     case "ADD_DESCRIPTION":

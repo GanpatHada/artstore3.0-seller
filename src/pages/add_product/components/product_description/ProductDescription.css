@@ -116,7 +116,7 @@
 }
 #ai-button-wrapper button span{
   position: absolute;
-  right: 0px;
+  right: 5px;
   height: 100%;
   aspect-ratio: 1/1;
   display: flex;

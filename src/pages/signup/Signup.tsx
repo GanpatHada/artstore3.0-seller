@@ -1,16 +1,22 @@
 import React, { useState, type JSX } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import "./Signup.css";
+import { Link } from "react-router-dom";
+import { fetchSellerRegistration } from "../../services/authService";
+import GuestLoginButton from "../../components/GuestLoginButton";
+import ArtstoreSellerLogo from '../../assets/Artstoreseller.svg'
 
 type SignupInputs = {
-  name: string;
-  emailOrPhone: string;
+  fullName: string;
+  email: string;
+  phone: string;
   password: string;
   confirmPassword: string;
 };
 
 const Signup: React.FC = (): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -19,62 +25,81 @@ const Signup: React.FC = (): JSX.Element => {
     formState: { errors },
   } = useForm<SignupInputs>();
 
-  const onSubmit: SubmitHandler<SignupInputs> = (data) => {
-    console.log("Signup Data:", data);
-    // API call here
-  };
-
-  // For confirming password
   const password = watch("password");
+
+  const onSubmit: SubmitHandler<SignupInputs> = async (data) => {
+    setLoading(true);
+    try {
+      const result = await fetchSellerRegistration(
+        data.fullName,
+        data.email,
+        data.phone,
+        data.password
+      );
+      console.log("Registration response:", result);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div id="signup-page">
       <header>
-        <h4>artstore seller</h4>
-
+        <img src={ArtstoreSellerLogo} alt="" />
+      </header>
+      <main>
         <form onSubmit={handleSubmit(onSubmit)}>
           <h2>Create Account</h2>
 
-          {/* Name */}
+          {/* Full Name */}
           <div>
-            <label htmlFor="name">Full Name</label>
+            <label htmlFor="fullName">Full Name</label>
             <input
-              id="name"
+              id="fullName"
               type="text"
-              {...register("name", {
-                required: "Name is required",
+              {...register("fullName", {
+                required: "Full Name is required",
                 minLength: {
                   value: 2,
-                  message: "Name must be at least 2 characters",
+                  message: "Full Name must be at least 2 characters",
                 },
               })}
             />
-            {errors.name && <p className="error">{errors.name.message}</p>}
+            {errors.fullName && <p className="error">{errors.fullName.message}</p>}
           </div>
 
-          {/* Email or Phone */}
+          {/* Email */}
           <div>
-            <label htmlFor="emailOrPhone">Email or phone number</label>
+            <label htmlFor="email">Email</label>
             <input
-              id="emailOrPhone"
-              type="text"
-              {...register("emailOrPhone", {
-                required: "Email or phone is required",
-                validate: (value) => {
-                  const emailRegex =
-                    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-                  const phoneRegex = /^\d{10}$/;
-
-                  if (emailRegex.test(value) || phoneRegex.test(value)) {
-                    return true;
-                  }
-                  return "Enter a valid email or 10-digit phone number";
+              id="email"
+              type="email"
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  message: "Enter a valid email",
                 },
               })}
             />
-            {errors.emailOrPhone && (
-              <p className="error">{errors.emailOrPhone.message}</p>
-            )}
+            {errors.email && <p className="error">{errors.email.message}</p>}
+          </div>
+
+          {/* Phone */}
+          <div>
+            <label htmlFor="phone">Phone Number</label>
+            <input
+              id="phone"
+              type="text"
+              {...register("phone", {
+                required: "Phone number is required",
+                pattern: {
+                  value: /^\d{10}$/,
+                  message: "Enter a valid 10-digit phone number",
+                },
+              })}
+            />
+            {errors.phone && <p className="error">{errors.phone.message}</p>}
           </div>
 
           {/* Password */}
@@ -83,6 +108,7 @@ const Signup: React.FC = (): JSX.Element => {
             <input
               id="password"
               type={showPassword ? "text" : "password"}
+              autoComplete="new-password"
               {...register("password", {
                 required: "Password is required",
                 validate: (value) =>
@@ -125,23 +151,42 @@ const Signup: React.FC = (): JSX.Element => {
 
           {/* Signup Button */}
           <div>
-            <button id="signup-button" className="primary-btn" type="submit">
-              Create account
+            <button
+              id="signup-button"
+              className="primary-btn"
+              type="submit"
+              disabled={loading}
+            >
+              {loading ? "Creating account..." : "Create account"}
             </button>
           </div>
+
           <hr />
-         <div>
-             <h5>Already a seller ?</h5>
-             <button className="primary-link-btn">Sign in instead</button>
-         </div>
-         <hr />
-         <div>
-             <p>
-            By continuing, you agree to Artstore's <a className="primary-link-btn" href="/">Conditions of Use</a> and <a className="primary-link-btn" href="/">Privacy Policy</a>
-          </p>
-         </div>
+          <div>
+            <h5>Already a seller?</h5>
+            <Link to={"/login"}>
+              <button className="primary-link-btn">Sign in instead</button>
+            </Link>
+          </div>
+          <hr />
+          <div>
+            <p>
+              By continuing, you agree to Artstore's{" "}
+              <a className="primary-link-btn" href="/">
+                Conditions of Use
+              </a>{" "}
+              and{" "}
+              <a className="primary-link-btn" href="/">
+                Privacy Policy
+              </a>
+            </p>
+          </div>
+          <GuestLoginButton />
         </form>
-      </header>
+      </main>
+
+
+
     </div>
   );
 };

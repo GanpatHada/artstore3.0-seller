@@ -34,12 +34,12 @@ export function validateProductForm(state: any) {
   }
 
   // Descriptions: exactly 4, none empty
-  for (let i = 0; i < 4; i++) {
-    const desc = state.descriptions[i] || "";
-    if (desc.trim() === "") {
-      errors[`descriptions.${i}`] = `Description ${i + 1} cannot be empty`;
-    }
-  }
+  if (
+  state.descriptions.length !== 4 ||
+  state.descriptions.some((d: string) => d.trim().length === 0)
+) {
+  errors.descriptions = "Exactly four complete bullet points are required";
+}
 
   // Images
   if (!state.productImages || state.productImages.length === 0) {
@@ -52,13 +52,13 @@ export function validateProductForm(state: any) {
   }
 
   // Discount
-  if (state.discount == null || isNaN(Number(state.discount)) || Number(state.discount) < 0) {
-    errors.discount = "Discount cannot be negative.";
+  if (state.discount == null || isNaN(Number(state.discount)) || Number(state.discount) < 0 || Number(state.discount)>100) {
+    errors.discount = "Discount is Invalid";
   }
 
   // Stock
-  if (!state.stock || isNaN(Number(state.stock)) || Number(state.stock) < 0) {
-    errors.stock = "Stock must be 0 or greater.";
+  if (!state.stock || isNaN(Number(state.stock)) || Number(state.stock) < 1) {
+    errors.stock = "Stock must be 1 or greater";
   }
 
   return errors;
