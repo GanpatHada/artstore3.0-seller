@@ -1,4 +1,3 @@
-import toast from "react-hot-toast";
 import { BACKEND_BASE_URL } from "../Constants";
 
 function redirectToLogin(delay = 1000) {
@@ -21,9 +20,6 @@ export async function refreshAccessToken(redirect = true) {
     return json.data;
   } catch (error:any) {
     if (redirect) {
-      toast.error(
-        error.message || "Unable to refresh token, please login again"
-      );
       redirectToLogin();
       return null;
     }

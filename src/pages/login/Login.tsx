@@ -14,10 +14,13 @@ type LoginInputs = {
 };
 
 const Login: React.FC = () => {
-   const {login} = useSeller();
+  const { login } = useSeller();
   const location = useLocation();
-  const navigate= useNavigate();
+  const navigate = useNavigate();
   const emailFromNav = location.state?.email ?? "";
+  const {seller,loading:sloading}=useSeller();
+
+  console.log(seller,sloading)
 
   const {
     register,
@@ -35,14 +38,14 @@ const Login: React.FC = () => {
   const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
     setLoading(true);
     try {
-      const result:LoginResponse= await fetchSellerLogin(data.emailOrPhone, data.password);
+      const result: LoginResponse = await fetchSellerLogin(data.emailOrPhone, data.password);
       console.log("Login response:", result);
       toast.success("Login successful!");
 
       const seller: Seller = {
-      ...result.seller,
-      accessToken: result.accessToken,
-    };
+        ...result.seller,
+        accessToken: result.accessToken,
+      };
       login(seller)
       navigate("/")
     } catch (err: any) {

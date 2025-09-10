@@ -1,19 +1,37 @@
 import React from "react";
-import AddProduct from "../add_product/AddProduct";
 import './Home.css'
-import { ProductFormProvider } from "../../contexts/ProductFormContext";
 import { useSeller } from "../../contexts/SellerContext";
 import Navbar from "../../components/navbar/Navbar";
+import Spinner from '../../assets/spinner.svg'
+import logo from '../../assets/a.svg'
+import { Outlet } from "react-router-dom";
+
+
+const Initializer = () => {
+  return <div className="initializer">
+    <img id="logo" src={logo} alt="a" />
+    <img id='spinner' src={Spinner} alt="..." />
+    <p>🚀 Please wait ...<br /> Hosted on Render, so it may take a few seconds to wake up. </p>
+  </div>
+}
 
 const Home: React.FC = () => {
-  const {seller,loading}=useSeller();
+  const {loading } = useSeller();
 
-  console.log(seller,loading)
+  if (loading)
+    return <Initializer />
   return <div id="home">
-    <Navbar/>
-    <ProductFormProvider>
-      <AddProduct />
-    </ProductFormProvider>
+    <header>
+      <Navbar />
+    </header>
+    <main>
+      <Outlet/>
+    </main>
+    {/* <MyProducts /> */}
+
+    <footer>
+      main footer
+    </footer>
   </div>;
 };
 

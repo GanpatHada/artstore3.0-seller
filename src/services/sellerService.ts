@@ -27,7 +27,7 @@ export interface SellerWithToken extends SellerResponseData {
 
 export async function fetchSellerDetails(): Promise<SellerWithToken> {
   try {
-    const accessToken = await refreshAccessToken(false);
+    const accessToken = await refreshAccessToken();
 
     const response = await fetch(`${BACKEND_BASE_URL}/seller/`, {
       method: "GET",

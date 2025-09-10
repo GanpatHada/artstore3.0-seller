@@ -8,19 +8,16 @@ import SellerInitializer from "./components/SellerInitializer";
 const App: React.FC = () => {
   return (
     <div id="app">
-      <Toaster />
-      <SellerProvider>
-        <SellerInitializer>
-          <Router>
+      <Router>
+        <Toaster />
+        <SellerProvider>
+          <SellerInitializer>
             <main id="app-content">
               <AppRoutes />
             </main>
-            <footer>
-              main footer
-            </footer>
-          </Router>
-        </SellerInitializer>
-      </SellerProvider>
+          </SellerInitializer>
+        </SellerProvider>
+      </Router>
     </div>
   );
 };

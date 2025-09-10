@@ -1,0 +1,111 @@
+.notfound-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f9fafb, #eef2ff);
+  padding: 20px;
+  font-family: "Inter", "Segoe UI", sans-serif;
+}
+
+.notfound-card {
+  text-align: center;
+  background: #ffffff;
+  padding: 40px 30px;
+  border-radius: 12px;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.notfound-illustration {
+  margin-bottom: 25px;
+}
+
+.notfound-illustration img {
+  width: 180px;
+  max-width: 100%;
+  height: auto;
+}
+
+.notfound-card h1 {
+  font-size: 1.8rem;
+  margin-bottom: 12px;
+  color: #111827;
+}
+
+.notfound-card p {
+  font-size: 1rem;
+  color: #4b5563;
+  margin-bottom: 25px;
+  line-height: 1.6;
+}
+
+.notfound-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-primary {
+  background: #4f46e5;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #4338ca;
+}
+
+.btn-secondary {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.btn-secondary:hover {
+  background: #e5e7eb;
+}
+
+/* Small signature if needed */
+.notfound-signature {
+  margin-top: 20px;
+  font-size: 0.85rem;
+  color: #9ca3af;
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .notfound-card {
+    padding: 30px 20px;
+  }
+
+  .notfound-card h1 {
+    font-size: 1.5rem;
+  }
+
+  .notfound-card p {
+    font-size: 0.9rem;
+  }
+
+  .notfound-buttons {
+    flex-direction: column;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+  }
+}
