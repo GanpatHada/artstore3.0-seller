@@ -1,25 +1,32 @@
 import React, { type JSX } from 'react'
 import mainLogo from '../../assets/Artstoreseller.svg'
 import './Navbar.css'
-import profile from '../../assets/profile.png'
+import profile from '../../assets/profile-3.webp'
 import { useSeller } from '../../contexts/SellerContext'
+import { IoMdMenu } from 'react-icons/io'
+import { IoSettings } from 'react-icons/io5'
+import { MdMail } from 'react-icons/md'
 
-const Navbar: React.FC = (): JSX.Element => {
-    const {seller}=useSeller()
+type NavbarProps = {
+    setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const Navbar: React.FC<NavbarProps> = ({ setShowSidebar }): JSX.Element => {
+    const { seller } = useSeller()
     return (
         <nav id='main-nav'>
-            <section className="image-section">
-                <img src={mainLogo} alt="..." />
+            <button onClick={() => setShowSidebar(true)} id='menu'><IoMdMenu /></button>
+            <section className="logo-section">
+                <button id="main-logo">
+                    <img src={mainLogo} alt="..." />
+                </button>
             </section>
-            <section className="info-section">
-                <div id="user-info">
-                    <img src={seller?.profileImage||profile} alt="" id="user-image" />
-                    <div>
-                        <h5>{seller?.fullName||" "}</h5>
-                        <p>{seller?.email||" "}</p>
-                    </div>
-                </div>
-                <button id='logout-btn'>Logout</button>
+            <section>
+                <button><MdMail /></button>
+                <button><IoSettings /></button>
+                <button id='user-profile'>
+                    <img src={seller?.profileImage || profile} alt="" id="user-image" />
+                </button>
             </section>
         </nav>
     )

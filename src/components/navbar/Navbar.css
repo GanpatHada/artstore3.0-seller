@@ -1,56 +1,63 @@
-#main-nav{
-    padding: 0.5rem;
+#main-nav {
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  background-color: rgb(0, 54, 63);
+  border-bottom: 1px solid rgb(226, 226, 226);
+  gap: 1rem;
+  position: relative;
+}
+
+#main-nav button{
+    background-color: transparent;
+}
+
+button#main-logo img{
+ height: 1.25rem;
+  filter: invert(100) brightness(10);
+}
+
+#main-nav section:last-child{
     display: flex;
+    gap: 2rem;
     align-items: center;
-    justify-content: space-between;
-    background-color: rgb(0, 54, 63);
-    border-bottom: 1px solid rgb(226, 226, 226);
+    position: absolute;
+    right: 1rem;
 }
-#main-nav .image-section img{
-    height: 1.5rem;
-    filter: invert(100) brightness(10);
-}
-#main-nav .info-section{
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-#user-info{
-    display: flex;
-    align-items: center;
-    padding: 0.25rem 0.5rem;
-    gap: 0.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.199);
-    border-radius: 5px;
-}
-#user-info div{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+
+#main-nav section:last-child button{
     color: white;
-    
+    font-size: 1.4rem;
+    display: flex;
 }
-#user-info div h5{
-    font-size: 1rem;
+
+
+button#user-profile {
+  height: 2rem;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  overflow: hidden;
 }
-#user-info div p{
-    font-size: 0.9rem;
-    color: rgb(216, 216, 216);
+
+#user-image {
+  height: 100%; 
+  object-fit: cover;
+  overflow: hidden;
 }
-#user-image{
-    height: 2rem;
-    aspect-ratio: 1/1;
-    border-radius: 50%;
-    object-fit: cover;
+#logout-btn {
+  height: fit-content;
+  background-color: white;
+  font-weight: bold;
+  color: rgb(0, 69, 87);
+  padding: 0.5rem 0.75rem;
+  border-radius: 5px;
+  &:hover {
+    background-color: rgb(215, 244, 255);
+  }
 }
-#logout-btn{
-    height: fit-content;
-    background-color: white;
-    font-weight: bold;
-    color: rgb(0, 69, 87);
-    padding: 0.5rem 0.75rem;
-    border-radius: 5px;
-    &:hover{
-        background-color: rgb(215, 244, 255);
-    }
+button#menu {
+  color: white;
+  background-color: transparent;
+  font-size: 1.4rem;
+  display: flex;
 }

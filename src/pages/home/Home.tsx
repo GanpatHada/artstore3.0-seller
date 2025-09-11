@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import './Home.css'
 import { useSeller } from "../../contexts/SellerContext";
 import Navbar from "../../components/navbar/Navbar";
 import Spinner from '../../assets/spinner.svg'
 import logo from '../../assets/a.svg'
 import { Outlet } from "react-router-dom";
+import Sidebar from "../../components/sidebar/Sidebar";
 
 
 const Initializer = () => {
@@ -17,12 +18,14 @@ const Initializer = () => {
 
 const Home: React.FC = () => {
   const { loading } = useSeller();
+  const [showSidebar,setShowSidebar]=useState<boolean>(false)
 
   if (loading)
     return <Initializer />
   return <div id="home">
+    {showSidebar&&<Sidebar setShowSidebar={setShowSidebar}/>}
     <header>
-      <Navbar />
+      <Navbar setShowSidebar={setShowSidebar} />
     </header>
     <main>
       <Outlet />
