@@ -16,7 +16,7 @@ const Initializer = () => {
 }
 
 const Home: React.FC = () => {
-  const {loading } = useSeller();
+  const { loading } = useSeller();
 
   if (loading)
     return <Initializer />
@@ -25,7 +25,7 @@ const Home: React.FC = () => {
       <Navbar />
     </header>
     <main>
-      <Outlet/>
+      <Outlet />
     </main>
     {/* <MyProducts /> */}
 
