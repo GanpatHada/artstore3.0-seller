@@ -2,13 +2,23 @@
     display: flex;
     flex-direction: column;
     flex:1;
+    position: relative;
     
+}
+#add-product-loader{
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.89);
+    inset: 0;
+    z-index: 15;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 #add-product-page > header{
     position: sticky;
     top: 0px;
     z-index: 10;
-    border-bottom: 1px solid rgb(202, 202, 202);
+    border-bottom: 1px solid #cacaca;
     background-color: white;
 }
 #add-product-page > main{
@@ -20,21 +30,48 @@
     justify-content: space-between;
     margin: auto;
     margin-top: 1rem;
+    width: 100%;
+    border: 1px solid #cacaca;
+    background-color: white;
+    padding: 1rem;
+    
 }
 #add-product-page footer div{
     display: flex;
     gap: 1rem;
 }
 #add-product-page footer button{
-    background-color: rgb(87, 87, 87);
+    background-color: whitesmoke;
+    border: 1px solid rgb(185, 185, 185);
     font-size: 1rem;
     padding: 0.5rem 1rem;
-    color: white;
+    color: black;
     font-family: inherit;
-    border-radius: 2px;
+    border-radius: 5px;
+    &:hover{
+        background-color: aliceblue;
+    }
 }
 #add-product-page footer button#next-btn{
-    background-color: rgb(0, 124, 173);
+    border: 1px solid var(--primary-color);
+    background-color: var(--primary-color);
+    color: white;
+    &:hover{
+        background-color: #00515f;
+         border: 1px solid #00515f;
+    }
+}
+#add-product-page footer button#submit-btn{
+    background-color: green;
+    color: white;
+    border: 1px solid green;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+#add-product-page footer button#submit-btn img{
+    height: 1.2rem;
+    filter: grayscale(0.5);
 }
 .add-product-form{
     max-width: 1000px;
@@ -54,7 +91,7 @@
     border: 1px solid rgb(199, 199, 199);
     border-radius: 5px;
     font-family: inherit;
-    font-size: inherit;
+    font-size: 0.9rem;
     padding: 0.5rem;
     &:focus{
         outline: 2px solid rgb(0, 121, 158);
@@ -85,5 +122,38 @@
     font-size: 0.9rem;
     font-weight: bold;
 }
+.add-product-form .sub-info{
+    color: rgb(65, 65, 65);
+    font-size: 0.8rem;
+}
+div#mrp{
+    background-color: rgb(255, 255, 234);
+    padding: 1rem;
+    border: 1px solid rgb(255, 153, 0);
+    border-radius: 10px;
+}
+
+div#mrp p{
+    color: gray;
+    font-size: 0.8rem;
+}
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 4rem;
+  padding: 8px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #008f77;
+  --_m: 
+    conic-gradient(#0000 10%,#000),
+    linear-gradient(#000 0 0) content-box;
+  -webkit-mask: var(--_m);
+          mask: var(--_m);
+  -webkit-mask-composite: source-out;
+          mask-composite: subtract;
+  animation: l3 1s infinite linear;
+}
+@keyframes l3 {to{transform: rotate(1turn)}}
 
 

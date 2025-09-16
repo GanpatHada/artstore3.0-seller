@@ -4,46 +4,72 @@ import { useProductFormContext } from "../../../../contexts/ProductFormContext";
 import { BsStars } from "react-icons/bs";
 import { generateBulletPointUsingAI } from "../../../../services/addProductService";
 import toast from "react-hot-toast";
-import spinner from '../../../../assets/spinner.svg'
-
+import spinner from "../../../../assets/spinner.svg";
 
 const DescriptionBullets = () => {
   const { state, dispatch } = useProductFormContext();
-  const [loading,setLoading]=useState(false)
-  const handleGenerateWithAI=async()=>{
-    const {title,category,dimensions:{height,width},weight,surface,medium}=state;
+  const [loading, setLoading] = useState(false);
+
+  const handleGenerateWithAI = async () => {
+    dispatch({ type: "CLEAR_ERROR", field: "descriptions" });
+    const {
+      title,
+      category,
+      dimensions: { height, width },
+      weight,
+      surface,
+      medium,
+    } = state;
+
     const fields = [
-    { name: "title", value: title },
-    { name: "category", value: category },
-    { name: "height", value: height },
-    { name: "width", value: width },
-    { name: "weight", value: weight },
-    { name: "surface", value: surface },
-    { name: "medium", value: medium },
-  ];
+      { name: "title", value: title },
+      { name: "category", value: category },
+      { name: "height", value: height },
+      { name: "width", value: width },
+      { name: "weight", value: weight },
+      { name: "surface", value: surface },
+      { name: "medium", value: medium },
+    ];
 
-  const missing = fields
-    .filter(({ value }) => value === null || value === undefined || value.toString().trim().length === 0)
-    .map(({ name }) => name);
+    const missing = fields
+      .filter(
+        ({ value }) =>
+          value === null ||
+          value === undefined ||
+          value.toString().trim().length === 0
+      )
+      .map(({ name }) => name);
 
-  if (missing.length > 0) {
-    dispatch({type:'SET_ERROR',field:'descriptions',error:`Please provide: ${missing.join(", ")} to use this feature`});
-    return;
-  }
-  try {
-    setLoading(true)
-    const descriptions =  await generateBulletPointUsingAI(title,category,height,width,weight.toString()||"",surface,medium);
-    dispatch({ type: "SET_ALL_DESCRIPTIONS", values: descriptions });
-    
-  } catch (error:any) {
-    toast.error(error.message || "unable to generate at the moment")
-  }
-  finally{
-    setLoading(false)
-  }
+    if (missing.length > 0) {
+      dispatch({
+        type: "SET_ERROR",
+        field: "descriptions",
+        error: `Please provide: ${missing.join(", ")} to use this feature`,
+      });
+      setTimeout(() => {
+        dispatch({ type: "CLEAR_ERROR", field: "descriptions" });
+      }, 5000)
+      return;
+    }
 
-  }
-
+    try {
+      setLoading(true);
+      const descriptions = await generateBulletPointUsingAI(
+        title,
+        category,
+        height,
+        width,
+        weight.toString() || "",
+        surface,
+        medium
+      );
+      dispatch({ type: "SET_ALL_DESCRIPTIONS", values: descriptions });
+    } catch (error: any) {
+      toast.error(error.message || "unable to generate at the moment");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleDescriptionChange = (index: number, value: string) => {
     const updated = [...state.descriptions];
@@ -56,22 +82,27 @@ const DescriptionBullets = () => {
     (_, i) => state.descriptions[i] || ""
   );
 
-
   return (
     <div id="description-bullets">
       <header>
-             <div>
-              <h4>Product Description</h4>
-             <h5>Bullet Points*</h5>
-             </div>
-             <div  id="ai-button-wrapper">
-              <button 
-              disabled={loading} 
-              onClick={handleGenerateWithAI}>
-              Auto Generate with AI {loading?<span><img height="30px" src={spinner} alt="" /></span>:<span><BsStars/></span>}
-              </button>
-             </div>
-             
+        <div>
+          <h4>Product Description</h4>
+          <h5>Bullet Points*</h5>
+        </div>
+        <div id="ai-button-wrapper">
+          <button disabled={loading} onClick={handleGenerateWithAI}>
+            Auto Generate with AI{" "}
+            {loading ? (
+              <span>
+                <img height="30px" src={spinner} alt="" />
+              </span>
+            ) : (
+              <span>
+                <BsStars />
+              </span>
+            )}
+          </button>
+        </div>
       </header>
       <main>
         <p className="error">{state.errors["descriptions"]}</p>
@@ -83,18 +114,19 @@ const DescriptionBullets = () => {
               value={desc}
               onChange={(e) => handleDescriptionChange(idx, e.target.value)}
               style={{
-                borderColor: state.errors['descriptions']?.length>0&&desc.length===0||undefined
-                  ? "#d10000"
-                  : undefined,
+                borderColor:
+                  state.errors["descriptions"]?.length > 0 &&
+                    desc.length === 0
+                    ? "#d10000"
+                    : undefined,
               }}
             />
           </div>
         ))}
       </main>
-
     </div>
-  )
-}
+  );
+};
 
 const ProductDescription: React.FC = () => {
   const { state, dispatch } = useProductFormContext();
@@ -103,30 +135,27 @@ const ProductDescription: React.FC = () => {
   const [thicknessUnit, setThicknessUnit] = useState("mm");
 
   const handleFieldChange = (
-  field: "height" | "width" | "thickness" | "weight" | "medium" | "surface",
-  value: string
-) => {
-  if (field === "medium" || field === "surface") {
-    dispatch({ type: "SET_FIELD", field, value });
-  } else if (/^\d*$/.test(value)) {
-    if (field === "height" || field === "width" || field === "thickness") {
-      dispatch({
-        type: "SET_DIMENSION",
-        field: field, 
-        value: Number(value),
-      });
-    } else if (field === "weight") {
+    field: "height" | "width" | "thickness" | "weight" | "medium" | "surface",
+    value: string,
+    unit?: string
+  ) => {
+    if (field === "medium" || field === "surface") {
       dispatch({ type: "SET_FIELD", field, value });
+    } else if (/^\d*$/.test(value)) {
+      if (field === "height" || field === "width" || field === "thickness") {
+        const finalValue = value ? `${value} ${unit}` : "";
+        dispatch({ type: "SET_DIMENSION", field, value: finalValue });
+      } else if (field === "weight") {
+        const finalValue = value ? `${value} gm` : "";
+        dispatch({ type: "SET_FIELD", field, value: finalValue });
+      }
     }
-  }
-};
-
-
+  };
 
   return (
     <section id="product-description" className="add-product-form">
       <header>
-        <h3>Product Description</h3>
+        <h4>Product Dimensions</h4>
       </header>
       <main>
         <section id="product-dimensions">
@@ -138,9 +167,11 @@ const ProductDescription: React.FC = () => {
                 id="height"
                 type="text"
                 placeholder="e.g. 60"
-                value={state.dimensions.height}
+                value={
+                  state.dimensions.height?.replace(/\s?(cm|inch)$/, "") || ""
+                }
                 onChange={(e) =>
-                  handleFieldChange("height", e.target.value)
+                  handleFieldChange("height", e.target.value, heightUnit)
                 }
                 style={{
                   borderColor: state.errors["dimensions.height"]
@@ -150,17 +181,25 @@ const ProductDescription: React.FC = () => {
               />
               <select
                 value={heightUnit}
-                onChange={(e) => setHeightUnit(e.target.value)}
+                onChange={(e) => {
+                  setHeightUnit(e.target.value);
+                  if (state.dimensions.height) {
+                    const numeric = state.dimensions.height.replace(
+                      /\s?(cm|inch)$/,
+                      ""
+                    );
+                    dispatch({
+                      type: "SET_DIMENSION",
+                      field: "height",
+                      value: `${numeric} ${e.target.value}`,
+                    });
+                  }
+                }}
               >
                 <option value="cm">cm</option>
                 <option value="inch">inch</option>
               </select>
             </div>
-            {state.dimensions.height && (
-              <p>
-                {state.dimensions.height} {heightUnit}
-              </p>
-            )}
             {state.errors["dimensions.height"] && (
               <p className="error">{state.errors["dimensions.height"]}</p>
             )}
@@ -174,8 +213,12 @@ const ProductDescription: React.FC = () => {
                 id="width"
                 type="text"
                 placeholder="e.g. 40"
-                value={state.dimensions.width}
-                onChange={(e) => handleFieldChange("width", e.target.value)}
+                value={
+                  state.dimensions.width?.replace(/\s?(cm|inch)$/, "") || ""
+                }
+                onChange={(e) =>
+                  handleFieldChange("width", e.target.value, widthUnit)
+                }
                 style={{
                   borderColor: state.errors["dimensions.width"]
                     ? "#d10000"
@@ -184,17 +227,25 @@ const ProductDescription: React.FC = () => {
               />
               <select
                 value={widthUnit}
-                onChange={(e) => setWidthUnit(e.target.value)}
+                onChange={(e) => {
+                  setWidthUnit(e.target.value);
+                  if (state.dimensions.width) {
+                    const numeric = state.dimensions.width.replace(
+                      /\s?(cm|inch)$/,
+                      ""
+                    );
+                    dispatch({
+                      type: "SET_DIMENSION",
+                      field: "width",
+                      value: `${numeric} ${e.target.value}`,
+                    });
+                  }
+                }}
               >
                 <option value="cm">cm</option>
                 <option value="inch">inch</option>
               </select>
             </div>
-            {state.dimensions.width && (
-              <p>
-                {state.dimensions.width} {widthUnit}
-              </p>
-            )}
             {state.errors["dimensions.width"] && (
               <p className="error">{state.errors["dimensions.width"]}</p>
             )}
@@ -208,9 +259,14 @@ const ProductDescription: React.FC = () => {
                 id="thickness"
                 type="text"
                 placeholder="e.g. 20"
-                value={state.dimensions.thickness}
+                value={
+                  state.dimensions.thickness?.replace(
+                    /\s?(mm|cm|inch|gsm)$/,
+                    ""
+                  ) || ""
+                }
                 onChange={(e) =>
-                  handleFieldChange("thickness", e.target.value)
+                  handleFieldChange("thickness", e.target.value, thicknessUnit)
                 }
                 style={{
                   borderColor: state.errors["dimensions.thickness"]
@@ -220,7 +276,20 @@ const ProductDescription: React.FC = () => {
               />
               <select
                 value={thicknessUnit}
-                onChange={(e) => setThicknessUnit(e.target.value)}
+                onChange={(e) => {
+                  setThicknessUnit(e.target.value);
+                  if (state.dimensions.thickness) {
+                    const numeric = state.dimensions.thickness.replace(
+                      /\s?(mm|cm|inch|gsm)$/,
+                      ""
+                    );
+                    dispatch({
+                      type: "SET_DIMENSION",
+                      field: "thickness",
+                      value: `${numeric} ${e.target.value}`,
+                    });
+                  }
+                }}
               >
                 <option value="mm">mm</option>
                 <option value="cm">cm</option>
@@ -228,11 +297,6 @@ const ProductDescription: React.FC = () => {
                 <option value="gsm">gsm</option>
               </select>
             </div>
-            {state.dimensions.thickness && (
-              <p>
-                {state.dimensions.thickness} {thicknessUnit}
-              </p>
-            )}
             {state.errors["dimensions.thickness"] && (
               <p className="error">{state.errors["dimensions.thickness"]}</p>
             )}
@@ -241,47 +305,59 @@ const ProductDescription: React.FC = () => {
 
         {/* Medium */}
         <div className="form-group">
-          <label htmlFor="medium">Medium</label>
+          <div>
+            <label htmlFor="medium">Medium</label>
+            <p className="sub-info">
+              Medium of artwork, e.g., Oil, Acrylic, Watercolor, Pastel, Pencil
+            </p>
+          </div>
           <input
             id="medium"
             type="text"
-            placeholder="e.g. Oil, Acrylic"
+            placeholder="e.g. Oil, Acrylic, Watercolor"
             value={state.medium}
             onChange={(e) => handleFieldChange("medium", e.target.value)}
-            style={{ borderColor: state.errors.medium ? "#d10000" : undefined }}
           />
           {state.errors.medium && <p className="error">{state.errors.medium}</p>}
         </div>
 
         {/* Surface */}
         <div className="form-group">
-          <label htmlFor="surface">Surface</label>
+          <div>
+            <label htmlFor="surface">Surface</label>
+            <p className="sub-info">
+              The base material used for the artwork, e.g., Canvas, Paper, Wood, Fabric
+            </p>
+          </div>
           <input
             id="surface"
             type="text"
-            placeholder="e.g. Canvas, Paper"
+            placeholder="e.g. Canvas, Paper, Wood"
             value={state.surface}
             onChange={(e) => handleFieldChange("surface", e.target.value)}
-            style={{ borderColor: state.errors.surface ? "#d10000" : undefined }}
           />
-          {state.errors.surface && (
-            <p className="error">{state.errors.surface}</p>
-          )}
+          {state.errors.surface && <p className="error">{state.errors.surface}</p>}
         </div>
 
         {/* Weight */}
         <div className="form-group">
-          <label htmlFor="weight">Weight (gm)</label>
+          <div>
+            <label htmlFor="weight">Weight (gm)</label>
+            <p className="sub-info">
+              Paper or surface weight in grams (gsm), e.g., 250, 300
+            </p>
+          </div>
           <input
             id="weight"
             type="text"
             placeholder="e.g. 250"
-            value={state.weight ? state.weight.toString() : ''}
+            value={state.weight?.replace(/\s?gm$/, "") || ""}
             onChange={(e) => handleFieldChange("weight", e.target.value)}
-            style={{ borderColor: state.errors.weight ? "#d10000" : undefined }}
           />
           {state.errors.weight && <p className="error">{state.errors.weight}</p>}
         </div>
+
+
         <DescriptionBullets />
       </main>
     </section>

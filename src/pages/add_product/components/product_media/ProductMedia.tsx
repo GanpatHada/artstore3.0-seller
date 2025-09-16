@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import "./ProductMedia.css";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { FaRegTrashAlt } from "react-icons/fa";
@@ -8,41 +8,58 @@ import { useProductFormContext } from "../../../../contexts/ProductFormContext";
 const ProductMedia: React.FC = () => {
   const { state, dispatch } = useProductFormContext();
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
+  const [previews, setPreviews] = useState<(string | null)[]>(state.productImages.map(() => null));
+
 
   const handleFileChange = (index: number, file: File | null) => {
     if (!file) return;
+
+
     const reader = new FileReader();
     reader.onload = () => {
-      const newImages = [...state.productImages];
-      newImages[index] = reader.result as string;
-      dispatch({ type: "SET_FIELD", field: "productImages", value: newImages });
+      const newPreviews = [...previews];
+      newPreviews[index] = reader.result as string;
+      setPreviews(newPreviews);
     };
     reader.readAsDataURL(file);
+
+
+    const newFiles = [...state.productImages];
+    newFiles[index] = file;
+    dispatch({ type: "SET_FIELD", field: "productImages", value: newFiles });
   };
 
   const removeImage = (index: number) => {
-    const newImages = state.productImages.filter((_, i) => i !== index);
-    dispatch({ type: "SET_FIELD", field: "productImages", value: newImages });
+    const newFiles = state.productImages.filter((_, i) => i !== index);
+    dispatch({ type: "SET_FIELD", field: "productImages", value: newFiles });
+
+    const newPreviews = previews.filter((_, i) => i !== index);
+    setPreviews(newPreviews);
   };
 
   const moveImage = (index: number, direction: "left" | "right") => {
-    const newImages = [...state.productImages];
     const swapIndex = direction === "left" ? index - 1 : index + 1;
-    if (swapIndex < 0 || swapIndex >= newImages.length) return;
+    if (swapIndex < 0 || swapIndex >= state.productImages.length) return;
 
-    [newImages[index], newImages[swapIndex]] = [
-      newImages[swapIndex],
-      newImages[index],
-    ];
-    dispatch({ type: "SET_FIELD", field: "productImages", value: newImages });
+
+    const newFiles = [...state.productImages];
+    [newFiles[index], newFiles[swapIndex]] = [newFiles[swapIndex], newFiles[index]];
+    dispatch({ type: "SET_FIELD", field: "productImages", value: newFiles });
+
+
+    const newPreviews = [...previews];
+    [newPreviews[index], newPreviews[swapIndex]] = [newPreviews[swapIndex], newPreviews[index]];
+    setPreviews(newPreviews);
   };
 
   const hasImageError = Boolean(state.errors.productImages);
 
   return (
     <section id="product-media" className="add-product-form">
-      <h3>Upload Artwork Images</h3>
-
+      <header>
+        <h3>Upload Artwork Images</h3>
+        <p className="sub-info">Upload upto 4 images</p>
+      </header>
       <div
         className="media-grid"
         style={{
@@ -51,28 +68,22 @@ const ProductMedia: React.FC = () => {
         }}
       >
         {Array.from({ length: 4 }).map((_, index) => {
-          const img = state.productImages[index] || null;
+          const preview = previews[index] || null;
+          const fileExists = !!state.productImages[index];
 
           return (
             <div
               key={index}
               className="media-box"
               onClick={() => {
-                if (!img) inputRefs.current[index]?.click();
+                if (!fileExists) inputRefs.current[index]?.click();
               }}
             >
-              {img ? (
+              {preview ? (
                 <div className="preview-wrapper">
-                  <img
-                    src={img}
-                    alt={`preview-${index}`}
-                    className="preview-image"
-                  />
+                  <img src={preview} alt={`preview-${index}`} className="preview-image" />
                   <div className="action-row">
-                    <button
-                      onClick={() => moveImage(index, "left")}
-                      disabled={index === 0}
-                    >
+                    <button onClick={() => moveImage(index, "left")} disabled={index === 0}>
                       <FaAngleLeft />
                     </button>
                     <button onClick={() => removeImage(index)}>
@@ -95,12 +106,10 @@ const ProductMedia: React.FC = () => {
                     type="file"
                     hidden
                     accept="image/*"
-                    ref={(el) => {
+                    ref={(el: HTMLInputElement | null) => {
                       inputRefs.current[index] = el;
                     }}
-                    onChange={(e) =>
-                      handleFileChange(index, e.target.files?.[0] || null)
-                    }
+                    onChange={(e) => handleFileChange(index, e.target.files?.[0] || null)}
                   />
                 </div>
               )}
@@ -109,7 +118,6 @@ const ProductMedia: React.FC = () => {
         })}
       </div>
 
-      {/* Error message at the bottom */}
       {hasImageError && (
         <p className="error" style={{ color: "#d10000", marginTop: "6px" }}>
           {state.errors.productImages}

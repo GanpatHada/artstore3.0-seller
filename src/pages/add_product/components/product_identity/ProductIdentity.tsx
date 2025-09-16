@@ -27,6 +27,7 @@ const ProductIdentity: React.FC = () => {
           <label htmlFor="title">Artwork Title:</label>
           <textarea
             id="title"
+            maxLength={100}
             value={state.title}
             onChange={(e) =>
               dispatch({ type: "SET_FIELD", field: "title", value: e.target.value })
@@ -36,20 +37,19 @@ const ProductIdentity: React.FC = () => {
           />
           {state.errors.title && <p className="error">{state.errors.title}</p>}
           <p className="info">
-            Add a clear and descriptive title for your artwork. A good title should mention
+            Add a clear and descriptive title (min: 10 characters) for your artwork. A good title should mention
             the main subject and mood of the painting. Keep it short and simple — avoid just
             "Untitled" or one-word titles.
           </p>
         </div>
 
-        {/* Category */}
         <div className="form-group">
           <label htmlFor="category">Select Art Style / Category</label>
           <select
             id="category"
             value={state.category}
             onChange={(e) =>
-              dispatch({ type: "SET_FIELD", field: "category", value: e.target.value })
+              dispatch({ type: "SET_FIELD", field: "category", value: e.target.value.toUpperCase() })
             }
             style={{ borderColor: state.errors.category ? '#d10000' : undefined }}
           >

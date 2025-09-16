@@ -81,7 +81,7 @@
   border-radius: 50%;
   content: "";
   position: absolute;
-  background: linear-gradient(yellow, #ff00ff);
+  background: linear-gradient(#2600ff,#fff8be, #0d7200);
   z-index: 0;
   animation: rotateBorder 4s linear infinite;
 }

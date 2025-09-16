@@ -2,8 +2,8 @@ export function validateProductForm(state: any) {
   const errors: Record<string, string> = {};
 
   // Title
-  if (!state.title || state.title.trim().length < 5) {
-    errors.title = "Title must be at least 5 characters long.";
+  if (!state.title || state.title.trim().length < 10) {
+    errors.title = "Title must be at least 10 characters long.";
   }
 
   // Category
@@ -29,7 +29,7 @@ export function validateProductForm(state: any) {
   }
 
   // Weight
-  if (!state.weight || isNaN(Number(state.weight)) || Number(state.weight) <= 0) {
+  if (!state.weight || state.weight.trim().length===0){
     errors.weight = "Weight must be a positive number.";
   }
 

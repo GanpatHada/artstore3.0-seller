@@ -8,11 +8,11 @@
   position: relative;
 }
 
-#main-nav button{
+#main-nav a{
     background-color: transparent;
 }
 
-button#main-logo img{
+a#main-logo img{
  height: 1.25rem;
   filter: invert(100) brightness(10);
 }
@@ -25,14 +25,14 @@ button#main-logo img{
     right: 1rem;
 }
 
-#main-nav section:last-child button{
+#main-nav section:last-child a{
     color: white;
     font-size: 1.4rem;
     display: flex;
 }
 
 
-button#user-profile {
+a#user-profile {
   height: 2rem;
   aspect-ratio: 1/1;
   border-radius: 50%;

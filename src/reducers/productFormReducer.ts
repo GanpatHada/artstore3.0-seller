@@ -8,16 +8,16 @@ export type ProductFormState = {
   stock: number;
   medium: string;
   surface: string;
-  weight: number;
+  weight: string;
   dimensions: {
     height: string;
     width: string;
     thickness: string;
   };
   descriptions: string[];
-  productImages: string[];
-  activeTab: number; // ✅ numeric index for tabs
-  errors: Record<string, string>; // ✅ map field -> error message
+  productImages: File[];
+  activeTab: number;
+  errors: Record<string, string>;
 };
 
 // Actions
@@ -26,14 +26,14 @@ export type Action =
   | {
       type: "SET_DIMENSION";
       field: keyof ProductFormState["dimensions"];
-      value: number;
+      value: string;
     }
   | { type: "SET_DESCRIPTION"; index: number; value: string }
   | { type: "SET_ALL_DESCRIPTIONS"; values: string[] }
 
   | { type: "ADD_DESCRIPTION" }
   | { type: "REMOVE_DESCRIPTION"; index: number }
-  | { type: "ADD_IMAGE"; value: string }
+  |  { type: "ADD_IMAGE"; value: File }
   | { type: "REMOVE_IMAGE"; index: number }
   | { type: "SET_ERROR"; field: keyof ProductFormState; error: string }
   | { type: "SET_ERRORS"; errors: Record<string, string> }
@@ -51,15 +51,14 @@ export const initialState: ProductFormState = {
   stock: 0,
   medium: "",
   surface: "",
-  weight: 0,
+  weight: "",
   dimensions: { height: "", width: "", thickness: "" },
   descriptions: [],
   productImages: [],
-  activeTab: 0, // default tab index
+  activeTab: 0,
   errors: {},
 };
 
-// Reducer
 export function productFormReducer(
   state: ProductFormState,
   action: Action
@@ -82,11 +81,8 @@ export function productFormReducer(
         ),
       };
 
-       case "SET_ALL_DESCRIPTIONS":
-      return {
-        ...state,
-        descriptions: action.values,
-      };
+    case "SET_ALL_DESCRIPTIONS":
+      return { ...state, descriptions: action.values };
 
     case "ADD_DESCRIPTION":
       return { ...state, descriptions: [...state.descriptions, ""] };
@@ -100,7 +96,7 @@ export function productFormReducer(
     case "ADD_IMAGE":
       return {
         ...state,
-        productImages: [...state.productImages, action.value],
+        productImages: [...state.productImages, action.value as File],
       };
 
     case "REMOVE_IMAGE":
@@ -110,23 +106,18 @@ export function productFormReducer(
       };
 
     case "SET_ERROR":
-      return {
-        ...state,
-        errors: { ...state.errors, [action.field]: action.error },
-      };
+      return { ...state, errors: { ...state.errors, [action.field]: action.error } };
 
     case "SET_ERRORS":
-      return {
-        ...state,
-        errors: action.errors,
-      };
+      return { ...state, errors: action.errors };
 
     case "CLEAR_ERROR": {
       const { [action.field]: _, ...rest } = state.errors;
       return { ...state, errors: rest };
     }
 
-    case "RESET_FORM":return initialState
+    case "RESET_FORM":
+      return initialState;
 
     case "SET_ACTIVE_TAB":
       return { ...state, activeTab: action.value };

@@ -1,13 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useProductFormContext } from "../../../../contexts/ProductFormContext";
+
+
+
 
 const PricingOffers: React.FC = () => {
   const { state, dispatch } = useProductFormContext();
 
-  const calculatedPrice =
+  
+
+  useEffect(() => {
+    const calculatedPrice =
     state.actualPrice && state.discount
       ? Math.round(state.actualPrice - (state.actualPrice * state.discount) / 100)
       : state.actualPrice || 0;
+
+      dispatch({type:'SET_FIELD',field:"price",value:calculatedPrice})
+
+  }, [state.actualPrice,state.discount])
+
+  
 
   const handleChange = (
     field: "actualPrice" | "discount" | "stock",
@@ -47,12 +59,12 @@ const PricingOffers: React.FC = () => {
             value={state.discount ? state.discount.toString() : ""}
             onChange={(e) => handleChange("discount", e.target.value)}
           />
-           <p className="error">{state.errors['discount']}</p>
+          <p className="error">{state.errors['discount']}</p>
         </div>
 
         {/* Calculated Price */}
-        <div>
-          <h4>MRP: {state.actualPrice ? `₹${calculatedPrice}` : "-"}</h4>
+        <div id="mrp">
+          <h4>MRP: {state.actualPrice ? `₹${state.price}` : "-"}</h4>
           <p className="info">Delivery charges excluded</p>
         </div>
 
@@ -65,7 +77,7 @@ const PricingOffers: React.FC = () => {
             value={state.stock ? state.stock.toString() : ""}
             onChange={(e) => handleChange("stock", e.target.value)}
           />
-           <p className="error">{state.errors['stock']}</p>
+          <p className="error">{state.errors['stock']}</p>
         </div>
       </main>
     </section>
