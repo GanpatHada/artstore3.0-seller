@@ -63,6 +63,7 @@ const AddProduct: React.FC = () => {
     try {
       setLoading(true)
       const data = await fetchlistProduct(seller, login, formData);
+      console.log(data);
       toast.success('Product listed successfully');
       dispatch({ type: "RESET_FORM" });
       navigate("/")

@@ -1,0 +1,90 @@
+#my-products{
+    padding: 1rem;
+}
+
+#my-products header h2 {
+  font-size: 24px;
+  margin-bottom: 16px;
+  color: #333;
+}
+#my-products main input{
+    padding: 0.5rem 1rem;
+    outline: 1px solid rgb(189, 189, 189);
+    border: none;
+    border-radius: 5px;
+    &:focus{
+        outline : 1px solid var(--primary-color);
+
+    }
+    margin-bottom: 1rem;
+}
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid rgb(184, 184, 184);
+  border-radius: 10px;
+  background-color: white;
+}
+
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+
+.product-table td {
+  padding: 8px 12px;
+  text-align: center;
+ 
+  
+  
+}
+
+.product-table th { 
+  padding: 1rem;
+  background-color: rgb(221, 221, 221);
+  font-weight: bold;
+}
+
+.product-table tr{
+    border-bottom: 1px solid rgb(216, 216, 216);
+}
+
+.product-table tr:last-child{
+    border-bottom: none;
+}
+
+.product-table tr:hover {
+  background-color: #f1f1f17e;
+}
+
+.product-img {
+  width: 100px;
+  height: 50px;
+  object-fit: cover;
+  margin-right: 4px;
+  border-radius: 4px;
+}
+.title{
+    color: var(--primary-color);
+    font-weight: bold;
+    &:hover{
+        text-decoration: underline;
+    }
+}
+p.actual-price{
+    color: gray;
+}
+
+p.price{
+    font-weight: bold;
+    color: green;
+    font-size: 1rem;
+}
+span.discount{
+    color: rgb(255, 128, 128);
+}
+.availability strong:first-child{
+    color: var(--primary-color);
+}
