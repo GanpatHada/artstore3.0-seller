@@ -1,5 +1,5 @@
 import { BACKEND_BASE_URL } from "../Constants";
-import { refreshAccessToken } from "./tokenService";
+import { refreshAccessToken, secureFetch } from "./tokenService";
 
 
 
@@ -45,5 +45,31 @@ export async function fetchSellerDetails(): Promise<SellerWithToken> {
     return { ...data.data, accessToken };
   } catch (error) {
     throw error;
+  }
+}
+
+export interface StatsData {
+  totalProducts: number
+  totalQuantity: number
+  soldProducts: number
+  unsoldProducts: number
+  availableProducts: number
+  unavailableProducts: number
+}
+
+
+
+/**
+ * Fetch seller stats
+ */
+export async function fetchSellerStats(seller: any, login: any): Promise<StatsData> {
+  const url = `${BACKEND_BASE_URL}/seller/stats`
+  try {
+    const data = await secureFetch(seller, login, url, {
+      method: 'GET',
+    })
+    return data
+  } catch (error) {
+    throw error
   }
 }
