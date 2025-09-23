@@ -7,7 +7,7 @@
   margin-bottom: 16px;
   color: #333;
 }
-#my-products main input{
+#my-products main input[type='search']{
     padding: 0.5rem 1rem;
     outline: 1px solid rgb(189, 189, 189);
     border: none;
@@ -88,3 +88,39 @@ span.discount{
 .availability strong:first-child{
     color: var(--primary-color);
 }
+#active-status{
+  display: flex;
+  gap: 0.25rem;
+  justify-content: flex-start;
+  text-align: left;
+  align-items: center;
+  width: 8rem;
+}
+#active-status input{
+  cursor: pointer;
+}
+
+#active-status .active{
+  color: rgb(0, 143, 0);
+  font-weight: bold;
+}
+#active-status .active-input{
+  height: 1rem;
+  width: 1rem;
+  overflow: hidden;
+}
+#active-status .active-input >*{
+  display: block;
+  height: 1rem;
+  width: 1rem;
+}
+#active-status .inactive{
+  color: red;
+  font-weight: bold;
+}
+
+
+
+
+
+

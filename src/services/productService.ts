@@ -52,3 +52,27 @@ export async function fetchlistProduct(
     throw error;
   }
 }
+
+export interface ToggleProductResponse {
+  productId: string;
+  isActive: boolean;
+}
+
+export async function fetchToggleProductAvailability(
+  seller: any,
+  login: any,
+  productId: string
+): Promise<ToggleProductResponse> {
+  const url = `${BACKEND_BASE_URL}/products/${productId}/toggle-availability`;
+
+  try {
+    const data = await secureFetch(seller, login, url, {
+      method: "PATCH",
+    });
+
+    return data as ToggleProductResponse;
+  } catch (error) {
+    console.error("Failed to toggle product availability:", error);
+    throw error;
+  }
+}

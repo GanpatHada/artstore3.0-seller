@@ -3,11 +3,16 @@ import './MyProducts.css'
 import { fetchInventory } from '../../services/inventoryService'
 import { useSeller } from '../../contexts/SellerContext'
 import type { InventoryProduct } from '../../types/inventory'
+import { fetchToggleProductAvailability } from '../../services/productService'
+import toast from 'react-hot-toast'
+import reload from '../../assets/reload.svg'
 
 const MyProducts: React.FC = (): JSX.Element => {
   const { seller, login } = useSeller();
   const [searchText, setSearchText] = useState("")
   const [products, setProducts] = useState<InventoryProduct[]>([])
+const [toggleLoading, setToggleLoading] = useState<string | boolean>(false);
+
 
   const getInventoryProducts = async () => {
     try {
@@ -22,7 +27,24 @@ const MyProducts: React.FC = (): JSX.Element => {
     getInventoryProducts()
   }, [])
 
-  // Filter products by title or product id
+  const handleToggleActive = async (id: string) => {
+  try {
+    setToggleLoading(id)
+    const res = await fetchToggleProductAvailability(seller, login, id);
+    setProducts(prev =>
+      prev.map(product =>
+        product._id === res.productId ? { ...product, isActive: res.isActive } : product
+      )
+    );
+  } catch (err:any) {
+    toast.error(err.message || "unable to toggle at the moment")
+  }
+  finally{
+    setToggleLoading(false)
+  }
+};
+
+
   const filteredProducts = products.filter((product) =>
     product.title.toLowerCase().includes(searchText.toLowerCase()) ||
     product._id.toLowerCase().includes(searchText.toLowerCase())
@@ -56,7 +78,21 @@ const MyProducts: React.FC = (): JSX.Element => {
             <tbody>
               {filteredProducts.map((product) => (
                 <tr key={product._id}>
-                  <td>{product.isActive ? 'active' : 'inactive'}</td>
+                  <td>
+                    <label id='active-status'>
+                      <div className="active-input">
+                        {toggleLoading===product._id?<img className='loading' src={reload} alt="" />:
+                      <input
+                        type="checkbox"
+                        checked={product.isActive}
+                        onChange={() => handleToggleActive(product._id)}
+                      />}
+                      </div>
+                      <span className={product.isActive ? 'active' : 'inactive'}>
+                        {product.isActive ? ' Available' : 'Not Available'}
+                      </span>
+                    </label>
+                  </td>
                   <td>
                     {product.productImages.length > 0 && (
                       <img
