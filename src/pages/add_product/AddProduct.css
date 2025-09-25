@@ -3,6 +3,7 @@
     flex-direction: column;
     flex:1;
     position: relative;
+    height: fit-content;
     
 }
 #add-product-loader{
