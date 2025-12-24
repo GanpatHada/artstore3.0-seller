@@ -1,11 +1,9 @@
-// ProductFormContext.tsx
 import React, { createContext, useContext, useReducer, type ReactNode } from "react";
 import {
-  type ProductFormState,
-  type Action,
   productFormReducer,
   initialState,
 } from "../reducers/productFormReducer";
+import type { ProductFormState, Action } from "../types/productForm.types";
 
 type ProductFormContextType = {
   state: ProductFormState;

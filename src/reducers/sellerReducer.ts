@@ -16,7 +16,14 @@ export interface SellerState {
 type Action =
   | { type: "SET_LOADING"; payload: boolean }
   | { type: "LOGIN_SUCCESS"; payload: Seller }
-  | { type: "LOGOUT" };
+  | { type: "LOGOUT" }
+  | {
+      type: "UPDATE_SELLER";
+      payload: {
+        fullName?: string;
+        profileImage?: string | null;
+      };
+    };
 
 export const initialSellerState: SellerState = {
   seller: null,
@@ -38,6 +45,18 @@ export function sellerReducer(state: SellerState, action: Action): SellerState {
       return {
         seller: null,
         loading: false,
+      };
+
+    case "UPDATE_SELLER":
+      if (!state.seller) {
+        return state;
+      }
+      return {
+        ...state,
+        seller: {
+          ...state.seller,
+          ...action.payload,
+        },
       };
 
     default:

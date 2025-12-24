@@ -48,14 +48,60 @@ export async function fetchSellerDetails(): Promise<SellerWithToken> {
   }
 }
 
+interface UpdateData {
+  fullName?: string;
+  profileImage?: File | null;
+}
+
+export interface UpdateProfileResponse {
+  fullName?: string;
+  profileImage?: string | null;
+}
+
+export async function fetchUpdateProfile(
+  seller: any,
+  login: any,
+  data: UpdateData
+): Promise<UpdateProfileResponse> {
+  const url = `${BACKEND_BASE_URL}/seller`;
+
+  try {
+    const formData = new FormData();
+
+    if (data.fullName !== undefined) {
+      formData.append("fullName", data.fullName);
+    }
+
+    if (data.profileImage === null) {
+      // explicitly remove profile image
+      formData.append("profileImage", "null");
+    } else if (data.profileImage instanceof File) {
+      formData.append("profileImage", data.profileImage);
+    }
+
+    const result = await secureFetch(seller, login, url, {
+      method: "PATCH",
+      body: formData,
+    });
+
+    return result as UpdateProfileResponse;
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+
+
 export interface StatsData {
   totalProducts: number
-  totalQuantity: number
-  soldProducts: number
-  unsoldProducts: number
+  totalStockAdded: number
+  totalSold: number
+  remainingStock: number
   availableProducts: number
   unavailableProducts: number
 }
+
 
 
 

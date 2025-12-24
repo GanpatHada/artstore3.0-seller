@@ -1,7 +1,7 @@
 import { BACKEND_BASE_URL } from "../Constants";
 
-export function getAccessToken(seller:any){
-  return seller.accessToken;
+export function getAccessToken(seller: any) {
+  return seller?.accessToken;
 }
 
 function redirectToLogin() {
@@ -19,15 +19,25 @@ export async function refreshAccessToken(redirect = true) {
     );
 
     const json = await res.json();
-    if (!json.success) {
+
+    const refreshTokenErrors = [
+      "EXPIRED_REFRESH_TOKEN",
+      "INVALID_REFRESH_TOKEN",
+      "MISSED_REFRESH_TOKEN",
+    ];
+
+    if (json?.success === false) {
+      if (refreshTokenErrors.includes(json.errorCode)) {
+        if (redirect) {
+          redirectToLogin();
+          return null;
+        }
+      }
       throw new Error(json.message);
     }
+
     return json.data;
-  } catch (error: any) {
-    if (redirect) {
-      redirectToLogin();
-      return null;
-    }
+  } catch (error) {
     throw error;
   }
 }
@@ -38,36 +48,47 @@ export async function secureFetch(
   input: RequestInfo,
   init: RequestInit = {}
 ) {
-  // Merge headers and add Authorization
   const headers = {
     ...(init.headers || {}),
     Authorization: `Bearer ${getAccessToken(seller)}`,
   };
 
   try {
-    // First fetch attempt
-    let res = await fetch(input, { ...init, headers });
-    let json = await res.json();
+    let response = await fetch(input, { ...init, headers });
+    let json = await response.json();
 
-    // If token expired, refresh token and retry
-    if (!json.success && json.errorCode === "EXPIRED_TOKEN") {
-      const accessToken = await refreshAccessToken();
+    if (json?.success === false && json?.errorCode === "EXPIRED_TOKEN") {
+      const accessToken = await refreshAccessToken(true);
       if (!accessToken) return;
 
-      // Update user state with new token
-      setSellerDetails((prev:any) => ({ ...prev, accessToken }));
+      setSellerDetails((prev: any) => ({
+        ...prev,
+        accessToken,
+      }));
 
       const newHeaders = {
-        ...headers,
+        ...(init.headers || {}),
         Authorization: `Bearer ${accessToken}`,
       };
 
-      res = await fetch(input, { ...init, headers: newHeaders });
-      json = await res.json();
+      response = await fetch(input, { ...init, headers: newHeaders });
+      json = await response.json();
     }
 
-    // If still not successful, throw error
-    if (!json.success) {
+    const accessTokenErrors = [
+      "MISSED_TOKEN",
+      "INVALID_TOKEN",
+    ];
+
+    if (
+      json?.success === false &&
+      accessTokenErrors.includes(json.errorCode)
+    ) {
+      redirectToLogin();
+      return;
+    }
+
+    if (json?.success === false) {
       throw new Error(json.message || "Something went wrong");
     }
 

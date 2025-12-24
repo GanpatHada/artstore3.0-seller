@@ -35,7 +35,7 @@ const PricingOffers: React.FC = () => {
   return (
     <section id="pricing-offers" className="add-product-form">
       <header>
-        <h3>Price and Offers</h3>
+        <h2>Pricing and Offers</h2>
       </header>
       <main>
         {/* Actual Price */}

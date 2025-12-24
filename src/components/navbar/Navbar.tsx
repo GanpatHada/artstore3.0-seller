@@ -5,7 +5,6 @@ import profile from '../../assets/profile-3.webp'
 import { useSeller } from '../../contexts/SellerContext'
 import { IoMdMenu } from 'react-icons/io'
 import { IoSettings } from 'react-icons/io5'
-import { MdMail } from 'react-icons/md'
 import { Link } from 'react-router-dom'
 
 type NavbarProps = {
@@ -23,9 +22,8 @@ const Navbar: React.FC<NavbarProps> = ({ setShowSidebar }): JSX.Element => {
                 </Link>
             </section>
             <section>
-                <Link to={"/"}><MdMail /></Link>
-                <Link to={"/"}><IoSettings /></Link>
-                <Link to={"/"} id='user-profile'>
+                <Link to={"/settings"}><IoSettings /></Link>
+                <Link to={"/settings"} id='user-profile'>
                     <img src={seller?.profileImage || profile} alt="" id="user-image" />
                 </Link>
             </section>

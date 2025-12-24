@@ -3,7 +3,7 @@
     flex-direction: column;
     gap: 3rem;
 }
-#dashboard-loader header,main{
+#dashboard-loader header,#dashboard-loader main{
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;

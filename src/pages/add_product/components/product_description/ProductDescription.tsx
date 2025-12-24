@@ -155,7 +155,7 @@ const ProductDescription: React.FC = () => {
   return (
     <section id="product-description" className="add-product-form">
       <header>
-        <h4>Product Dimensions</h4>
+        <h2>Product Description</h2>
       </header>
       <main>
         <section id="product-dimensions">

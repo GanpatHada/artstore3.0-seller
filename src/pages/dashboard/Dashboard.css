@@ -1,27 +1,54 @@
-/* Dashboard container */
 #dashboard {
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  background-color: #f5f6fa;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
 }
 
-#dashboard header {
+#dashboard > main{
   display: flex;
-  flex-wrap: wrap;
   gap: 1rem;
-  justify-content: flex-start;
-  align-items: stretch; 
+}
+
+#dashboard nav{
+  display: flex;
+  justify-content: space-between;
+  
+}
+#dashboard nav button{
+  background-color: transparent;
+  border: 1px solid gray;
+  padding: 0.5rem 1rem;
+  border-radius:2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  &:hover{
+    background-color: whitesmoke;
+  }
+}
+#dashboard nav button span{
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.highlights-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  align-items: stretch;
 }
 
 .highlight {
-  width: 220px;
   background-color: #fff;
+  height: 100%;
   padding: 1rem;
-  box-shadow: 0 0 4px rgba(53, 53, 53, 0.2); 
-  border-radius: 8px;
+  border: 1px solid lightgray; 
+  border-radius: 4px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   cursor: default;
 }
@@ -48,16 +75,21 @@
     position: relative;
     border-radius: 4px;
 }
-.health-wrapper span{
-    font-size: 1rem;
-    color: green;
+.draggable-item {
+  cursor: default;
+  user-select:none;
+  transition: transform 0.2s;
+  
 }
-.health-status{
-    position: absolute;
-    border-radius: 4px;
-    inset: 0;
-    width: 80%;
-    background-color: var(--primary-color);
+
+.draggable-active {
+  cursor: grab;
+  
+}
+
+.draggable-active:active {
+  cursor:grabbing;
+  transform: scale(0.97);
 }
 
 

@@ -11,6 +11,7 @@ interface SellerContextType extends SellerState {
   login: (seller: Seller) => void;
   logout: () => void;
   setLoading: (loading: boolean) => void;
+  dispatch: React.Dispatch<any>;
 }
 
 
@@ -39,6 +40,7 @@ export const SellerProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         login,
         logout,
         setLoading,
+        dispatch,
       }}
     >
       {children}

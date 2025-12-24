@@ -3,6 +3,14 @@
     padding: 0px;
     box-sizing: border-box;
 }
+:root {
+  --primary-color: #008296;
+  font-family: inherit;
+}
+
+* input{
+  accent-color: var(--primary-color);
+}
 
 button{
     cursor: pointer;
@@ -19,14 +27,14 @@ body::-webkit-scrollbar{
   font-family: inherit;
 }
 .primary-btn{
-  background-color: #008296;
-  border: 1px solid #008296;
+  background-color: #007e91;
+  border: 1px solid #007e91;
   padding: 0.5rem 1rem;
   border-radius: 1rem;
-  color: white;
+  color: #ffffffec;
   &:hover{
     background-color: #006777;
-  border: 1px solid #006777;
+    border: 1px solid #006777;
   }
 }
 .primary-link-btn{

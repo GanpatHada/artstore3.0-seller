@@ -57,10 +57,11 @@ const ProductMedia: React.FC = () => {
   return (
     <section id="product-media" className="add-product-form">
       <header>
-        <h3>Upload Artwork Images</h3>
+        <h2>Upload Artwork Images</h2>
         <p className="sub-info">Upload upto 4 images</p>
       </header>
-      <div
+      <main>
+        <div
         className="media-grid"
         style={{
           border: hasImageError ? "1px solid #d10000" : undefined,
@@ -117,6 +118,7 @@ const ProductMedia: React.FC = () => {
           );
         })}
       </div>
+      </main>
 
       {hasImageError && (
         <p className="error" style={{ color: "#d10000", marginTop: "6px" }}>

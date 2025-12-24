@@ -18,8 +18,9 @@
   display: flex;
   background-color: white;
   overflow: hidden;
-  padding: 0.25 0.5rem;
-  justify-content: space-between;
+}
+#product-dimensions > div > div  input{
+  flex: 1;
 }
 
 #product-dimensions > div > div:focus-within {
@@ -42,7 +43,7 @@
 #description-bullets {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 #description-bullets header {

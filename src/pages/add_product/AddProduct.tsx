@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Tabs from "./components/tabs/Tabs";
 import ProductIdentity from "./components/product_identity/ProductIdentity";
 import ProductDescription from "./components/product_description/ProductDescription";
@@ -11,27 +11,64 @@ import { fetchlistProduct } from "../../services/productService";
 import { useSeller } from "../../contexts/SellerContext";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { getStoreDetails } from "../../services/storeService";
+import { StoreNotFound } from "../my_store/MyStore";
+
 
 const AddProduct: React.FC = () => {
   const { state, dispatch } = useProductFormContext();
   const { seller, login } = useSeller();
-  const [loading,setLoading]=useState<boolean>(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const handleNext = () => {
-    if (state.activeTab < 3) {
-      dispatch({ type: "SET_ACTIVE_TAB", value: state.activeTab + 1 });
-    }
-  };
+  const [storeFetching, setStoreFetching] = useState(true);
+  const [storeExist, setStoreExist] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleReset = () => {
-    dispatch({ type: "RESET_FORM" });
-  };
+  useEffect(() => {
+    const toastId = toast.loading("Fetching store details...");
 
-  const handleCancel=()=>{
-    dispatch({ type: "RESET_FORM" });
-    navigate("/")
+    const checkStore = async () => {
+      try {
+        const store = await getStoreDetails(seller, login);
+        if (store) {
+          setStoreExist(true);
+          toast.success("Store details fetched successfully", { id: toastId });
+        } else {
+          setStoreExist(false);
+          toast.error("Store not found", { id: toastId });
+        }
+      } catch (err: any) {
+        setStoreExist(false);
+        toast.error(err.message || "Unable to fetch store details", { id: toastId });
+      } finally {
+        setStoreFetching(false);
+      }
+    };
+
+    checkStore();
+  }, [seller, login]);
+
+  if (storeFetching) {
+    // Blank screen with only toast
+    return <div id="add-product-loader"></div>;
   }
+
+  if (!storeExist) {
+    // Store not found
+    return <StoreNotFound />;
+  }
+
+  // Store exists → show AddProduct form
+  const handleNext = () => {
+    if (state.activeTab < 3) dispatch({ type: "SET_ACTIVE_TAB", value: state.activeTab + 1 });
+  };
+
+  const handleReset = () => dispatch({ type: "RESET_FORM" });
+
+  const handleCancel = () => {
+    dispatch({ type: "RESET_FORM" });
+    navigate("/");
+  };
 
   const handleSubmit = async () => {
     const errors = validateProductForm(state);
@@ -43,44 +80,41 @@ const AddProduct: React.FC = () => {
     const { activeTab, errors: er, ...initState } = state;
     const formData = new FormData();
     const simpleFields = ["title", "category", "medium", "surface", "weight"];
+
     simpleFields.forEach((field) => {
-      formData.append(field, (initState as any)[field]);
+      let value = (initState as any)[field];
+      if (field === "category" && typeof value === "string") value = value.toUpperCase();
+      formData.append(field, value);
     });
+
     formData.append("price", initState.price.toString());
     formData.append("discount", initState.discount.toString());
     formData.append("actualPrice", initState.actualPrice.toString());
     formData.append("stock", initState.stock.toString());
     formData.append("dimensions", JSON.stringify(initState.dimensions));
     formData.append("descriptions", JSON.stringify(initState.descriptions));
-    initState.productImages.forEach((file: File) => {
-      formData.append("productImages", file);
-    });
-
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
+    initState.productImages.forEach((file: File) => formData.append("productImages", file));
 
     try {
-      setLoading(true)
-      const data = await fetchlistProduct(seller, login, formData);
-      console.log(data);
-      toast.success('Product listed successfully');
+      setLoading(true);
+      await fetchlistProduct(seller, login, formData);
+      toast.success("Product listed successfully");
       dispatch({ type: "RESET_FORM" });
-      navigate("/")
+      navigate("/");
     } catch (error: any) {
-      toast.error("Failed to add product:", error.message || error);
-    }
-    finally{
-      setLoading(false)
+      toast.error(error.message || "Failed to add product");
+    } finally {
+      setLoading(false);
     }
   };
 
-
   return (
     <div id="add-product-page">
-      {loading&&<div id="add-product-loader">
-        <div className="loader"></div>
-      </div>}
+      {loading && (
+        <div id="add-product-loader">
+          <div className="loader"></div>
+        </div>
+      )}
       <header>
         <Tabs />
       </header>
@@ -90,7 +124,6 @@ const AddProduct: React.FC = () => {
         {state.activeTab === 2 && <ProductMedia />}
         {state.activeTab === 3 && <PricingOffers />}
       </main>
-
       <footer>
         <div>
           <button onClick={handleCancel}>Cancel</button>
@@ -104,7 +137,6 @@ const AddProduct: React.FC = () => {
           ) : (
             <button id="submit-btn" onClick={handleSubmit}>
               Submit
-
             </button>
           )}
         </div>

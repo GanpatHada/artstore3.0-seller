@@ -1,7 +1,9 @@
 import React, { type JSX } from 'react'
 import './Sidebar.css'
-import { IoMdClose } from 'react-icons/io'
+import { IoIosAddCircle, IoIosHelpCircle, IoMdClose,IoMdListBox } from 'react-icons/io'
 import { Link } from 'react-router-dom'
+import {IoSettingsSharp, IoStorefrontSharp } from 'react-icons/io5'
+import { MdDashboard } from 'react-icons/md'
 
 type SidebarProps = {
   setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>
@@ -26,11 +28,12 @@ const Sidebar: React.FC<SidebarProps> = ({ setShowSidebar }): JSX.Element => {
         </header>
         <main>
           <ul onClick={handleLinkClick}>
-            <li><Link to="/list-product">List Product</Link></li>
-            <li><Link to="/my-products">My Products</Link></li>
-            <li><Link to="/my-account">My Account</Link></li>
-            <li><Link to="/help">Help</Link></li>
-            <li><Link to="/settings">Settings</Link></li>
+            <li><Link to="/"><i className='icon'><MdDashboard /></i>Dashboard</Link></li>
+            <li><Link to="/list-product"><i className='icon'><IoIosAddCircle /></i>List Product</Link></li>
+            <li><Link to="/my-products"><i className='icon'><IoMdListBox /></i> My Products</Link></li>
+            <li><Link to="/my-store"> <i className="icon"><IoStorefrontSharp /></i>My Store</Link></li>
+            <li><Link to="/help"><i className="icon"><IoIosHelpCircle /></i> Help</Link></li>
+            <li><Link to="/settings"><i className="icon"><IoSettingsSharp /></i> Settings</Link></li>
           </ul>
         </main>
       </nav>

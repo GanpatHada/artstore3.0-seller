@@ -46,16 +46,18 @@ const Tabs: React.FC = () => {
         {tabLabels.map((label, index) => {
           const isActive = state.activeTab === index;
           const hasError = tabHasError(index);
-
           return (
+
             <li
               key={label}
               className={[isActive ? "active" : "", hasError ? "error" : ""].join(" ")}
               onClick={() => handleTabClick(index)}
             >
               {label}
-              {hasError &&<MdError color="#d10000" />}
+              {hasError && <MdError color="#d10000" />}
             </li>
+
+
           );
         })}
       </ul>

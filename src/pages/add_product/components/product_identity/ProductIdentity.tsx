@@ -20,7 +20,7 @@ const ProductIdentity: React.FC = () => {
   return (
     <section id="product-identity" className="add-product-form">
       <header>
-        <h3>Product Identity</h3>
+        <h2>Product Identity</h2>
       </header>
       <main>
         <div className="form-group">
@@ -49,7 +49,7 @@ const ProductIdentity: React.FC = () => {
             id="category"
             value={state.category}
             onChange={(e) =>
-              dispatch({ type: "SET_FIELD", field: "category", value: e.target.value.toUpperCase() })
+              dispatch({ type: "SET_FIELD", field: "category", value: e.target.value })
             }
             style={{ borderColor: state.errors.category ? '#d10000' : undefined }}
           >

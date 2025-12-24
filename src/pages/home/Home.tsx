@@ -18,23 +18,18 @@ const Initializer = () => {
 
 const Home: React.FC = () => {
   const { loading } = useSeller();
-  const [showSidebar,setShowSidebar]=useState<boolean>(false)
+  const [showSidebar, setShowSidebar] = useState<boolean>(false)
 
   if (loading)
     return <Initializer />
   return <div id="home">
-    {showSidebar&&<Sidebar setShowSidebar={setShowSidebar}/>}
+    {showSidebar && <Sidebar setShowSidebar={setShowSidebar} />}
     <header>
       <Navbar setShowSidebar={setShowSidebar} />
     </header>
     <main>
       <Outlet />
     </main>
-    {/* <MyProducts /> */}
-
-    <footer>
-      main footer
-    </footer>
   </div>;
 };
 

@@ -7,7 +7,9 @@ export interface InventoryProduct {
   productImages: string[];
   stock: number;
   createdAt: string;
-  initialStock: number;
+  stockSold: number;
+  surface:string;
+  medium:string;
   isActive: boolean;
 }
 

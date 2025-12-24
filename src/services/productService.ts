@@ -1,45 +1,17 @@
 import { BACKEND_BASE_URL } from "../Constants";
+import type { Product } from "../types/productForm.types";
 import { secureFetch } from "./tokenService";
 
-
-export interface AddProduct {
-  title: string;
-  category: string;
-  price: number;
-  discount: number;
-  actualPrice: number;
-  stock: number;
-  medium: string;
-  surface: string;
-  weight: string;
-  dimensions: {
-    height: string;
-    width: string;
-    thickness: string;
-  };
-  descriptions: string[];
-  productImages: File[];
-  
-}
-
-export interface Product extends AddProduct{
-    _id:string,
-    averageRatings:number,
-    createdAt:string,
-    updatedAt:string,
-    initialStock:string,
-}
-
-export interface ListProductResponse {
-  product: Product;
-}
+type ProductFormResponse = {
+  productId: string;
+};
 
 export async function fetchlistProduct(
   seller: any,
   login: any,
   product: FormData
-): Promise<ListProductResponse> {
-      const url = `${BACKEND_BASE_URL}/products`;
+): Promise<ProductFormResponse> {
+  const url = `${BACKEND_BASE_URL}/products`;
 
   try {
     const data = await secureFetch(seller, login, url, {
@@ -53,9 +25,46 @@ export async function fetchlistProduct(
   }
 }
 
+export async function fetchEditProduct(
+  seller: any,
+  login: any,
+  product: FormData,
+  productId:string
+): Promise<ProductFormResponse> {
+  const url = `${BACKEND_BASE_URL}/products/edit/${productId}`;
+
+  try {
+    const data = await secureFetch(seller, login, url, {
+      method: "PUT",
+      body: product,
+    });
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export interface ToggleProductResponse {
   productId: string;
   isActive: boolean;
+}
+
+export async function getProductDetails(
+  seller:any,
+  login:any,
+  productId:string
+):Promise<Product>{
+  const url = `${BACKEND_BASE_URL}/products/${productId}`;
+  try {
+    const data = await secureFetch(seller, login, url, {
+      method: "GET",
+    });
+
+    return data;
+  } catch (error) {
+    console.error("Failed to get product details", error);
+    throw error;
+  }
 }
 
 export async function fetchToggleProductAvailability(
