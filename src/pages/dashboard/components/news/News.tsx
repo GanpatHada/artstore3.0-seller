@@ -10,9 +10,9 @@ const News:React.FC = () => {
             <h3>News</h3> <BetaBadge />
         </header>
         <main>
-        {newsList.news.map(news=>{
+        {newsList.news.map((news,index)=>{
             return(
-                <div>
+                <div key={index}>
                     <span>{news.date}</span>
                     <h4>{news.title}</h4>
                     <a href="/">see full news</a>

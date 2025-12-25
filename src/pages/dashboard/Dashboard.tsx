@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, type JSX } from "react";
+import React, { useEffect, useState, type JSX } from "react";
 import "./Dashboard.css";
 import { useSeller } from "../../contexts/SellerContext";
 import { fetchSellerStats } from "../../services/sellerService";
@@ -12,8 +12,15 @@ import BetaBadge from "../../components/common/BetaBadge";
 import StockChart from "./components/StockChart";
 import SellerForums from "./components/seller_forums/SellerForums";
 
-/* ===================== TYPES ===================== */
+import {
+  DragDropContext,
+  Droppable,
+  Draggable
+} from "@hello-pangea/dnd";
+import type { DropResult } from "@hello-pangea/dnd";
 
+
+/* ===================== TYPES ===================== */
 interface StatsData {
   totalProducts: number;
   totalStockAdded: number;
@@ -29,7 +36,6 @@ interface HighlightProps {
 }
 
 /* ===================== COMPONENTS ===================== */
-
 const Highlight: React.FC<HighlightProps> = ({ title, value }): JSX.Element => (
   <div className="highlight">
     <header>
@@ -52,48 +58,39 @@ const BetaHighlights: React.FC<HighlightProps> = ({
 );
 
 /* ===================== DASHBOARD ===================== */
-
 const Dashboard: React.FC = (): JSX.Element => {
   const { seller, login } = useSeller();
 
   const [stats, setStats] = useState<StatsData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-
-  const [order, setOrder] = useState<number[]>([]);
-  const [dragItem, setDragItem] = useState<number | null>(null);
+  const [highlights, setHighlights] = useState<HighlightProps[]>([]);
   const [customise, setCustomise] = useState<boolean>(false);
-  const [canDrag, setCanDrag] = useState<boolean>(false);
-
-  const pressTimer = useRef<number | null>(null);
 
   /* ===================== FETCH STATS ===================== */
-
   useEffect(() => {
     const getStats = async () => {
       setLoading(true);
       try {
         const data = await fetchSellerStats(seller, login);
         setStats(data);
+
+        // Set initial highlights
+        setHighlights([
+          { title: "Total Products", value: data.totalProducts },
+          { title: "Total Stock Added", value: data.totalStockAdded },
+          { title: "Total Sold Products", value: data.totalSold },
+          { title: "Remaining Stock", value: data.remainingStock },
+          { title: "Available Products", value: data.availableProducts },
+          { title: "Unavailable Products", value: data.unavailableProducts },
+        ]);
       } catch (err: any) {
         toast.error(err?.message || "Failed to load dashboard stats");
       } finally {
         setLoading(false);
       }
     };
-
     getStats();
   }, [seller, login]);
-
-  /* ===================== HIGHLIGHTS ===================== */
-
-  const highlights = [
-    { title: "Total Products", value: stats?.totalProducts },
-    { title: "Total Stock Added", value: stats?.totalStockAdded },
-    { title: "Total Sold Products", value: stats?.totalSold },
-    { title: "Remaining Stock", value: stats?.remainingStock },
-    { title: "Available Products", value: stats?.availableProducts },
-    { title: "Unavailable Products", value: stats?.unavailableProducts },
-  ];
 
   const betaHightlights = [
     { title: <>Account Health <BetaBadge /></>, value: "Good" },
@@ -109,60 +106,25 @@ const Dashboard: React.FC = (): JSX.Element => {
         </span>
       ),
     },
-    {
-      title: <>Buyer Messages <BetaBadge /></>,
-      value: 5,
-    },
+    { title: <>Buyer Messages <BetaBadge /></>, value: 5 },
   ];
-
-  useEffect(() => {
-    setOrder(highlights.map((_, i) => i));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const chartData = [
     { name: "Total Sold", value: stats?.totalSold ?? 0 },
     { name: "Remaining Stock", value: stats?.remainingStock ?? 0 },
   ];
 
-  /* ===================== DRAG LOGIC ===================== */
+  /* ===================== REACT DND HANDLER ===================== */
+  const handleDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
 
-  const handleMouseDown = () => {
-    if (!customise) return;
-
-    pressTimer.current = window.setTimeout(() => {
-      setCanDrag(true);
-    }, 350);
-  };
-
-  const clearPressTimer = () => {
-    if (pressTimer.current) {
-      clearTimeout(pressTimer.current);
-      pressTimer.current = null;
-    }
-    setCanDrag(false);
-  };
-
-  const handleDragStart = (index: number) => {
-    if (!customise || !canDrag) return;
-    setDragItem(index);
-  };
-
-  const handleDragEnter = (index: number) => {
-    if (dragItem === null || dragItem === index) return;
-
-    const newOrder = [...order];
-    const dragged = newOrder[dragItem];
-
-    newOrder.splice(dragItem, 1);
-    newOrder.splice(index, 0, dragged);
-
-    setOrder(newOrder);
-    setDragItem(index);
+    const updatedHighlights = Array.from(highlights);
+    const [removed] = updatedHighlights.splice(result.source.index, 1);
+    updatedHighlights.splice(result.destination.index, 0, removed);
+    setHighlights(updatedHighlights);
   };
 
   /* ===================== RENDER ===================== */
-
   return (
     <div id="dashboard">
       {loading ? (
@@ -171,41 +133,48 @@ const Dashboard: React.FC = (): JSX.Element => {
         <>
           <nav>
             <h2>My Dashboard</h2>
-            <button onClick={() => setCustomise((prev) => !prev)}>
+            <button onClick={() => setCustomise(prev => !prev)}>
               <span>{customise ? "Lock Layout" : "Customise Layout"}</span>{" "}
               <i>{customise ? <CiLock /> : <CiUnlock />}</i>
             </button>
           </nav>
 
-          <header className="highlights-container">
-            {order.map((itemIndex, position) => (
-              <div
-                key={itemIndex}
-                draggable={customise && canDrag}
-                onMouseDown={handleMouseDown}
-                onMouseUp={clearPressTimer}
-                onMouseLeave={clearPressTimer}
-                onDragStart={() => handleDragStart(position)}
-                onDragEnter={() => handleDragEnter(position)}
-                className={`draggable-item ${
-                  customise ? "draggable-active" : ""
-                }`}
-              >
-                <Highlight
-                  title={highlights[itemIndex].title}
-                  value={highlights[itemIndex].value}
-                />
-              </div>
-            ))}
-          </header>
+          <DragDropContext onDragEnd={handleDragEnd}>
+            <Droppable droppableId="highlights" direction="horizontal">
+              {(provided) => (
+                <header
+                  className="highlights-container"
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                >
+                  {highlights.map((item, index) => (
+                    <Draggable
+                      key={index}
+                      draggableId={index.toString()}
+                      index={index}
+                      isDragDisabled={!customise}
+                    >
+                      {(provided) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          className={`draggable-item ${customise ? "draggable-active" : ""}`}
+                        >
+                          <Highlight title={item.title} value={item.value} />
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </header>
+              )}
+            </Droppable>
+          </DragDropContext>
 
           <header className="beta-highlights-container">
             {betaHightlights.map((item, index) => (
-              <BetaHighlights
-                key={index}
-                title={item.title}
-                value={item.value}
-              />
+              <BetaHighlights key={index} title={item.title} value={item.value} />
             ))}
           </header>
 
