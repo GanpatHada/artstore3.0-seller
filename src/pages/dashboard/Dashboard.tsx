@@ -9,6 +9,8 @@ import News from "./components/news/News";
 import Tutorial from "./components/tutorial/Tutorial";
 import { CiUnlock, CiLock } from "react-icons/ci";
 import BetaBadge from "../../components/common/BetaBadge";
+import StockChart from "./components/StockChart";
+import SellerForums from "./components/seller_forums/SellerForums";
 
 /* ===================== TYPES ===================== */
 
@@ -26,11 +28,22 @@ interface HighlightProps {
   value?: number | string | JSX.Element;
 }
 
-
 /* ===================== COMPONENTS ===================== */
 
 const Highlight: React.FC<HighlightProps> = ({ title, value }): JSX.Element => (
   <div className="highlight">
+    <header>
+      <h5>{title}</h5>
+    </header>
+    <main>{value}</main>
+  </div>
+);
+
+const BetaHighlights: React.FC<HighlightProps> = ({
+  title,
+  value,
+}): JSX.Element => (
+  <div className="beta-highlight">
     <header>
       <h5>{title}</h5>
     </header>
@@ -76,13 +89,16 @@ const Dashboard: React.FC = (): JSX.Element => {
   const highlights = [
     { title: "Total Products", value: stats?.totalProducts },
     { title: "Total Stock Added", value: stats?.totalStockAdded },
-    { title: "Total Sold", value: stats?.totalSold },
+    { title: "Total Sold Products", value: stats?.totalSold },
     { title: "Remaining Stock", value: stats?.remainingStock },
     { title: "Available Products", value: stats?.availableProducts },
     { title: "Unavailable Products", value: stats?.unavailableProducts },
-    { title: <>Account Health<BetaBadge /></>, value: "Good" },
+  ];
+
+  const betaHightlights = [
+    { title: <>Account Health <BetaBadge /></>, value: "Good" },
     {
-      title: <>Customer Feedback<BetaBadge /></>,
+      title: <>Customer Feedback <BetaBadge /></>,
       value: (
         <span style={{ color: "gray" }}>
           <IoIosStarOutline />
@@ -93,13 +109,21 @@ const Dashboard: React.FC = (): JSX.Element => {
         </span>
       ),
     },
+    {
+      title: <>Buyer Messages <BetaBadge /></>,
+      value: 5,
+    },
   ];
-
 
   useEffect(() => {
     setOrder(highlights.map((_, i) => i));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const chartData = [
+    { name: "Total Sold", value: stats?.totalSold ?? 0 },
+    { name: "Remaining Stock", value: stats?.remainingStock ?? 0 },
+  ];
 
   /* ===================== DRAG LOGIC ===================== */
 
@@ -153,7 +177,6 @@ const Dashboard: React.FC = (): JSX.Element => {
             </button>
           </nav>
 
-
           <header className="highlights-container">
             {order.map((itemIndex, position) => (
               <div
@@ -164,8 +187,9 @@ const Dashboard: React.FC = (): JSX.Element => {
                 onMouseLeave={clearPressTimer}
                 onDragStart={() => handleDragStart(position)}
                 onDragEnter={() => handleDragEnter(position)}
-                className={`draggable-item ${customise ? "draggable-active" : ""
-                  }`}
+                className={`draggable-item ${
+                  customise ? "draggable-active" : ""
+                }`}
               >
                 <Highlight
                   title={highlights[itemIndex].title}
@@ -175,9 +199,21 @@ const Dashboard: React.FC = (): JSX.Element => {
             ))}
           </header>
 
+          <header className="beta-highlights-container">
+            {betaHightlights.map((item, index) => (
+              <BetaHighlights
+                key={index}
+                title={item.title}
+                value={item.value}
+              />
+            ))}
+          </header>
+
           <main>
             <News />
             <Tutorial />
+            <SellerForums />
+            <StockChart data={chartData} />
           </main>
         </>
       )}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./Settings.css";
 import { useSeller } from "../../contexts/SellerContext";
 import { fetchUpdateProfile } from "../../services/sellerService";
+import toast, { Toaster } from "react-hot-toast";
 
 const Profile = () => {
   const { seller, dispatch, login } = useSeller();
@@ -14,10 +15,14 @@ const Profile = () => {
   );
 
   const [initialFullName, setInitialFullName] = useState(seller?.fullName || "");
-  const [initialProfileImage, setInitialProfileImage] = useState(seller?.profileImage || null);
+  const [initialProfileImage, setInitialProfileImage] = useState(
+    seller?.profileImage || null
+  );
 
-
-  const isChanged = fullName !== initialFullName || profileImage !== null || previewUrl !== initialProfileImage;
+  const isChanged =
+    fullName.trim() !== initialFullName.trim() ||
+    profileImage !== null ||
+    previewUrl !== initialProfileImage;
 
   useEffect(() => {
     if (seller) {
@@ -51,13 +56,12 @@ const Profile = () => {
     }
 
     if (previewUrl !== initialProfileImage) {
-        updateData.profileImage = profileImage;
-    }
-    
-    if(previewUrl===null && initialProfileImage!==null){
-        updateData.profileImage = null;
+      updateData.profileImage = profileImage;
     }
 
+    if (previewUrl === null && initialProfileImage !== null) {
+      updateData.profileImage = null;
+    }
 
     if (Object.keys(updateData).length === 0) {
       return;
@@ -67,16 +71,23 @@ const Profile = () => {
     setError(null);
 
     try {
-      const updatedSeller = await fetchUpdateProfile(seller, login, updateData);
-      
+      const updatedSeller = await fetchUpdateProfile(
+        seller,
+        login,
+        updateData
+      );
+
       dispatch({ type: "UPDATE_SELLER", payload: updatedSeller });
+      toast.success("Profile updated successfully!");
 
       // also update initial state
-      if(updatedSeller.fullName) setInitialFullName(updatedSeller.fullName);
-      
-      if(updatedSeller.profileImage !== undefined) setInitialProfileImage(updatedSeller.profileImage);      
+      if (updatedSeller.fullName) setInitialFullName(updatedSeller.fullName);
+
+      if (updatedSeller.profileImage !== undefined)
+        setInitialProfileImage(updatedSeller.profileImage);
     } catch (err: any) {
       setError(err.message || "An error occurred while updating the profile.");
+      toast.error(err.message || "An error occurred while updating the profile.");
     } finally {
       setIsUpdating(false);
     }
@@ -87,54 +98,71 @@ const Profile = () => {
       <header>
         <h2>Profile</h2>
       </header>
-      <main>
-        <div className="profile-field">
-          <strong>Profile photo</strong>
-          <div className="profile-photo-container">
-            <img
-              src={previewUrl || "/src/assets/profile-default.svg"}
-              alt="Profile"
-              className="profile-photo-preview"
-            />
-            <input type="file" id="profileImage" onChange={handleFileChange} accept="image/*" />
-            <div className="photo-actions">
-                <label htmlFor="profileImage" className="btn-upload">Change</label>
-                {previewUrl && <button onClick={handleRemoveImage} className="btn-remove">Remove</button>}
+      <main className="profile-main">
+        <div className="profile-section">
+          <div className="profile-field">
+            <strong>Profile photo</strong>
+            <div className="profile-photo-container">
+              <img
+                src={previewUrl || "/src/assets/profile-default.svg"}
+                alt="Profile"
+                className="profile-photo-preview"
+              />
+              <input
+                type="file"
+                id="profileImage"
+                onChange={handleFileChange}
+                accept="image/*"
+              />
+              <div className="photo-actions">
+                <label htmlFor="profileImage" className="btn-upload">
+                  Change
+                </label>
+                {previewUrl && (
+                  <button onClick={handleRemoveImage} className="btn-remove">
+                    Remove
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>
-        <div className="profile-field">
-          <strong>Full name</strong>
-          <input
-            type="text"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-            className="input-field"
-          />
+        <div className="profile-section">
+          <div className="profile-field">
+            <strong>Full name</strong>
+            <input
+              type="text"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              className="input-field"
+            />
+          </div>
+          <div className="profile-field">
+            <strong>Email</strong>
+            <span>{seller?.email || ""}</span>
+          </div>
+          <div className="profile-field">
+            <strong>Phone</strong>
+            <span>{seller?.phone || ""}</span>
+          </div>
+          <div className="profile-field">
+            <strong>Verification status</strong>
+            <span>{seller?.isVerified ? "Verified" : "Pending"}</span>
+          </div>
         </div>
-        <div className="profile-field">
-          <strong>Email</strong>
-          <span>{seller?.email || ""}</span>
-        </div>
-        <div className="profile-field">
-          <strong>Phone</strong>
-          <span>{seller?.phone || ""}</span>
-        </div>
-        <div className="profile-field">
-          <strong>Verification status</strong>
-          <span>{seller?.isVerified ? "Verified" : "Pending"}</span>
-        </div>
-        <div className="update-button-container">
-            <button
-                onClick={handleUpdate}
-                disabled={!isChanged || isUpdating}
-                className="btn-update"
-            >
-                {isUpdating ? "Updating..." : "Update Profile"}
-            </button>
-            {error && <p className="error-message">{error}</p>}
-       </div>
       </main>
+      <div className="update-button-container">
+        {isChanged && (
+          <button
+            onClick={handleUpdate}
+            disabled={isUpdating}
+            className="btn-update"
+          >
+            {isUpdating ? "Updating..." : "Update Profile"}
+          </button>
+        )}
+        {error && <p className="error-message">{error}</p>}
+      </div>
     </section>
   );
 };
@@ -142,6 +170,7 @@ const Profile = () => {
 const Settings: React.FC = () => {
   return (
     <div id="settings">
+      <Toaster position="bottom-right" />
       <Profile />
     </div>
   );

@@ -7,8 +7,7 @@ const News:React.FC = () => {
   return (
     <div id='news-box'>
         <header>
-            <h2>News <BetaBadge /></h2>
-            <button>see all</button>
+            <h3>News</h3> <BetaBadge />
         </header>
         <main>
         {newsList.news.map(news=>{

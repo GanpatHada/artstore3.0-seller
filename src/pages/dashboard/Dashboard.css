@@ -5,14 +5,14 @@
   gap: 1.5rem;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   width: 100%;
-  max-width: 1200px;
-  margin: auto;
 }
 
 #dashboard > main{
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
   gap: 1rem;
 }
+
 
 #dashboard nav{
   display: flex;
@@ -38,34 +38,46 @@
 
 .highlights-container {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
   gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
   align-items: stretch;
 }
 
-.highlight {
-  background-color: #fff;
+.highlight, .beta-highlight {
   height: 100%;
-  padding: 1rem;
   border: 1px solid lightgray; 
   border-radius: 4px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   cursor: default;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.beta-highlights-container
+{
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  align-items: stretch;
 }
 
-.highlight header {
+.highlight header, .beta-highlight header {
   font-size: 1rem;
+  padding: 0.5rem;
   font-weight: 500;
   color: #4b4b4b;
-  margin-bottom: 0.5rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-.highlight main {
+.highlight main, .beta-highlight main {
+  flex: 1;
+  padding: 1rem;
   font-size: 1.5rem;
   font-weight: 600;
-  color: var(--primary-color, #514b82);
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
   
 }
 .health-wrapper{
@@ -91,5 +103,4 @@
   cursor:grabbing;
   transform: scale(0.97);
 }
-
 

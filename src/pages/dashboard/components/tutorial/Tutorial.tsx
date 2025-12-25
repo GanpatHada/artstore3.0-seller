@@ -6,7 +6,7 @@ const Tutorial:React.FC = () => {
   return (
     <div id='tutorial-box'>
         <header>
-          <h2>Tutorial</h2>
+          <h3>Tutorial</h3>
         </header>
         <main>
           <iframe src="https://www.youtube.com/embed/75V1bTrsXnw" ></iframe>

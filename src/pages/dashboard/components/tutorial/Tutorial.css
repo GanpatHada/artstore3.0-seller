@@ -1,6 +1,4 @@
 #tutorial-box{
-    width: 100vw;
-    max-width: 300px;
     height: 400px;
     border: 1px solid lightgray;
     display: flex;
@@ -15,11 +13,18 @@
 }
 #tutorial-box main{
     overflow: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+    background-color: aliceblue;
     
 }
 #tutorial-box main a{
-    color: var(--primary-color);
-    margin-left: 1rem;
+    color: aliceblue;
+    padding: 0.5rem;
+    text-align: center;
+    background-color: var(--primary-color);
     &:hover{
         text-decoration: underline;
     }
@@ -27,5 +32,6 @@
 #tutorial-box main iframe{
     width: 100%;
     aspect-ratio: 3/2;
+    border: none;
     
 }
