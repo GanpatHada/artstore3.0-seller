@@ -44,17 +44,7 @@ a#user-profile {
   object-fit: cover;
   overflow: hidden;
 }
-#logout-btn {
-  height: fit-content;
-  background-color: white;
-  font-weight: bold;
-  color: rgb(0, 69, 87);
-  padding: 0.5rem 0.75rem;
-  border-radius: 5px;
-  &:hover {
-    background-color: rgb(215, 244, 255);
-  }
-}
+
 button#menu {
   color: white;
   background-color: transparent;

@@ -14,11 +14,13 @@ import StoreForm from './pages/StoreForm/StoreForm';
 import { StoreFormProvider } from './contexts/StoreContext';
 import MyStore from './pages/my_store/MyStore';
 import Settings from './pages/settings/Settings';
+import ProtectedRoute from './components/ProtectedRoute';
+
 
 const AppRoutes: React.FC = (): JSX.Element => {
    return (
       <Routes>
-         <Route path="/" element={<Home />}>
+         <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>}>
             <Route index element={<Dashboard />} />
             <Route path='/my-products' element={<MyProducts />} />
             <Route path='/my-store' element={<MyStore />} />

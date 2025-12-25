@@ -1,10 +1,10 @@
-import React, { createContext, useContext, useReducer, type ReactNode } from "react";
+import React, { createContext, useContext, useEffect, useReducer, type ReactNode } from "react";
 import {
   sellerReducer,
-  initialSellerState,
-  type SellerState,
-  type Seller,
+  initialSellerState
 } from "../reducers/sellerReducer";
+import { fetchSellerDetails } from "../services/sellerService";
+import type { Seller, SellerState } from "../types/seller.types";
 
 
 interface SellerContextType extends SellerState {
@@ -33,6 +33,19 @@ export const SellerProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     dispatch({ type: "SET_LOADING", payload: loading });
   };
 
+  useEffect(() => {
+    const initSeller = async () => {
+      try {
+        const sellerDetails = await fetchSellerDetails();
+        dispatch({ type: "LOGIN_SUCCESS", payload: sellerDetails });
+      } catch {
+        dispatch({ type: "LOGOUT" });
+      }
+    };
+
+    initSeller();
+  }, []);
+
   return (
     <SellerContext.Provider
       value={{
@@ -47,6 +60,7 @@ export const SellerProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     </SellerContext.Provider>
   );
 };
+
 
 export const useSeller = (): SellerContextType => {
   const context = useContext(SellerContext);

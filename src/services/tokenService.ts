@@ -1,14 +1,12 @@
 import { BACKEND_BASE_URL } from "../Constants";
+import type { Seller } from "../types/seller.types";
 
 export function getAccessToken(seller: any) {
   return seller?.accessToken;
 }
 
-function redirectToLogin() {
-  window.location.href = "/login";
-}
 
-export async function refreshAccessToken(redirect = true) {
+export async function refreshAccessToken() {
   try {
     const res = await fetch(
       `${BACKEND_BASE_URL}/auth/seller/refreshAccessToken`,
@@ -20,58 +18,51 @@ export async function refreshAccessToken(redirect = true) {
 
     const json = await res.json();
 
-    const refreshTokenErrors = [
-      "EXPIRED_REFRESH_TOKEN",
-      "INVALID_REFRESH_TOKEN",
-      "MISSED_REFRESH_TOKEN",
-    ];
-
-    if (json?.success === false) {
-      if (refreshTokenErrors.includes(json.errorCode)) {
-        if (redirect) {
-          redirectToLogin();
-          return null;
-        }
-      }
-      throw new Error(json.message);
-    }
-
+    if(!json.success)
+      throw new Error(json.message)
     return json.data;
   } catch (error) {
     throw error;
   }
 }
 
+
+
 export async function secureFetch(
-  seller: any,
+  seller: Seller,
   setSellerDetails: React.Dispatch<React.SetStateAction<any>>,
-  input: RequestInfo,
+  url: RequestInfo,
   init: RequestInit = {}
-) {
+){
+
+  //headers received as args inside init
+
   const headers = {
     ...(init.headers || {}),
     Authorization: `Bearer ${getAccessToken(seller)}`,
   };
 
   try {
-    let response = await fetch(input, { ...init, headers });
+    let response = await fetch(url, { ...init, headers });
     let json = await response.json();
 
-    if (json?.success === false && json?.errorCode === "EXPIRED_TOKEN") {
-      const accessToken = await refreshAccessToken(true);
-      if (!accessToken) return;
+    //If Access token is expired only
 
+    if (json?.success === false && json?.errorCode === "EXPIRED_TOKEN") {
+      const accessToken = await refreshAccessToken();
       setSellerDetails((prev: any) => ({
         ...prev,
         accessToken,
       }));
+
+      //now with new accessToken fetch again
 
       const newHeaders = {
         ...(init.headers || {}),
         Authorization: `Bearer ${accessToken}`,
       };
 
-      response = await fetch(input, { ...init, headers: newHeaders });
+      response = await fetch(url, { ...init, headers: newHeaders });
       json = await response.json();
     }
 
@@ -80,20 +71,20 @@ export async function secureFetch(
       "INVALID_TOKEN",
     ];
 
-    if (
-      json?.success === false &&
-      accessTokenErrors.includes(json.errorCode)
-    ) {
-      redirectToLogin();
-      return;
+    if (json?.success === false && accessTokenErrors.includes(json.errorCode))
+    {
+      throw new Error("Unauthorized access")
     }
 
     if (json?.success === false) {
-      throw new Error(json.message || "Something went wrong");
+      throw new Error(json.message);
     }
+    // return data if no error
 
-    return json.data;
+    return json?.data||null;
+
+
   } catch (err: any) {
-    throw new Error(err?.message || "Network error");
+    throw new Error(err);
   }
 }

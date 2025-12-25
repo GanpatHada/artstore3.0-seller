@@ -4,12 +4,15 @@ import { useSeller } from "../../contexts/SellerContext";
 import { fetchUpdateProfile } from "../../services/sellerService";
 import toast, { Toaster } from "react-hot-toast";
 
+import { logout as logoutSeller } from "../../services/sellerService";
+import { useNavigate } from "react-router-dom";
+
 const Profile = () => {
-  const { seller, dispatch, login } = useSeller();
+  const { seller, dispatch, login, logout } = useSeller();
+  const navigate = useNavigate();
   const [fullName, setFullName] = useState(seller?.fullName || "");
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const [isUpdating, setIsUpdating] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(
     seller?.profileImage || null
   );
@@ -68,7 +71,6 @@ const Profile = () => {
     }
 
     setIsUpdating(true);
-    setError(null);
 
     try {
       const updatedSeller = await fetchUpdateProfile(
@@ -79,17 +81,26 @@ const Profile = () => {
 
       dispatch({ type: "UPDATE_SELLER", payload: updatedSeller });
       toast.success("Profile updated successfully!");
-
-      // also update initial state
       if (updatedSeller.fullName) setInitialFullName(updatedSeller.fullName);
 
       if (updatedSeller.profileImage !== undefined)
         setInitialProfileImage(updatedSeller.profileImage);
     } catch (err: any) {
-      setError(err.message || "An error occurred while updating the profile.");
       toast.error(err.message || "An error occurred while updating the profile.");
     } finally {
       setIsUpdating(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    if (!seller) return;
+    try {
+      await logoutSeller(seller, login);
+      logout();
+      navigate('/login');
+    } catch (error) {
+      console.error(error);
+      toast.error("Logout failed. Please try again.");
     }
   };
 
@@ -149,19 +160,21 @@ const Profile = () => {
             <strong>Verification status</strong>
             <span>{seller?.isVerified ? "Verified" : "Pending"}</span>
           </div>
+          <button id="logout-btn" onClick={handleLogout}>Logout</button>
         </div>
       </main>
       <div className="update-button-container">
-        {isChanged && (
+        
           <button
+            style={{visibility:isChanged?'visible':'hidden'}}
             onClick={handleUpdate}
             disabled={isUpdating}
             className="btn-update"
           >
             {isUpdating ? "Updating..." : "Update Profile"}
           </button>
-        )}
-        {error && <p className="error-message">{error}</p>}
+        
+       
       </div>
     </section>
   );

@@ -28,20 +28,17 @@ export interface SellerWithToken extends SellerResponseData {
 export async function fetchSellerDetails(): Promise<SellerWithToken> {
   try {
     const accessToken = await refreshAccessToken();
-
     const response = await fetch(`${BACKEND_BASE_URL}/seller/`, {
       method: "GET",
       headers: {
         Authorization: accessToken,
+
       },
     });
-
     const data: SellerDetailsResponse = await response.json();
-
     if (!data.success) {
       throw new Error(data.message);
     }
-
     return { ...data.data, accessToken };
   } catch (error) {
     throw error;
@@ -89,6 +86,25 @@ export async function fetchUpdateProfile(
     throw error;
   }
 }
+
+export const logout = async (
+  seller: any,
+  login: any
+): Promise<null> => {
+  const url = `${BACKEND_BASE_URL}/seller/logout`;
+
+  try {
+    const data = await secureFetch(seller, login, url, {
+      method: "POST",
+      credentials:"include"
+    });
+
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
 
 
 
