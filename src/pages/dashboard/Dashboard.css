@@ -5,63 +5,70 @@
   gap: 1.5rem;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   width: 100%;
+  box-sizing: border-box;
 }
 
-#dashboard > main{
+#dashboard > main {
   display: grid;
-  grid-template-columns: repeat(3,1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
 }
 
-
-#dashboard nav{
+#dashboard nav {
   display: flex;
   justify-content: space-between;
-  
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
-#dashboard nav button{
+
+#dashboard nav h2 {
+  margin: 0;
+}
+
+#dashboard nav button {
   background-color: transparent;
   border: 1px solid gray;
   padding: 0.5rem 1rem;
-  border-radius:2rem;
+  border-radius: 2rem;
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  &:hover{
-    background-color: whitesmoke;
-  }
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
-#dashboard nav button span{
+
+#dashboard nav button:hover {
+  background-color: whitesmoke;
+}
+
+#dashboard nav button i {
   font-size: 1rem;
   font-weight: bold;
 }
 
-.highlights-container {
+/* ================== HIGHLIGHTS ================== */
+.highlights-container,
+.beta-highlights-container {
   display: grid;
   gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   align-items: stretch;
 }
 
-.highlight, .beta-highlight {
-  height: 100%;
-  border: 1px solid lightgray; 
-  border-radius: 4px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  cursor: default;
-  overflow: hidden;
+.highlight,
+.beta-highlight {
   display: flex;
   flex-direction: column;
-}
-.beta-highlights-container
-{
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
-  align-items: stretch;
+  border: 1px solid lightgray;
+  border-radius: 4px;
+  overflow: hidden;
+  min-width: 0;
+  height: 100%;
 }
 
-.highlight header, .beta-highlight header {
+.highlight header,
+.beta-highlight header {
   font-size: 1rem;
   padding: 0.5rem;
   font-weight: 500;
@@ -70,7 +77,8 @@
   letter-spacing: 0.5px;
 }
 
-.highlight main, .beta-highlight main {
+.highlight main,
+.beta-highlight main {
   flex: 1;
   padding: 1rem;
   font-size: 1.5rem;
@@ -78,29 +86,81 @@
   color: var(--primary-color);
   display: flex;
   align-items: center;
-  
+  justify-content: center;
 }
-.health-wrapper{
-    width: 100%;
-    height: 8px;
-    background-color: rgb(216, 216, 216);
-    position: relative;
-    border-radius: 4px;
+
+/* ================== OTHER COMPONENTS ================== */
+.health-wrapper {
+  width: 100%;
+  height: 8px;
+  background-color: rgb(216, 216, 216);
+  position: relative;
+  border-radius: 4px;
 }
+
 .draggable-item {
   cursor: default;
-  user-select:none;
+  user-select: none;
   transition: transform 0.2s;
-  
 }
 
 .draggable-active {
   cursor: grab;
-  
 }
 
 .draggable-active:active {
-  cursor:grabbing;
+  cursor: grabbing;
   transform: scale(0.97);
 }
 
+/* ================== RESPONSIVE ================== */
+@media (max-width: 1024px) {
+  #dashboard > main {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) and (min-width: 541px) {
+  #dashboard {
+    padding: 1.25rem;
+  }
+
+  #dashboard > main {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .highlight main,
+  .beta-highlight main {
+    font-size: 1.35rem;
+  }
+}
+
+@media (max-width: 540px) {
+  #dashboard {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  #dashboard button span{
+    display: none;
+  }
+
+  
+  .highlights-container{
+  grid-template-columns: repeat(2,1fr);
+}
+
+  #dashboard nav h2 {
+    font-size: 1.25rem;
+  }
+
+  #dashboard > main {
+    grid-template-columns: 1fr;
+  }
+
+  .highlight main,
+  .beta-highlight main {
+    font-size: 1.25rem;
+    padding: 0.75rem;
+  }
+}

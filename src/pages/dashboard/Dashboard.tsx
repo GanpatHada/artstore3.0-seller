@@ -172,8 +172,8 @@ const Dashboard: React.FC = (): JSX.Element => {
           <nav>
             <h2>My Dashboard</h2>
             <button onClick={() => setCustomise((prev) => !prev)}>
-              {customise ? "Lock Layout" : "Customise Layout"}{" "}
-              <span>{customise ? <CiLock /> : <CiUnlock />}</span>
+              <span>{customise ? "Lock Layout" : "Customise Layout"}</span>{" "}
+              <i>{customise ? <CiLock /> : <CiUnlock />}</i>
             </button>
           </nav>
 
