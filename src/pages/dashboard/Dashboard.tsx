@@ -210,10 +210,10 @@ const Dashboard: React.FC = (): JSX.Element => {
           </header>
 
           <main>
-            <News />
-            <Tutorial />
-            <SellerForums />
             <StockChart data={chartData} />
+            <Tutorial />
+            <News />
+            <SellerForums />
           </main>
         </>
       )}
