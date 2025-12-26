@@ -3,7 +3,7 @@ import { fetchSellerLogin } from '../services/authService';
 import toast from 'react-hot-toast';
 import {useNavigate } from 'react-router-dom';
 import { useSeller } from '../contexts/SellerContext';
-import type { Seller } from '../reducers/sellerReducer';
+import type { Seller } from '../types/seller.types';
 
 const GuestLoginButton: React.FC = (): JSX.Element => {
     const {login}=useSeller()

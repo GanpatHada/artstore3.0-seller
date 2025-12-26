@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import "./MyStore.css";
 import defaultLogo from "../../assets/logoPlaceholder.png";
 import { useNavigate } from "react-router-dom";
+import { AuthError } from "../../services/tokenService";
 
 export const StoreNotFound: React.FC = () => {
   const navigate=useNavigate()
@@ -32,6 +33,7 @@ const MyStore: React.FC = () => {
   const [store, setStore] = useState<StoreType | null>(null);
   const [loading, setLoading] = useState(true);
   const { seller, login } = useSeller();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadStore = async () => {
@@ -40,6 +42,11 @@ const MyStore: React.FC = () => {
           const data = await getStoreDetails(seller, login);
           setStore(data);
         } catch (err: any) {
+          if (err instanceof AuthError) {
+            toast.error("Session expired. Please login again.");
+            navigate("/login", { replace: true });
+            return;
+          }
           console.error(err);
           toast.error(err?.message || "Failed to load store");
         } finally {
@@ -51,9 +58,8 @@ const MyStore: React.FC = () => {
     };
 
     loadStore();
-  }, [seller, login]);
+  }, [seller, login, navigate]);
 
-  const navigate = useNavigate();
 
   if (loading) return <div>Loading...</div>;
   if (!loading && !store) return <StoreNotFound />;

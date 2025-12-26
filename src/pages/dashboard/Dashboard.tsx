@@ -18,6 +18,8 @@ import {
   Draggable
 } from "@hello-pangea/dnd";
 import type { DropResult } from "@hello-pangea/dnd";
+import { useNavigate } from "react-router-dom";
+import { AuthError } from "../../services/tokenService";
 
 
 /* ===================== TYPES ===================== */
@@ -60,37 +62,43 @@ const BetaHighlights: React.FC<HighlightProps> = ({
 /* ===================== DASHBOARD ===================== */
 const Dashboard: React.FC = (): JSX.Element => {
   const { seller, login } = useSeller();
-
+  const navigate=useNavigate();
   const [stats, setStats] = useState<StatsData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [highlights, setHighlights] = useState<HighlightProps[]>([]);
   const [customise, setCustomise] = useState<boolean>(false);
 
   /* ===================== FETCH STATS ===================== */
-  useEffect(() => {
-    const getStats = async () => {
-      setLoading(true);
-      try {
-        const data = await fetchSellerStats(seller, login);
-        setStats(data);
+useEffect(() => {
+  const getStats = async () => {
+    setLoading(true);
+    try {
+      const data = await fetchSellerStats(seller, login);
+      setStats(data);
 
-        // Set initial highlights
-        setHighlights([
-          { title: "Total Products", value: data.totalProducts },
-          { title: "Total Stock Added", value: data.totalStockAdded },
-          { title: "Total Sold Products", value: data.totalSold },
-          { title: "Remaining Stock", value: data.remainingStock },
-          { title: "Available Products", value: data.availableProducts },
-          { title: "Unavailable Products", value: data.unavailableProducts },
-        ]);
-      } catch (err: any) {
-        toast.error(err?.message || "Failed to load dashboard stats");
-      } finally {
-        setLoading(false);
+      setHighlights([
+        { title: "Total Products", value: data.totalProducts },
+        { title: "Total Stock Added", value: data.totalStockAdded },
+        { title: "Total Sold Products", value: data.totalSold },
+        { title: "Remaining Stock", value: data.remainingStock },
+        { title: "Available Products", value: data.availableProducts },
+        { title: "Unavailable Products", value: data.unavailableProducts },
+      ]);
+    } catch (err: any) {
+      if (err instanceof AuthError) {
+        toast.error("Session expired. Please login again.");
+        navigate("/login", { replace: true });
+        return;
       }
-    };
-    getStats();
-  }, [seller, login]);
+      toast.error(err?.message || "Failed to load dashboard stats");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  getStats();
+}, [seller, login, navigate]);
+
 
   const betaHightlights = [
     { title: <>Account Health <BetaBadge /></>, value: "Good" },

@@ -8,9 +8,12 @@ import toast from 'react-hot-toast'
 import reload from '../../assets/reload.svg'
 import { FaRegEdit } from 'react-icons/fa'
 import { FaRegEye } from 'react-icons/fa6'
+import { useNavigate } from 'react-router-dom'
+import { AuthError } from '../../services/tokenService'
 
 const MyProducts: React.FC = (): JSX.Element => {
   const { seller, login } = useSeller();
+  const navigate = useNavigate();
   const [searchText, setSearchText] = useState("");
   const [products, setProducts] = useState<InventoryProduct[]>([]);
   const [toggleLoading, setToggleLoading] = useState<string | boolean>(false);
@@ -24,8 +27,13 @@ const MyProducts: React.FC = (): JSX.Element => {
       setLoading(true)
       const data = await fetchInventory(seller, login);
       setProducts(data);
-    } catch (err) {
-      console.error(err);
+    } catch (err: any) {
+      if (err instanceof AuthError) {
+        toast.error("Session expired. Please login again.");
+        navigate("/login", { replace: true });
+        return;
+      }
+      toast.error(err?.message || "Failed to load products");
     }
     finally {
       setLoading(false)
@@ -46,6 +54,11 @@ const MyProducts: React.FC = (): JSX.Element => {
         )
       );
     } catch (err: any) {
+      if (err instanceof AuthError) {
+        toast.error("Session expired. Please login again.");
+        navigate("/login", { replace: true });
+        return;
+      }
       toast.error(err.message || "unable to toggle at the moment");
     }
     finally {

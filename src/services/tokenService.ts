@@ -1,42 +1,56 @@
 import { BACKEND_BASE_URL } from "../Constants";
 import type { Seller } from "../types/seller.types";
 
-export function getAccessToken(seller: any) {
-  return seller?.accessToken;
-}
+/* =====================================================
+   AuthError – thrown ONLY when refresh token fails
+===================================================== */
+export class AuthError extends Error {
+  code: "REFRESH_TOKEN_FAILED";
 
-
-export async function refreshAccessToken() {
-  try {
-    const res = await fetch(
-      `${BACKEND_BASE_URL}/auth/seller/refreshAccessToken`,
-      {
-        method: "POST",
-        credentials: "include",
-      }
-    );
-
-    const json = await res.json();
-
-    if(!json.success)
-      throw new Error(json.message)
-    return json.data;
-  } catch (error) {
-    throw error;
+  constructor(message: string) {
+    super(message);
+    this.name = "AuthError";
+    this.code = "REFRESH_TOKEN_FAILED";
   }
 }
 
+/* =====================================================
+   Helper: get access token from seller
+===================================================== */
+export function getAccessToken(seller: Seller | null) {
+  return seller?.accessToken;
+}
 
+/* =====================================================
+   Refresh access token using refresh token (cookie)
+===================================================== */
+export async function refreshAccessToken() {
+  const res = await fetch(
+    `${BACKEND_BASE_URL}/auth/seller/refreshAccessToken`,
+    {
+      method: "POST",
+      credentials: "include",
+    }
+  );
 
+  const json = await res.json();
+
+  if (!json?.success) {
+    throw new Error(json?.message || "Failed to refresh access token");
+  }
+
+  return json.data; // new access token
+}
+
+/* =====================================================
+   Secure Fetch
+===================================================== */
 export async function secureFetch(
   seller: Seller,
   setSellerDetails: React.Dispatch<React.SetStateAction<any>>,
   url: RequestInfo,
   init: RequestInit = {}
-){
-
-  //headers received as args inside init
-
+) {
   const headers = {
     ...(init.headers || {}),
     Authorization: `Bearer ${getAccessToken(seller)}`,
@@ -46,17 +60,24 @@ export async function secureFetch(
     let response = await fetch(url, { ...init, headers });
     let json = await response.json();
 
-    //If Access token is expired only
-
+    /* 🔁 Access token expired → try refresh */
     if (json?.success === false && json?.errorCode === "EXPIRED_TOKEN") {
-      const accessToken = await refreshAccessToken();
+      let accessToken: string;
+
+      try {
+        accessToken = await refreshAccessToken();
+      } catch {
+        // ✅ ONLY refresh token failure throws AuthError
+        throw new AuthError("Refresh token expired or invalid");
+      }
+
+      // update seller state
       setSellerDetails((prev: any) => ({
         ...prev,
         accessToken,
       }));
 
-      //now with new accessToken fetch again
-
+      // retry original request with new token
       const newHeaders = {
         ...(init.headers || {}),
         Authorization: `Bearer ${accessToken}`,
@@ -66,25 +87,20 @@ export async function secureFetch(
       json = await response.json();
     }
 
-    const accessTokenErrors = [
-      "MISSED_TOKEN",
-      "INVALID_TOKEN",
-    ];
+    /* ❌ Invalid / missing access token */
+    const accessTokenErrors = ["MISSED_TOKEN", "INVALID_TOKEN"];
 
-    if (json?.success === false && accessTokenErrors.includes(json.errorCode))
-    {
-      throw new Error("Unauthorized access")
+    if (!json?.success) {
+      if (accessTokenErrors.includes(json.errorCode)) {
+        throw new Error("Unauthorized access");
+      }
+
+      throw new Error(json?.message || "Request failed");
     }
 
-    if (json?.success === false) {
-      throw new Error(json.message);
-    }
-    // return data if no error
-
-    return json?.data||null;
-
-
-  } catch (err: any) {
-    throw new Error(err);
+    /* ✅ Success */
+    return json?.data ?? null;
+  } catch (err) {
+    throw err;
   }
 }

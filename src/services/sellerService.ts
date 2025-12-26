@@ -1,5 +1,5 @@
 import { BACKEND_BASE_URL } from "../Constants";
-import { refreshAccessToken, secureFetch } from "./tokenService";
+import { AuthError, refreshAccessToken, secureFetch } from "./tokenService";
 
 
 
@@ -26,12 +26,17 @@ export interface SellerWithToken extends SellerResponseData {
 }
 
 export async function fetchSellerDetails(): Promise<SellerWithToken> {
+  let accessToken: string;
   try {
-    const accessToken = await refreshAccessToken();
+    accessToken = await refreshAccessToken();
+  } catch (error) {
+    throw new AuthError("Session expired. Please login again.");
+  }
+  try {
     const response = await fetch(`${BACKEND_BASE_URL}/seller/`, {
       method: "GET",
       headers: {
-        Authorization: accessToken,
+        Authorization: `Bearer ${accessToken}`,
 
       },
     });

@@ -16,6 +16,7 @@ import { useSeller } from "../../contexts/SellerContext";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import type { StoreType } from "../../types/store.types";
+import { AuthError } from "../../services/tokenService";
 
 
 const StoreForm: React.FC = () => {
@@ -55,13 +56,18 @@ const StoreForm: React.FC = () => {
               payload: seller.fullName,
             });
           }
-        } catch (error) {
+        } catch (error: any) {
+          if (error instanceof AuthError) {
+            toast.error("Session expired. Please login again.");
+            navigate("/login", { replace: true });
+            return;
+          }
           console.log("Something went wrong, proceeding to create one");
         }
       }
     };
     fetchStore();
-  }, [seller, login, dispatch]);
+  }, [seller, login, dispatch, navigate]);
 
   const handleReset = () => {
     dispatch({ type: "RESET_FORM" });
@@ -80,6 +86,11 @@ const StoreForm: React.FC = () => {
       }
       navigate("/my-store");
     } catch (error: any) {
+      if (error instanceof AuthError) {
+        toast.error("Session expired. Please login again.");
+        navigate("/login", { replace: true });
+        return;
+      }
       toast.error(error.message || "Something went wrong");
     }
   };

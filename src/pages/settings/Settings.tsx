@@ -3,7 +3,7 @@ import "./Settings.css";
 import { useSeller } from "../../contexts/SellerContext";
 import { fetchUpdateProfile } from "../../services/sellerService";
 import toast, { Toaster } from "react-hot-toast";
-
+import { AuthError } from "../../services/tokenService";
 import { logout as logoutSeller } from "../../services/sellerService";
 import { useNavigate } from "react-router-dom";
 
@@ -86,6 +86,11 @@ const Profile = () => {
       if (updatedSeller.profileImage !== undefined)
         setInitialProfileImage(updatedSeller.profileImage);
     } catch (err: any) {
+      if (err instanceof AuthError) {
+        toast.error("Session expired. Please login again.");
+        navigate("/login", { replace: true });
+        return;
+      }
       toast.error(err.message || "An error occurred while updating the profile.");
     } finally {
       setIsUpdating(false);
@@ -98,7 +103,12 @@ const Profile = () => {
       await logoutSeller(seller, login);
       logout();
       navigate('/login');
-    } catch (error) {
+    } catch (error:any) {
+      if (error instanceof AuthError) {
+        toast.error("Session expired. Please login again.");
+        navigate("/login", { replace: true });
+        return;
+      }
       console.error(error);
       toast.error("Logout failed. Please try again.");
     }

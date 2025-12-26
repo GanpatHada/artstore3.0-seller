@@ -13,7 +13,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { getStoreDetails } from "../../services/storeService";
 import { StoreNotFound } from "../my_store/MyStore";
-
+import { AuthError } from "../../services/tokenService";
 
 const AddProduct: React.FC = () => {
   const { state, dispatch } = useProductFormContext();
@@ -38,6 +38,11 @@ const AddProduct: React.FC = () => {
           toast.error("Store not found", { id: toastId });
         }
       } catch (err: any) {
+        if (err instanceof AuthError) {
+          toast.error("Session expired. Please login again.", { id: toastId });
+          navigate("/login", { replace: true });
+          return;
+        }
         setStoreExist(false);
         toast.error(err.message || "Unable to fetch store details", { id: toastId });
       } finally {
@@ -46,7 +51,7 @@ const AddProduct: React.FC = () => {
     };
 
     checkStore();
-  }, [seller, login]);
+  }, [seller, login, navigate]);
 
   if (storeFetching) {
     // Blank screen with only toast
@@ -102,6 +107,11 @@ const AddProduct: React.FC = () => {
       dispatch({ type: "RESET_FORM" });
       navigate("/");
     } catch (error: any) {
+      if (error instanceof AuthError) {
+        toast.error("Session expired. Please login again.");
+        navigate("/login", { replace: true });
+        return;
+      }
       toast.error(error.message || "Failed to add product");
     } finally {
       setLoading(false);
