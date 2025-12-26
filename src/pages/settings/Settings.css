@@ -1,139 +1,134 @@
-#settings > section{
-    border: 1px solid lightgray;
-    border-radius: 0.5rem;
-    overflow: hidden;
+#settings > section {
+  border: 1px solid lightgray;
+  border-radius: 0.5rem;
+  overflow: hidden;
 }
-#settings > section > header{
-    border-bottom: 1px solid lightgray;
-    background-color: whitesmoke;
-    color: var(--primary-color);
-    font-size: 0.8rem;
-    padding: 0.8rem 1rem;
+#settings > section > header {
+  border-bottom: 1px solid lightgray;
+  background-color: whitesmoke;
+  color: var(--primary-color);
+  font-size: 0.8rem;
+  padding: 0.8rem 1rem;
 }
-#settings > section > main{
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-    font-size: 0.9rem;
+#settings > section > main {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  font-size: 0.9rem;
 }
-#logout-btn{
-    width: fit-content;
-    padding: 0.5rem 1rem;
-    border: 1px solid rgb(189, 189, 189);
-    border-radius: 0.25rem;
-    &:hover{
-        background-color: rgb(228, 228, 228);
-    }
+#logout-btn {
+  width: fit-content;
+  padding: 0.5rem 1rem;
+  border: 1px solid rgb(189, 189, 189);
+  border-radius: 0.25rem;
+  &:hover {
+    background-color: rgb(228, 228, 228);
+  }
 }
 
 .profile-main {
-    display: flex;
-    gap: 2rem;
+  display: flex;
+  gap: 2rem;
 }
 
 .profile-section {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-    flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  flex: 1;
 }
 
 .profile-field {
-    display: grid;
-    grid-template-columns: 150px 1fr;
-    align-items: center;
-    gap: 1rem;
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  align-items: center;
+  gap: 1rem;
 }
 
 .input-field {
-    width: 100%;
-    max-width: 500px;
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 0.3rem;
-    font-size: 0.9rem;
+  width: 100%;
+  max-width: 500px;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.3rem;
+  font-size: 0.9rem;
 }
 
 .profile-photo-container {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .profile-photo-preview {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #eee;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #eee;
 }
 
 input#profileImage {
-    display: none;
+  display: none;
 }
 
 .photo-actions {
-    display: flex;
-    gap: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
 }
 
-.btn-upload, .btn-remove {
-    padding: 0.4rem 0.8rem;
-    border: none;
-    border-radius: 0.3rem;
-    cursor: pointer;
-    font-size: 0.8rem;
+.btn-upload,
+.btn-remove {
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  font-size: 0.8rem;
 }
 
 .btn-upload {
-    background-color: #f0f0f0;
-    color: #333;
-    border: 1px solid #ccc;
+  background-color: #f0f0f0;
+  color: #333;
+  border: 1px solid #ccc;
 }
 
 .btn-remove {
-    background-color: transparent;
-    color: #e53e3e;
-    
+  background-color: transparent;
+  color: #e53e3e;
 }
-.btn-remove:hover{
-    background-color: #ff00002d;
-    
+.btn-remove:hover {
+  background-color: #ff00002d;
 }
 
-.update-button-container{
-    display: flex;
-    justify-content: flex-end;
-    border-top: 1px solid lightgray;
-    padding: 0.5rem;
-   
+.update-button-container {
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid lightgray;
+  padding: 0.5rem;
 }
 
 .btn-update {
-    padding:0.5rem 1rem;
-    background-color: var(--primary-color);
-    color: aliceblue;
-    border: none;
-    border-radius: 0.3rem;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: background-color 0.2s;
-    &:hover{
-        background-color: rgb(0, 149, 160);
-    }
+  padding: 0.5rem 1rem;
+  background-color: var(--primary-color);
+  color: aliceblue;
+  border: none;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+  &:hover {
+    background-color: rgb(0, 149, 160);
+  }
 }
 
 .btn-update:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
-
-
-
 .error-message {
-    color: #e53e3e;
-    font-size: 0.8rem;
-    margin-top: 0.5rem;
+  color: #e53e3e;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
 }

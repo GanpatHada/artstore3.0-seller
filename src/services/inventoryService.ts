@@ -1,7 +1,6 @@
-import { BACKEND_BASE_URL } from "../Constants";
-import type { InventoryProduct} from "../types/inventory";
-import { secureFetch } from "./tokenService";
-
+import { BACKEND_BASE_URL } from '../Constants';
+import type { InventoryProduct } from '../types/inventory';
+import { secureFetch } from './tokenService';
 
 export async function fetchInventory(
   seller: any,
@@ -11,7 +10,7 @@ export async function fetchInventory(
 
   try {
     const data = await secureFetch(seller, login, url, {
-      method: "GET",
+      method: 'GET',
     });
 
     return data as InventoryProduct[];

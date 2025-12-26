@@ -1,6 +1,6 @@
-import { BACKEND_BASE_URL } from "../Constants";
-import type { Product } from "../types/productForm.types";
-import { secureFetch } from "./tokenService";
+import { BACKEND_BASE_URL } from '../Constants';
+import type { Product } from '../types/productForm.types';
+import { secureFetch } from './tokenService';
 
 type ProductFormResponse = {
   productId: string;
@@ -15,7 +15,7 @@ export async function fetchlistProduct(
 
   try {
     const data = await secureFetch(seller, login, url, {
-      method: "POST",
+      method: 'POST',
       body: product,
     });
 
@@ -29,13 +29,13 @@ export async function fetchEditProduct(
   seller: any,
   login: any,
   product: FormData,
-  productId:string
+  productId: string
 ): Promise<ProductFormResponse> {
   const url = `${BACKEND_BASE_URL}/products/edit/${productId}`;
 
   try {
     const data = await secureFetch(seller, login, url, {
-      method: "PUT",
+      method: 'PUT',
       body: product,
     });
     return data;
@@ -50,19 +50,19 @@ export interface ToggleProductResponse {
 }
 
 export async function getProductDetails(
-  seller:any,
-  login:any,
-  productId:string
-):Promise<Product>{
+  seller: any,
+  login: any,
+  productId: string
+): Promise<Product> {
   const url = `${BACKEND_BASE_URL}/products/${productId}`;
   try {
     const data = await secureFetch(seller, login, url, {
-      method: "GET",
+      method: 'GET',
     });
 
     return data;
   } catch (error) {
-    console.error("Failed to get product details", error);
+    console.error('Failed to get product details', error);
     throw error;
   }
 }
@@ -76,12 +76,12 @@ export async function fetchToggleProductAvailability(
 
   try {
     const data = await secureFetch(seller, login, url, {
-      method: "PATCH",
+      method: 'PATCH',
     });
 
     return data as ToggleProductResponse;
   } catch (error) {
-    console.error("Failed to toggle product availability:", error);
+    console.error('Failed to toggle product availability:', error);
     throw error;
   }
 }

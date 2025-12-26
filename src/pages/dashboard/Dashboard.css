@@ -86,7 +86,6 @@
   color: var(--primary-color);
   display: flex;
   align-items: center;
-    
 }
 
 /* ================== OTHER COMPONENTS ================== */
@@ -121,8 +120,6 @@
 }
 
 @media (max-width: 768px) and (min-width: 541px) {
-  
-
   #dashboard > main {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -134,16 +131,13 @@
 }
 
 @media (max-width: 540px) {
- 
-
-  #dashboard button span{
+  #dashboard button span {
     display: none;
   }
 
-  
-  .highlights-container{
-  grid-template-columns: repeat(2,1fr);
-}
+  .highlights-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
   #dashboard nav h2 {
     font-size: 1.25rem;

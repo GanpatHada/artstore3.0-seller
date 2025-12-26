@@ -39,7 +39,7 @@
   font-size: 1.4rem;
 }
 
-#sidebar ul{
+#sidebar ul {
   width: 100%;
   list-style: none;
   display: flex;
@@ -58,14 +58,13 @@
 }
 #sidebar ul li a {
   color: rgb(39, 39, 39);
-  font-weight:600;
+  font-weight: 600;
   padding: 0.75rem;
   display: flex;
   gap: 0.75rem;
   align-items: center;
- 
 }
-#sidebar ul li a .icon{
+#sidebar ul li a .icon {
   font-size: 1.2rem;
   display: flex;
 }

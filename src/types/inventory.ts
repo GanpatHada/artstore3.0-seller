@@ -8,8 +8,8 @@ export interface InventoryProduct {
   stock: number;
   createdAt: string;
   stockSold: number;
-  surface:string;
-  medium:string;
+  surface: string;
+  medium: string;
   isActive: boolean;
 }
 

@@ -8,13 +8,12 @@ export interface Seller {
   accessToken: string;
 }
 
-
 export type SellerAction =
-  | { type: "SET_LOADING"; payload: boolean }
-  | { type: "LOGIN_SUCCESS"; payload: Seller }
-  | { type: "LOGOUT" }
+  | { type: 'SET_LOADING'; payload: boolean }
+  | { type: 'LOGIN_SUCCESS'; payload: Seller }
+  | { type: 'LOGOUT' }
   | {
-      type: "UPDATE_SELLER";
+      type: 'UPDATE_SELLER';
       payload: {
         fullName?: string;
         profileImage?: string | null;

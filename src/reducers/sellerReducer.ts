@@ -1,4 +1,4 @@
-import type { SellerAction, SellerState } from "../types/seller.types";
+import type { SellerAction, SellerState } from '../types/seller.types';
 
 export const initialSellerState: SellerState = {
   seller: null,
@@ -6,28 +6,29 @@ export const initialSellerState: SellerState = {
   initialized: false,
 };
 
-export function sellerReducer(state: SellerState, action: SellerAction): SellerState {
+export function sellerReducer(
+  state: SellerState,
+  action: SellerAction
+): SellerState {
   switch (action.type) {
-    case "SET_LOADING":
+    case 'SET_LOADING':
       return { ...state, loading: action.payload };
-    case "LOGIN_SUCCESS":
+    case 'LOGIN_SUCCESS':
       return {
         seller: action.payload,
         loading: false,
         initialized: true, // fetch done
       };
-    case "LOGOUT":
+    case 'LOGOUT':
       return {
         seller: null,
         loading: false,
         initialized: true, // fetch done
       };
-    case "UPDATE_SELLER":
+    case 'UPDATE_SELLER':
       if (!state.seller) return state;
       return { ...state, seller: { ...state.seller, ...action.payload } };
     default:
       return state;
   }
 }
-
-

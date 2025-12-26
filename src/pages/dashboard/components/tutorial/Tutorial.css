@@ -1,37 +1,35 @@
-#tutorial-box{
-    height: 400px;
-    border: 1px solid lightgray;
-    display: flex;
-    flex-direction: column;
+#tutorial-box {
+  height: 400px;
+  border: 1px solid lightgray;
+  display: flex;
+  flex-direction: column;
 }
-#tutorial-box header{
-    padding: 10px;
-    border-bottom: 1px solid lightgray;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+#tutorial-box header {
+  padding: 10px;
+  border-bottom: 1px solid lightgray;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-#tutorial-box main{
-    overflow: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    flex: 1;
-    background-color: aliceblue;
-    
+#tutorial-box main {
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  background-color: aliceblue;
 }
-#tutorial-box main a{
-    color: aliceblue;
-    padding: 0.5rem;
-    text-align: center;
-    background-color: var(--primary-color);
-    &:hover{
-        text-decoration: underline;
-    }
+#tutorial-box main a {
+  color: aliceblue;
+  padding: 0.5rem;
+  text-align: center;
+  background-color: var(--primary-color);
+  &:hover {
+    text-decoration: underline;
+  }
 }
-#tutorial-box main iframe{
-    width: 100%;
-    aspect-ratio: 3/2;
-    border: none;
-    
+#tutorial-box main iframe {
+  width: 100%;
+  aspect-ratio: 3/2;
+  border: none;
 }

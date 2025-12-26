@@ -5,7 +5,7 @@
   min-height: 100vh;
   background: linear-gradient(135deg, #f9fafb, #eef2ff);
   padding: 20px;
-  font-family: "Inter", "Segoe UI", sans-serif;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
 }
 
 .notfound-card {

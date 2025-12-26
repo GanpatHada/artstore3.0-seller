@@ -19,14 +19,14 @@
   background-color: white;
   overflow: hidden;
 }
-#product-dimensions > div > div  input{
+#product-dimensions > div > div input {
   flex: 1;
 }
 
 #product-dimensions > div > div:focus-within {
   outline: 2px solid var(--primary-color);
 }
-#product-dimensions input{
+#product-dimensions input {
   border: none;
 }
 #product-dimensions select {
@@ -62,7 +62,6 @@
   background-color: rgb(255, 255, 235);
 }
 
-
 #ai-button-wrapper {
   background-color: transparent;
   padding: 2px;
@@ -80,9 +79,9 @@
   height: 220px;
   width: 220px;
   border-radius: 50%;
-  content: "";
+  content: '';
   position: absolute;
-  background: linear-gradient(#2600ff,#fff8be, #0d7200);
+  background: linear-gradient(#2600ff, #fff8be, #0d7200);
   z-index: 0;
   animation: rotateBorder 4s linear infinite;
 }
@@ -99,7 +98,7 @@
 #ai-button-wrapper button {
   position: relative;
   z-index: 1;
-  background:white ;
+  background: white;
   padding: 0.5rem 1rem;
   border-radius: 5rem;
   border: none;
@@ -109,14 +108,12 @@
   font-weight: bold;
   width: 200px;
   color: rgb(0, 119, 255);
-  &:hover{
+  &:hover {
     color: rgb(0, 84, 163);
     background-color: aliceblue;
   }
-   
-  
 }
-#ai-button-wrapper button span{
+#ai-button-wrapper button span {
   position: absolute;
   right: 5px;
   height: 100%;
@@ -130,5 +127,3 @@
 #ai-button-wrapper:hover::before {
   animation-play-state: paused;
 }
-
-

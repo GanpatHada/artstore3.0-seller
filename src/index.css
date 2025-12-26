@@ -1,68 +1,67 @@
-*{
-    margin: 0px;
-    padding: 0px;
-    box-sizing: border-box;
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
 }
 :root {
   --primary-color: #008296;
   font-family: inherit;
 }
 
-* input{
+* input {
   accent-color: var(--primary-color);
 }
 
-button{
-    cursor: pointer;
-    border: none;
+button {
+  cursor: pointer;
+  border: none;
 }
 body {
   font-family: 'Lato', sans-serif;
 }
-body::-webkit-scrollbar{
+body::-webkit-scrollbar {
   display: none;
 }
 :root {
   --primary-color: #008296;
   font-family: inherit;
 }
-.primary-btn{
+.primary-btn {
   background-color: #007e91;
   border: 1px solid #007e91;
   padding: 0.5rem 1rem;
   border-radius: 1rem;
   color: #ffffffec;
-  &:hover{
+  &:hover {
     background-color: #006777;
     border: 1px solid #006777;
   }
 }
-.primary-link-btn{
+.primary-link-btn {
   color: #006777;
   width: fit-content;
   background-color: transparent;
-  &:hover{
+  &:hover {
     text-decoration: underline;
     color: #003b44;
   }
 }
-.secondary-btn{
+.secondary-btn {
   background-color: white;
   border: 1px solid gray;
   padding: 0.5rem 1rem;
   border-radius: 1rem;
   color: black;
-  &:hover{
-    background-color:aliceblue;
+  &:hover {
+    background-color: aliceblue;
   }
 }
-hr{
+hr {
   height: 1px;
   border: none;
   background-color: rgb(204, 204, 204);
-
 }
-a{
+a {
   text-decoration: none;
   font-weight: 500;
 }

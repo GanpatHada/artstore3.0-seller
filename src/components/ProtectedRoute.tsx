@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import { useSeller } from "../contexts/SellerContext";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from 'react';
+import { useSeller } from '../contexts/SellerContext';
+import { useNavigate } from 'react-router-dom';
 import Spinner from '../assets/spinner.svg';
 import logo from '../assets/a.svg';
 
@@ -8,9 +8,10 @@ const Initializer = () => {
   return (
     <div className="initializer">
       <img id="logo" src={logo} alt="a" />
-      <img id='spinner' src={Spinner} alt="..." />
+      <img id="spinner" src={Spinner} alt="..." />
       <p>
-        🚀 Please wait ...<br /> Hosted on Render, so it may take a few seconds to wake up.
+        🚀 Please wait ...
+        <br /> Hosted on Render, so it may take a few seconds to wake up.
       </p>
     </div>
   );
@@ -27,7 +28,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   useEffect(() => {
     // Redirect only after initialization and loading is finished
     if (initialized && !loading && !seller) {
-      navigate("/login", { replace: true });
+      navigate('/login', { replace: true });
     }
   }, [initialized, loading, seller, navigate]);
 

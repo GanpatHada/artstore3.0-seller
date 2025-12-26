@@ -4,15 +4,15 @@ export interface FormField<T> {
 }
 
 export type BusinessType =
-  | "Individual"
-  | "Proprietorship"
-  | "Partnership"
-  | "LLP"
-  | "Private Limited";
+  | 'Individual'
+  | 'Proprietorship'
+  | 'Partnership'
+  | 'LLP'
+  | 'Private Limited';
 
 export interface StoreFormState {
   businessName: FormField<string>;
-  businessLogo: FormField<File| string | null>;
+  businessLogo: FormField<File | string | null>;
   gstin: FormField<string | null>;
   haveGSTIN: FormField<boolean>;
   businessType: FormField<BusinessType>;
@@ -38,12 +38,23 @@ export interface StoreFormState {
 }
 
 export type StoreFormAction =
-  | { type: "SET_FIELD_VALUE"; field: Exclude<keyof StoreFormState, "loading">; payload: any }
-  | { type: "SET_FIELD_ERROR"; field: Exclude<keyof StoreFormState, "loading">; payload: string | null }
-  | { type: "CLEAR_FIELD_ERROR"; field: Exclude<keyof StoreFormState, "loading"> }
-  | { type: "SET_LOADING"; payload: boolean }
-  | { type: "POPULATE_FORM"; payload: StoreType }
-  | { type: "RESET_FORM" };
+  | {
+      type: 'SET_FIELD_VALUE';
+      field: Exclude<keyof StoreFormState, 'loading'>;
+      payload: any;
+    }
+  | {
+      type: 'SET_FIELD_ERROR';
+      field: Exclude<keyof StoreFormState, 'loading'>;
+      payload: string | null;
+    }
+  | {
+      type: 'CLEAR_FIELD_ERROR';
+      field: Exclude<keyof StoreFormState, 'loading'>;
+    }
+  | { type: 'SET_LOADING'; payload: boolean }
+  | { type: 'POPULATE_FORM'; payload: StoreType }
+  | { type: 'RESET_FORM' };
 
 export type StoreType = {
   _id: string;
@@ -74,4 +85,3 @@ export type StoreType = {
   isVerified: boolean;
   isActive: boolean;
 };
-

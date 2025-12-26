@@ -39,8 +39,6 @@
   padding: 6px;
 }
 
-
-
 #logo-preview:hover .delete-logo-button {
   display: grid;
 }
@@ -62,20 +60,18 @@ section#logo > div {
 }
 
 #business-type-radio-group {
-    display: flex;
-    flex-direction: column;
-    margin: 20px 0px;
-    
-    
+  display: flex;
+  flex-direction: column;
+  margin: 20px 0px;
 }
 
 #business-type-radio-group label {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    color: #525252;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: #525252;
 }
 
-#business-type-radio-group input[type="radio"] {
-    margin-right: 5px;
+#business-type-radio-group input[type='radio'] {
+  margin-right: 5px;
 }

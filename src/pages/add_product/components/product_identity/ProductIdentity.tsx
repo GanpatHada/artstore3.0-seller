@@ -1,17 +1,17 @@
-import React from "react";
-import "./ProductIdentity.css";
-import { useProductFormContext } from "../../../../contexts/ProductFormContext";
+import React from 'react';
+import './ProductIdentity.css';
+import { useProductFormContext } from '../../../../contexts/ProductFormContext';
 
 const ART_CATEGORIES = [
-  "Madhubani",
-  "Phad",
-  "Warli",
-  "Pattachitra",
-  "Miniature",
-  "Gond",
-  "Kalighat",
-  "Tanjore",
-  "Others",
+  'Madhubani',
+  'Phad',
+  'Warli',
+  'Pattachitra',
+  'Miniature',
+  'Gond',
+  'Kalighat',
+  'Tanjore',
+  'Others',
 ];
 
 const ProductIdentity: React.FC = () => {
@@ -30,16 +30,21 @@ const ProductIdentity: React.FC = () => {
             maxLength={100}
             value={state.title}
             onChange={(e) =>
-              dispatch({ type: "SET_FIELD", field: "title", value: e.target.value })
+              dispatch({
+                type: 'SET_FIELD',
+                field: 'title',
+                value: e.target.value,
+              })
             }
             style={{ borderColor: state.errors.title ? '#d10000' : undefined }}
             placeholder="e.g., Peacock dancing in the rain during monsoon"
           />
           {state.errors.title && <p className="error">{state.errors.title}</p>}
           <p className="info">
-            Add a clear and descriptive title (min: 10 characters) for your artwork. A good title should mention
-            the main subject and mood of the painting. Keep it short and simple — avoid just
-            "Untitled" or one-word titles.
+            Add a clear and descriptive title (min: 10 characters) for your
+            artwork. A good title should mention the main subject and mood of
+            the painting. Keep it short and simple — avoid just "Untitled" or
+            one-word titles.
           </p>
         </div>
 
@@ -49,9 +54,15 @@ const ProductIdentity: React.FC = () => {
             id="category"
             value={state.category}
             onChange={(e) =>
-              dispatch({ type: "SET_FIELD", field: "category", value: e.target.value })
+              dispatch({
+                type: 'SET_FIELD',
+                field: 'category',
+                value: e.target.value,
+              })
             }
-            style={{ borderColor: state.errors.category ? '#d10000' : undefined }}
+            style={{
+              borderColor: state.errors.category ? '#d10000' : undefined,
+            }}
           >
             <option value="" disabled>
               -- Select --
@@ -62,7 +73,9 @@ const ProductIdentity: React.FC = () => {
               </option>
             ))}
           </select>
-          {state.errors.category && <p className="error">{state.errors.category}</p>}
+          {state.errors.category && (
+            <p className="error">{state.errors.category}</p>
+          )}
         </div>
       </main>
     </section>

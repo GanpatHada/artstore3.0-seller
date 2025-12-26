@@ -1,20 +1,19 @@
-#tabs ul{
-    display: flex;
-    list-style: none;
-    padding: 0.75rem 0rem;
-    
+#tabs ul {
+  display: flex;
+  list-style: none;
+  padding: 0.75rem 0rem;
 }
-#tabs ul li{
-    padding: 0.5rem 0.75rem;
-    border-radius: 0.5rem;
-    position: relative;
-    cursor: pointer;
-    color: rgb(88, 88, 88);
-    &:hover{
-        background-color: whitesmoke;
-    }
+#tabs ul li {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  position: relative;
+  cursor: pointer;
+  color: rgb(88, 88, 88);
+  &:hover {
+    background-color: whitesmoke;
+  }
 }
-#tabs ul li.active{
-    color: var(--primary-color);
-    font-weight: bold;
+#tabs ul li.active {
+  color: var(--primary-color);
+  font-weight: bold;
 }

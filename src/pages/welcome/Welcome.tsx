@@ -1,11 +1,7 @@
-import React, { type JSX } from 'react'
+import React, { type JSX } from 'react';
 
-const Welcome:React.FC = ():JSX.Element => {
-  return (
-    <div id='welcome'>
-      
-    </div>
-  )
-}
+const Welcome: React.FC = (): JSX.Element => {
+  return <div id="welcome"></div>;
+};
 
-export default Welcome
+export default Welcome;

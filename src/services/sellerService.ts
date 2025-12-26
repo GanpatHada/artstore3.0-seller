@@ -1,7 +1,5 @@
-import { BACKEND_BASE_URL } from "../Constants";
-import { AuthError, refreshAccessToken, secureFetch } from "./tokenService";
-
-
+import { BACKEND_BASE_URL } from '../Constants';
+import { AuthError, refreshAccessToken, secureFetch } from './tokenService';
 
 export interface SellerResponseData {
   _id: string;
@@ -30,14 +28,13 @@ export async function fetchSellerDetails(): Promise<SellerWithToken> {
   try {
     accessToken = await refreshAccessToken();
   } catch (error) {
-    throw new AuthError("Session expired. Please login again.");
+    throw new AuthError('Session expired. Please login again.');
   }
   try {
     const response = await fetch(`${BACKEND_BASE_URL}/seller/`, {
-      method: "GET",
+      method: 'GET',
       headers: {
         Authorization: `Bearer ${accessToken}`,
-
       },
     });
     const data: SellerDetailsResponse = await response.json();
@@ -71,18 +68,18 @@ export async function fetchUpdateProfile(
     const formData = new FormData();
 
     if (data.fullName !== undefined) {
-      formData.append("fullName", data.fullName);
+      formData.append('fullName', data.fullName);
     }
 
     if (data.profileImage === null) {
       // explicitly remove profile image
-      formData.append("profileImage", "null");
+      formData.append('profileImage', 'null');
     } else if (data.profileImage instanceof File) {
-      formData.append("profileImage", data.profileImage);
+      formData.append('profileImage', data.profileImage);
     }
 
     const result = await secureFetch(seller, login, url, {
-      method: "PATCH",
+      method: 'PATCH',
       body: formData,
     });
 
@@ -92,16 +89,13 @@ export async function fetchUpdateProfile(
   }
 }
 
-export const logout = async (
-  seller: any,
-  login: any
-): Promise<null> => {
+export const logout = async (seller: any, login: any): Promise<null> => {
   const url = `${BACKEND_BASE_URL}/seller/logout`;
 
   try {
     const data = await secureFetch(seller, login, url, {
-      method: "POST",
-      credentials:"include"
+      method: 'POST',
+      credentials: 'include',
     });
 
     return data;
@@ -111,32 +105,29 @@ export const logout = async (
   }
 };
 
-
-
-
 export interface StatsData {
-  totalProducts: number
-  totalStockAdded: number
-  totalSold: number
-  remainingStock: number
-  availableProducts: number
-  unavailableProducts: number
+  totalProducts: number;
+  totalStockAdded: number;
+  totalSold: number;
+  remainingStock: number;
+  availableProducts: number;
+  unavailableProducts: number;
 }
-
-
-
 
 /**
  * Fetch seller stats
  */
-export async function fetchSellerStats(seller: any, login: any): Promise<StatsData> {
-  const url = `${BACKEND_BASE_URL}/seller/stats`
+export async function fetchSellerStats(
+  seller: any,
+  login: any
+): Promise<StatsData> {
+  const url = `${BACKEND_BASE_URL}/seller/stats`;
   try {
     const data = await secureFetch(seller, login, url, {
       method: 'GET',
-    })
-    return data
+    });
+    return data;
   } catch (error) {
-    throw error
+    throw error;
   }
 }

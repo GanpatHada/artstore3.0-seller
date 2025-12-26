@@ -3,10 +3,9 @@
 A modern **Seller Dashboard** built for e-commerce platforms, enabling sellers to manage products, view analytics, and streamline store operations.  
 This project is built with **TypeScript**, integrated with **Gemini AI**, and provides a seamless user experience for managing an online store.
 
-
 ## 🔗 Live Demo
-👉 [Click here to view the Seller Dashboard](https://artstoreseller.vercel.app)
 
+👉 [Click here to view the Seller Dashboard](https://artstoreseller.vercel.app)
 
 ## 🚀 Features
 
@@ -32,4 +31,3 @@ This project is built with **TypeScript**, integrated with **Gemini AI**, and pr
 - **Database (optional):** MongoDB
 
 ---
-

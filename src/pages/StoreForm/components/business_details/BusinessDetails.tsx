@@ -1,9 +1,9 @@
-import React, { useRef } from "react";
-import { useStoreFormContext } from "../../../../contexts/StoreContext";
-import { generateTestGstNumber } from "../../../../utils/storeUtil";
-import "./BusinessDetails.css";
-import { IoCloudUploadOutline } from "react-icons/io5";
-import { MdDelete } from "react-icons/md";
+import React, { useRef } from 'react';
+import { useStoreFormContext } from '../../../../contexts/StoreContext';
+import { generateTestGstNumber } from '../../../../utils/storeUtil';
+import './BusinessDetails.css';
+import { IoCloudUploadOutline } from 'react-icons/io5';
+import { MdDelete } from 'react-icons/md';
 
 interface BusinessDetailsProps {}
 
@@ -13,8 +13,8 @@ const BusinessDetails: React.FC<BusinessDetailsProps> = () => {
 
   const handleFillRandomGSTIN = () => {
     dispatch({
-      type: "SET_FIELD_VALUE",
-      field: "gstin",
+      type: 'SET_FIELD_VALUE',
+      field: 'gstin',
       payload: generateTestGstNumber(),
     });
   };
@@ -22,20 +22,20 @@ const BusinessDetails: React.FC<BusinessDetailsProps> = () => {
   const toggleHaveGSTIN = () => {
     const newHaveGSTIN = !state.haveGSTIN.value;
     dispatch({
-      type: "SET_FIELD_VALUE",
-      field: "haveGSTIN",
+      type: 'SET_FIELD_VALUE',
+      field: 'haveGSTIN',
       payload: newHaveGSTIN,
     });
     if (!newHaveGSTIN) {
-      dispatch({ type: "SET_FIELD_VALUE", field: "gstin", payload: null });
+      dispatch({ type: 'SET_FIELD_VALUE', field: 'gstin', payload: null });
     } else {
-      dispatch({ type: "SET_FIELD_VALUE", field: "gstin", payload: "" });
+      dispatch({ type: 'SET_FIELD_VALUE', field: 'gstin', payload: '' });
     }
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
-    dispatch({ type: "SET_FIELD_VALUE", field: "businessLogo", payload: file });
+    dispatch({ type: 'SET_FIELD_VALUE', field: 'businessLogo', payload: file });
   };
 
   const handleLogoClick = () => {
@@ -43,15 +43,15 @@ const BusinessDetails: React.FC<BusinessDetailsProps> = () => {
   };
 
   const handleDeleteImage = () => {
-    dispatch({ type: "SET_FIELD_VALUE", field: "businessLogo", payload: null });
+    dispatch({ type: 'SET_FIELD_VALUE', field: 'businessLogo', payload: null });
     if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+      fileInputRef.current.value = '';
     }
   };
 
   let displayUrl = null;
   if (state.businessLogo.value) {
-    if (typeof state.businessLogo.value === "string") {
+    if (typeof state.businessLogo.value === 'string') {
       displayUrl = state.businessLogo.value;
     } else {
       displayUrl = URL.createObjectURL(state.businessLogo.value);
@@ -73,8 +73,8 @@ const BusinessDetails: React.FC<BusinessDetailsProps> = () => {
             value={state.businessName.value}
             onChange={(e) =>
               dispatch({
-                type: "SET_FIELD_VALUE",
-                field: "businessName",
+                type: 'SET_FIELD_VALUE',
+                field: 'businessName',
                 payload: e.target.value,
               })
             }
@@ -90,11 +90,11 @@ const BusinessDetails: React.FC<BusinessDetailsProps> = () => {
           <div id="business-type-radio-group">
             {(
               [
-                "Individual",
-                "Proprietorship",
-                "Partnership",
-                "LLP",
-                "Private Limited",
+                'Individual',
+                'Proprietorship',
+                'Partnership',
+                'LLP',
+                'Private Limited',
               ] as const
             ).map((type) => (
               <label key={type}>
@@ -105,8 +105,8 @@ const BusinessDetails: React.FC<BusinessDetailsProps> = () => {
                   checked={state.businessType.value === type}
                   onChange={(e) =>
                     dispatch({
-                      type: "SET_FIELD_VALUE",
-                      field: "businessType",
+                      type: 'SET_FIELD_VALUE',
+                      field: 'businessType',
                       payload: e.target.value,
                     })
                   }
@@ -125,7 +125,7 @@ const BusinessDetails: React.FC<BusinessDetailsProps> = () => {
               checked={state.haveGSTIN.value}
               onChange={toggleHaveGSTIN}
               type="checkbox"
-            />{" "}
+            />{' '}
             Do you have GSTIN
           </label>
         </div>
@@ -135,11 +135,11 @@ const BusinessDetails: React.FC<BusinessDetailsProps> = () => {
             <div>
               <input
                 type="text"
-                value={state.gstin.value || ""}
+                value={state.gstin.value || ''}
                 onChange={(e) =>
                   dispatch({
-                    type: "SET_FIELD_VALUE",
-                    field: "gstin",
+                    type: 'SET_FIELD_VALUE',
+                    field: 'gstin',
                     payload: e.target.value,
                   })
                 }
@@ -158,7 +158,7 @@ const BusinessDetails: React.FC<BusinessDetailsProps> = () => {
         <div>
           <label>Business Logo</label>
           <input
-            style={{ display: "none" }}
+            style={{ display: 'none' }}
             type="file"
             ref={fileInputRef}
             onChange={handleImageChange}

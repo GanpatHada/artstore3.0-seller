@@ -1,16 +1,16 @@
-import { BACKEND_BASE_URL } from "../Constants";
-import type { Seller } from "../types/seller.types";
+import { BACKEND_BASE_URL } from '../Constants';
+import type { Seller } from '../types/seller.types';
 
 /* =====================================================
    AuthError – thrown ONLY when refresh token fails
 ===================================================== */
 export class AuthError extends Error {
-  code: "REFRESH_TOKEN_FAILED";
+  code: 'REFRESH_TOKEN_FAILED';
 
   constructor(message: string) {
     super(message);
-    this.name = "AuthError";
-    this.code = "REFRESH_TOKEN_FAILED";
+    this.name = 'AuthError';
+    this.code = 'REFRESH_TOKEN_FAILED';
   }
 }
 
@@ -28,15 +28,15 @@ export async function refreshAccessToken() {
   const res = await fetch(
     `${BACKEND_BASE_URL}/auth/seller/refreshAccessToken`,
     {
-      method: "POST",
-      credentials: "include",
+      method: 'POST',
+      credentials: 'include',
     }
   );
 
   const json = await res.json();
 
   if (!json?.success) {
-    throw new Error(json?.message || "Failed to refresh access token");
+    throw new Error(json?.message || 'Failed to refresh access token');
   }
 
   return json.data; // new access token
@@ -61,14 +61,14 @@ export async function secureFetch(
     let json = await response.json();
 
     /* 🔁 Access token expired → try refresh */
-    if (json?.success === false && json?.errorCode === "EXPIRED_TOKEN") {
+    if (json?.success === false && json?.errorCode === 'EXPIRED_TOKEN') {
       let accessToken: string;
 
       try {
         accessToken = await refreshAccessToken();
       } catch {
         // ✅ ONLY refresh token failure throws AuthError
-        throw new AuthError("Refresh token expired or invalid");
+        throw new AuthError('Refresh token expired or invalid');
       }
 
       // update seller state
@@ -88,14 +88,14 @@ export async function secureFetch(
     }
 
     /* ❌ Invalid / missing access token */
-    const accessTokenErrors = ["MISSED_TOKEN", "INVALID_TOKEN"];
+    const accessTokenErrors = ['MISSED_TOKEN', 'INVALID_TOKEN'];
 
     if (!json?.success) {
       if (accessTokenErrors.includes(json.errorCode)) {
-        throw new Error("Unauthorized access");
+        throw new Error('Unauthorized access');
       }
 
-      throw new Error(json?.message || "Request failed");
+      throw new Error(json?.message || 'Request failed');
     }
 
     /* ✅ Success */

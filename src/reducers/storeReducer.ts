@@ -1,66 +1,63 @@
-import type { StoreFormAction, StoreFormState } from "../types/store.types";
+import type { StoreFormAction, StoreFormState } from '../types/store.types';
 
 export const initialStoreFormState: StoreFormState = {
-  businessName: { value: "", error: null },
+  businessName: { value: '', error: null },
   businessLogo: { value: null, error: null },
   gstin: { value: null, error: null },
   haveGSTIN: { value: false, error: null },
 
-  businessType: { value: "Individual", error: null },
+  businessType: { value: 'Individual', error: null },
 
-  ownerName: { value: "", error: null },
-  contactEmail: { value: "", error: null },
-  contactPhone: { value: "", error: null },
+  ownerName: { value: '', error: null },
+  contactEmail: { value: '', error: null },
+  contactPhone: { value: '', error: null },
 
-  street: { value: "", error: null },
-  city: { value: "", error: null },
-  state: { value: "", error: null },
-  postalCode: { value: "", error: null },
-  country: { value: "India", error: null },
+  street: { value: '', error: null },
+  city: { value: '', error: null },
+  state: { value: '', error: null },
+  postalCode: { value: '', error: null },
+  country: { value: 'India', error: null },
 
-  accountHolderName: { value: "", error: null },
-  accountNumber: { value: "", error: null },
-  ifscCode: { value: "", error: null },
+  accountHolderName: { value: '', error: null },
+  accountNumber: { value: '', error: null },
+  ifscCode: { value: '', error: null },
 
-  aadhaarNumber: { value: "", error: null },
-  panNumber: { value: "", error: null },
+  aadhaarNumber: { value: '', error: null },
+  panNumber: { value: '', error: null },
 
   loading: false,
 };
-
-
-
 
 export function storeFormReducer(
   state: StoreFormState,
   action: StoreFormAction
 ): StoreFormState {
   switch (action.type) {
-    case "SET_FIELD_VALUE":
+    case 'SET_FIELD_VALUE':
       return {
         ...state,
         [action.field]: { ...state[action.field], value: action.payload },
       };
 
-    case "SET_FIELD_ERROR":
+    case 'SET_FIELD_ERROR':
       return {
         ...state,
         [action.field]: { ...state[action.field], error: action.payload },
       };
 
-    case "CLEAR_FIELD_ERROR":
+    case 'CLEAR_FIELD_ERROR':
       return {
         ...state,
         [action.field]: { ...state[action.field], error: null },
       };
 
-    case "SET_LOADING":
+    case 'SET_LOADING':
       return {
         ...state,
         loading: action.payload,
       };
 
-    case "POPULATE_FORM": {
+    case 'POPULATE_FORM': {
       const {
         businessName,
         businessLogo,
@@ -101,7 +98,7 @@ export function storeFormReducer(
       };
     }
 
-    case "RESET_FORM":
+    case 'RESET_FORM':
       return initialStoreFormState;
 
     default:

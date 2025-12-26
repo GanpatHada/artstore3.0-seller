@@ -1,9 +1,14 @@
-import React, { createContext, useContext, useReducer, type ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useReducer,
+  type ReactNode,
+} from 'react';
 import {
   productFormReducer,
   initialState,
-} from "../reducers/productFormReducer";
-import type { ProductFormState, Action } from "../types/productForm.types";
+} from '../reducers/productFormReducer';
+import type { ProductFormState, Action } from '../types/productForm.types';
 
 type ProductFormContextType = {
   state: ProductFormState;
@@ -27,7 +32,9 @@ export function ProductFormProvider({ children }: { children: ReactNode }) {
 export function useProductFormContext() {
   const context = useContext(ProductFormContext);
   if (!context) {
-    throw new Error("useProductFormContext must be used inside ProductFormProvider");
+    throw new Error(
+      'useProductFormContext must be used inside ProductFormProvider'
+    );
   }
   return context;
 }

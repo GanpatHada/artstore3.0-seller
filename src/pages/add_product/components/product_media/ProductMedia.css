@@ -16,7 +16,6 @@
   align-items: center;
   overflow: hidden;
   cursor: pointer;
-
 }
 
 #product-media .upload-placeholder {
@@ -26,13 +25,13 @@
   cursor: pointer;
 }
 
-#product-media .upload-placeholder span { 
+#product-media .upload-placeholder span {
   display: block;
   color: #666;
 }
 
-#product-media .upload-placeholder span > *:not(p){
-    font-size: 2rem;
+#product-media .upload-placeholder span > *:not(p) {
+  font-size: 2rem;
 }
 
 #product-media .preview-wrapper {

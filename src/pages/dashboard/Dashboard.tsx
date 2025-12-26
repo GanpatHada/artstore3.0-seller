@@ -1,26 +1,21 @@
-import React, { useEffect, useState, type JSX } from "react";
-import "./Dashboard.css";
-import { useSeller } from "../../contexts/SellerContext";
-import { fetchSellerStats } from "../../services/sellerService";
-import { IoIosStarOutline } from "react-icons/io";
-import DashboardLoader from "./components/DashboardLoader";
-import toast from "react-hot-toast";
-import News from "./components/news/News";
-import Tutorial from "./components/tutorial/Tutorial";
-import { CiUnlock, CiLock } from "react-icons/ci";
-import BetaBadge from "../../components/common/BetaBadge";
-import StockChart from "./components/StockChart";
-import SellerForums from "./components/seller_forums/SellerForums";
+import React, { useEffect, useState, type JSX } from 'react';
+import './Dashboard.css';
+import { useSeller } from '../../contexts/SellerContext';
+import { fetchSellerStats } from '../../services/sellerService';
+import { IoIosStarOutline } from 'react-icons/io';
+import DashboardLoader from './components/DashboardLoader';
+import toast from 'react-hot-toast';
+import News from './components/news/News';
+import Tutorial from './components/tutorial/Tutorial';
+import { CiUnlock, CiLock } from 'react-icons/ci';
+import BetaBadge from '../../components/common/BetaBadge';
+import StockChart from './components/StockChart';
+import SellerForums from './components/seller_forums/SellerForums';
 
-import {
-  DragDropContext,
-  Droppable,
-  Draggable
-} from "@hello-pangea/dnd";
-import type { DropResult } from "@hello-pangea/dnd";
-import { useNavigate } from "react-router-dom";
-import { AuthError } from "../../services/tokenService";
-
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
+import type { DropResult } from '@hello-pangea/dnd';
+import { useNavigate } from 'react-router-dom';
+import { AuthError } from '../../services/tokenService';
 
 /* ===================== TYPES ===================== */
 interface StatsData {
@@ -62,50 +57,60 @@ const BetaHighlights: React.FC<HighlightProps> = ({
 /* ===================== DASHBOARD ===================== */
 const Dashboard: React.FC = (): JSX.Element => {
   const { seller, login } = useSeller();
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const [stats, setStats] = useState<StatsData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [highlights, setHighlights] = useState<HighlightProps[]>([]);
   const [customise, setCustomise] = useState<boolean>(false);
 
   /* ===================== FETCH STATS ===================== */
-useEffect(() => {
-  const getStats = async () => {
-    setLoading(true);
-    try {
-      const data = await fetchSellerStats(seller, login);
-      setStats(data);
+  useEffect(() => {
+    const getStats = async () => {
+      setLoading(true);
+      try {
+        const data = await fetchSellerStats(seller, login);
+        setStats(data);
 
-      setHighlights([
-        { title: "Total Products", value: data.totalProducts },
-        { title: "Total Stock Added", value: data.totalStockAdded },
-        { title: "Total Sold Products", value: data.totalSold },
-        { title: "Remaining Stock", value: data.remainingStock },
-        { title: "Available Products", value: data.availableProducts },
-        { title: "Unavailable Products", value: data.unavailableProducts },
-      ]);
-    } catch (err: any) {
-      if (err instanceof AuthError) {
-        toast.error("Session expired. Please login again.");
-        navigate("/login", { replace: true });
-        return;
+        setHighlights([
+          { title: 'Total Products', value: data.totalProducts },
+          { title: 'Total Stock Added', value: data.totalStockAdded },
+          { title: 'Total Sold Products', value: data.totalSold },
+          { title: 'Remaining Stock', value: data.remainingStock },
+          { title: 'Available Products', value: data.availableProducts },
+          { title: 'Unavailable Products', value: data.unavailableProducts },
+        ]);
+      } catch (err: any) {
+        if (err instanceof AuthError) {
+          toast.error('Session expired. Please login again.');
+          navigate('/login', { replace: true });
+          return;
+        }
+        toast.error(err?.message || 'Failed to load dashboard stats');
+      } finally {
+        setLoading(false);
       }
-      toast.error(err?.message || "Failed to load dashboard stats");
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
 
-  getStats();
-}, [seller, login, navigate]);
-
+    getStats();
+  }, [seller, login, navigate]);
 
   const betaHightlights = [
-    { title: <>Account Health <BetaBadge /></>, value: "Good" },
     {
-      title: <>Customer Feedback <BetaBadge /></>,
+      title: (
+        <>
+          Account Health <BetaBadge />
+        </>
+      ),
+      value: 'Good',
+    },
+    {
+      title: (
+        <>
+          Customer Feedback <BetaBadge />
+        </>
+      ),
       value: (
-        <span style={{ color: "gray" }}>
+        <span style={{ color: 'gray' }}>
           <IoIosStarOutline />
           <IoIosStarOutline />
           <IoIosStarOutline />
@@ -114,12 +119,19 @@ useEffect(() => {
         </span>
       ),
     },
-    { title: <>Buyer Messages <BetaBadge /></>, value: 5 },
+    {
+      title: (
+        <>
+          Buyer Messages <BetaBadge />
+        </>
+      ),
+      value: 5,
+    },
   ];
 
   const chartData = [
-    { name: "Total Sold", value: stats?.totalSold ?? 0 },
-    { name: "Remaining Stock", value: stats?.remainingStock ?? 0 },
+    { name: 'Total Sold', value: stats?.totalSold ?? 0 },
+    { name: 'Remaining Stock', value: stats?.remainingStock ?? 0 },
   ];
 
   /* ===================== REACT DND HANDLER ===================== */
@@ -141,8 +153,8 @@ useEffect(() => {
         <>
           <nav>
             <h2>My Dashboard</h2>
-            <button onClick={() => setCustomise(prev => !prev)}>
-              <span>{customise ? "Lock Layout" : "Customise Layout"}</span>{" "}
+            <button onClick={() => setCustomise((prev) => !prev)}>
+              <span>{customise ? 'Lock Layout' : 'Customise Layout'}</span>{' '}
               <i>{customise ? <CiLock /> : <CiUnlock />}</i>
             </button>
           </nav>
@@ -167,7 +179,7 @@ useEffect(() => {
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
-                          className={`draggable-item ${customise ? "draggable-active" : ""}`}
+                          className={`draggable-item ${customise ? 'draggable-active' : ''}`}
                         >
                           <Highlight title={item.title} value={item.value} />
                         </div>
@@ -182,7 +194,11 @@ useEffect(() => {
 
           <header className="beta-highlights-container">
             {betaHightlights.map((item, index) => (
-              <BetaHighlights key={index} title={item.title} value={item.value} />
+              <BetaHighlights
+                key={index}
+                title={item.title}
+                value={item.value}
+              />
             ))}
           </header>
 

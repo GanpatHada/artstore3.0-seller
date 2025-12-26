@@ -25,31 +25,25 @@
   border-radius: 10px;
 }
 
-
-#login-page form .error{
-    font-size: 0.8rem;
-    color: rgb(190, 0, 0);
+#login-page form .error {
+  font-size: 0.8rem;
+  color: rgb(190, 0, 0);
 }
-#login-page form input{
-    padding: 0.5rem;
-    border: 1px solid rgb(212, 212, 212);
-    border-radius: 5px;
+#login-page form input {
+  padding: 0.5rem;
+  border: 1px solid rgb(212, 212, 212);
+  border-radius: 5px;
 }
-#login-page form label{
-    font-weight: bold;
-    font-size: 0.9rem;
+#login-page form label {
+  font-weight: bold;
+  font-size: 0.9rem;
 }
-#login-page form input:focus{
-    outline: none;
-    border: 1px solid #008296;
+#login-page form input:focus {
+  outline: none;
+  border: 1px solid #008296;
 }
-#login-page form > div{
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-    
+#login-page form > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
 }
-
-
-
-

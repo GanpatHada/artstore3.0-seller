@@ -4,12 +4,12 @@
   gap: 1rem;
   width: 100%;
 }
-#my-store header{
+#my-store header {
   display: flex;
   gap: 1rem;
   align-items: center;
 }
-#my-store header button{
+#my-store header button {
   padding: 0.5rem 1rem;
   border: 1px solid lightgray;
   border-radius: 2rem;
@@ -55,7 +55,7 @@
 
 .my-store-field p {
   font-size: 0.9rem;
-  font-weight:bold;
+  font-weight: bold;
   color: #727272;
   font-weight: bold;
 }
@@ -77,10 +77,10 @@
   padding-left: 1.75rem;
   width: 100%;
   position: relative;
-  overflow:hidden;
+  overflow: hidden;
 }
-#store-not-found::after{
-  content: "";
+#store-not-found::after {
+  content: '';
   width: 0.75rem;
   height: 100%;
   background-color: var(--primary-color);
@@ -97,10 +97,8 @@
 #store-not-found p {
   color: #666;
 }
-#store-not-found button{
-    border-radius: 0.2rem;
-    margin-top: 1rem;
-    font-size: 1rem;
+#store-not-found button {
+  border-radius: 0.2rem;
+  margin-top: 1rem;
+  font-size: 1rem;
 }
-
-

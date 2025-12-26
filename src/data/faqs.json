@@ -1,42 +1,42 @@
 [
-    {
-        "question": "How do I add a new product?",
-        "answer": "To add a new product, navigate to the 'My Products' page and click on the 'Add New Product' button. Fill out the required details and click 'Save'."
-    },
-    {
-        "question": "How can I update my store details?",
-        "answer": "You can update your store details by going to the 'My Store' page. There you can edit your business name, logo, address, and other information."
-    },
-    {
-        "question": "Where can I see my sales analytics?",
-        "answer": "Sales analytics are available on the 'Dashboard' page. You can view your revenue, orders, and other key metrics."
-    },
-    {
-        "question": "How do I manage my inventory?",
-        "answer": "Inventory management can be done from the 'My Products' page. You can update stock levels for each product."
-    },
-    {
-        "question": "What payment methods are supported?",
-        "answer": "We support a variety of payment methods including credit/debit cards, net banking, and various digital wallets."
-    },
-    {
-        "question": "How do I process an order?",
-        "answer": "New orders will appear on your 'Orders' page. From there you can view order details, update the order status, and manage shipping."
-    },
-    {
-        "question": "Can I offer discounts on my products?",
-        "answer": "Yes, you can create and manage discounts from the 'Pricing & Offers' section when adding or editing a product."
-    },
-    {
-        "question": "How do I get paid?",
-        "answer": "Payouts are automatically transferred to your registered bank account on a weekly basis. You can view your payout history in the 'Account Details' section."
-    },
-    {
-        "question": "What is the return policy?",
-        "answer": "The return policy is configured by you, the seller. You can set your own return and refund policies for your products."
-    },
-    {
-        "question": "How can I contact support?",
-        "answer": "For any further assistance, you can contact our support team by sending an email to hadaganpat42@gmail.com."
-    }
+  {
+    "question": "How do I add a new product?",
+    "answer": "To add a new product, navigate to the 'My Products' page and click on the 'Add New Product' button. Fill out the required details and click 'Save'."
+  },
+  {
+    "question": "How can I update my store details?",
+    "answer": "You can update your store details by going to the 'My Store' page. There you can edit your business name, logo, address, and other information."
+  },
+  {
+    "question": "Where can I see my sales analytics?",
+    "answer": "Sales analytics are available on the 'Dashboard' page. You can view your revenue, orders, and other key metrics."
+  },
+  {
+    "question": "How do I manage my inventory?",
+    "answer": "Inventory management can be done from the 'My Products' page. You can update stock levels for each product."
+  },
+  {
+    "question": "What payment methods are supported?",
+    "answer": "We support a variety of payment methods including credit/debit cards, net banking, and various digital wallets."
+  },
+  {
+    "question": "How do I process an order?",
+    "answer": "New orders will appear on your 'Orders' page. From there you can view order details, update the order status, and manage shipping."
+  },
+  {
+    "question": "Can I offer discounts on my products?",
+    "answer": "Yes, you can create and manage discounts from the 'Pricing & Offers' section when adding or editing a product."
+  },
+  {
+    "question": "How do I get paid?",
+    "answer": "Payouts are automatically transferred to your registered bank account on a weekly basis. You can view your payout history in the 'Account Details' section."
+  },
+  {
+    "question": "What is the return policy?",
+    "answer": "The return policy is configured by you, the seller. You can set your own return and refund policies for your products."
+  },
+  {
+    "question": "How can I contact support?",
+    "answer": "For any further assistance, you can contact our support team by sending an email to hadaganpat42@gmail.com."
+  }
 ]

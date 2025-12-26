@@ -1,13 +1,12 @@
-import { BACKEND_BASE_URL } from "../Constants";
-import type {StoreType } from "../types/store.types";
-import { secureFetch } from "./tokenService";
+import { BACKEND_BASE_URL } from '../Constants';
+import type { StoreType } from '../types/store.types';
+import { secureFetch } from './tokenService';
 
 export interface LocationDetails {
   country: string;
   state: string;
   city: string;
 }
-
 
 export interface CreateOrUpdateStoreResponse {
   store: StoreType;
@@ -24,8 +23,8 @@ export async function getLocationByPincode(
     }[];
 
     const po = data[0]?.PostOffice?.[0];
-    if (!po || data[0].Status !== "Success") {
-      throw new Error("Invalid PIN code");
+    if (!po || data[0].Status !== 'Success') {
+      throw new Error('Invalid PIN code');
     }
 
     return {
@@ -34,38 +33,44 @@ export async function getLocationByPincode(
       city: po.District,
     };
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : "Unable to fetch details";
-    console.error("Error fetching location:", message);
+    const message =
+      error instanceof Error ? error.message : 'Unable to fetch details';
+    console.error('Error fetching location:', message);
     throw new Error(message);
   }
 }
-export async function createStore(seller:any,login:any,formData:any):Promise<StoreType>
-{
-  const url=`${BACKEND_BASE_URL}/seller/store`;
+export async function createStore(
+  seller: any,
+  login: any,
+  formData: any
+): Promise<StoreType> {
+  const url = `${BACKEND_BASE_URL}/seller/store`;
   try {
     const data = await secureFetch(seller, login, url, {
-      method: "POST",
-      body:formData
+      method: 'POST',
+      body: formData,
     });
-    return data as StoreType
+    return data as StoreType;
   } catch (error) {
-    console.error("Failed to create store", error);
+    console.error('Failed to create store', error);
     throw error;
   }
 }
 
-
-export async function editStore(seller:any,login:any,formData:any):Promise<StoreType>
-{
-  const url=`${BACKEND_BASE_URL}/seller/store`;
+export async function editStore(
+  seller: any,
+  login: any,
+  formData: any
+): Promise<StoreType> {
+  const url = `${BACKEND_BASE_URL}/seller/store`;
   try {
     const data = await secureFetch(seller, login, url, {
-      method: "PATCH",
-      body:formData
+      method: 'PATCH',
+      body: formData,
     });
-    return data as StoreType
+    return data as StoreType;
   } catch (error) {
-    console.error("Failed to edit store", error);
+    console.error('Failed to edit store', error);
     throw error;
   }
 }
@@ -77,12 +82,12 @@ export async function getStoreDetails(
   const url = `${BACKEND_BASE_URL}/seller/store`;
   try {
     const data = await secureFetch(seller, login, url, {
-      method: "GET",
+      method: 'GET',
     });
 
     return data as StoreType;
   } catch (error) {
-    console.error("Failed to fetch store details", error);
+    console.error('Failed to fetch store details', error);
     throw error;
   }
 }

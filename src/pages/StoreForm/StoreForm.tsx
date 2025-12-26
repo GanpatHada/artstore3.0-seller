@@ -1,23 +1,22 @@
-import React, { useEffect, useState } from "react";
-import "./StoreForm.css";
-import BusinessDetails from "./components/business_details/BusinessDetails";
-import Address from "./components/address/Address";
-import AccountDetails from "./components/account_details/AccountDetails";
-import Identity from "./components/identity/Identity";
-import OwnerDetails from "./components/owner_details/OwnerDetails";
-import { useStoreFormContext } from "../../contexts/StoreContext";
-import { buildStoreFormData } from "../../utils/storeUtil";
+import React, { useEffect, useState } from 'react';
+import './StoreForm.css';
+import BusinessDetails from './components/business_details/BusinessDetails';
+import Address from './components/address/Address';
+import AccountDetails from './components/account_details/AccountDetails';
+import Identity from './components/identity/Identity';
+import OwnerDetails from './components/owner_details/OwnerDetails';
+import { useStoreFormContext } from '../../contexts/StoreContext';
+import { buildStoreFormData } from '../../utils/storeUtil';
 import {
   createStore,
   editStore,
   getStoreDetails,
-} from "../../services/storeService";
-import { useSeller } from "../../contexts/SellerContext";
-import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
-import type { StoreType } from "../../types/store.types";
-import { AuthError } from "../../services/tokenService";
-
+} from '../../services/storeService';
+import { useSeller } from '../../contexts/SellerContext';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import type { StoreType } from '../../types/store.types';
+import { AuthError } from '../../services/tokenService';
 
 const StoreForm: React.FC = () => {
   const navigate = useNavigate();
@@ -31,38 +30,37 @@ const StoreForm: React.FC = () => {
         try {
           const store: StoreType = await getStoreDetails(seller, login);
           if (store) {
-            dispatch({ type: "POPULATE_FORM", payload: store });
+            dispatch({ type: 'POPULATE_FORM', payload: store });
             setIsEditMode(true);
-          }
-          else {
+          } else {
             dispatch({
-              type: "SET_FIELD_VALUE",
-              field: "ownerName",
+              type: 'SET_FIELD_VALUE',
+              field: 'ownerName',
               payload: seller.fullName,
             });
             dispatch({
-              type: "SET_FIELD_VALUE",
-              field: "contactEmail",
+              type: 'SET_FIELD_VALUE',
+              field: 'contactEmail',
               payload: seller.email,
             });
             dispatch({
-              type: "SET_FIELD_VALUE",
-              field: "contactPhone",
+              type: 'SET_FIELD_VALUE',
+              field: 'contactPhone',
               payload: seller.phone,
             });
             dispatch({
-              type: "SET_FIELD_VALUE",
-              field: "accountHolderName",
+              type: 'SET_FIELD_VALUE',
+              field: 'accountHolderName',
               payload: seller.fullName,
             });
           }
         } catch (error: any) {
           if (error instanceof AuthError) {
-            toast.error("Session expired. Please login again.");
-            navigate("/login", { replace: true });
+            toast.error('Session expired. Please login again.');
+            navigate('/login', { replace: true });
             return;
           }
-          console.log("Something went wrong, proceeding to create one");
+          console.log('Something went wrong, proceeding to create one');
         }
       }
     };
@@ -70,7 +68,7 @@ const StoreForm: React.FC = () => {
   }, [seller, login, dispatch, navigate]);
 
   const handleReset = () => {
-    dispatch({ type: "RESET_FORM" });
+    dispatch({ type: 'RESET_FORM' });
   };
 
   const handleSubmit = async () => {
@@ -79,19 +77,19 @@ const StoreForm: React.FC = () => {
     try {
       if (isEditMode) {
         await editStore(seller, login, formData);
-        toast.success("Store updated successfully");
+        toast.success('Store updated successfully');
       } else {
         await createStore(seller, login, formData);
-        toast.success("Store created successfully");
+        toast.success('Store created successfully');
       }
-      navigate("/my-store");
+      navigate('/my-store');
     } catch (error: any) {
       if (error instanceof AuthError) {
-        toast.error("Session expired. Please login again.");
-        navigate("/login", { replace: true });
+        toast.error('Session expired. Please login again.');
+        navigate('/login', { replace: true });
         return;
       }
-      toast.error(error.message || "Something went wrong");
+      toast.error(error.message || 'Something went wrong');
     }
   };
   return (
@@ -105,7 +103,7 @@ const StoreForm: React.FC = () => {
 
       <div className="buttons">
         <button id="save-store-details-btn" onClick={handleSubmit}>
-          {isEditMode ? "Save details" : "Create Store"}
+          {isEditMode ? 'Save details' : 'Create Store'}
         </button>
         <button onClick={handleReset}>Reset</button>
       </div>

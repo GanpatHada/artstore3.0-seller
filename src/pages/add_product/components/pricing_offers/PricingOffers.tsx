@@ -1,34 +1,28 @@
-import React, { useEffect } from "react";
-import { useProductFormContext } from "../../../../contexts/ProductFormContext";
-
-
-
+import React, { useEffect } from 'react';
+import { useProductFormContext } from '../../../../contexts/ProductFormContext';
 
 const PricingOffers: React.FC = () => {
   const { state, dispatch } = useProductFormContext();
 
-  
-
   useEffect(() => {
     const calculatedPrice =
-    state.actualPrice && state.discount
-      ? Math.round(state.actualPrice - (state.actualPrice * state.discount) / 100)
-      : state.actualPrice || 0;
+      state.actualPrice && state.discount
+        ? Math.round(
+            state.actualPrice - (state.actualPrice * state.discount) / 100
+          )
+        : state.actualPrice || 0;
 
-      dispatch({type:'SET_FIELD',field:"price",value:calculatedPrice})
-
-  }, [state.actualPrice,state.discount])
-
-  
+    dispatch({ type: 'SET_FIELD', field: 'price', value: calculatedPrice });
+  }, [state.actualPrice, state.discount]);
 
   const handleChange = (
-    field: "actualPrice" | "discount" | "stock",
+    field: 'actualPrice' | 'discount' | 'stock',
     value: string
   ) => {
     // Allow only digits
     if (/^\d*$/.test(value)) {
-      const numericValue = value === "" ? 0 : Number(value);
-      dispatch({ type: "SET_FIELD", field, value: numericValue });
+      const numericValue = value === '' ? 0 : Number(value);
+      dispatch({ type: 'SET_FIELD', field, value: numericValue });
     }
   };
 
@@ -44,8 +38,8 @@ const PricingOffers: React.FC = () => {
           <input
             type="text"
             id="actual-price"
-            value={state.actualPrice ? state.actualPrice.toString() : ""}
-            onChange={(e) => handleChange("actualPrice", e.target.value)}
+            value={state.actualPrice ? state.actualPrice.toString() : ''}
+            onChange={(e) => handleChange('actualPrice', e.target.value)}
           />
           <p className="error">{state.errors['actualPrice']}</p>
         </div>
@@ -56,15 +50,15 @@ const PricingOffers: React.FC = () => {
           <input
             type="text"
             id="discount"
-            value={state.discount ? state.discount.toString() : ""}
-            onChange={(e) => handleChange("discount", e.target.value)}
+            value={state.discount ? state.discount.toString() : ''}
+            onChange={(e) => handleChange('discount', e.target.value)}
           />
           <p className="error">{state.errors['discount']}</p>
         </div>
 
         {/* Calculated Price */}
         <div id="mrp">
-          <h4>MRP: {state.actualPrice ? `₹${state.price}` : "-"}</h4>
+          <h4>MRP: {state.actualPrice ? `₹${state.price}` : '-'}</h4>
           <p className="info">Delivery charges excluded</p>
         </div>
 
@@ -74,8 +68,8 @@ const PricingOffers: React.FC = () => {
           <input
             type="text"
             id="stock"
-            value={state.stock ? state.stock.toString() : ""}
-            onChange={(e) => handleChange("stock", e.target.value)}
+            value={state.stock ? state.stock.toString() : ''}
+            onChange={(e) => handleChange('stock', e.target.value)}
           />
           <p className="error">{state.errors['stock']}</p>
         </div>

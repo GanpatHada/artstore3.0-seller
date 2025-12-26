@@ -1,5 +1,4 @@
-import { BACKEND_BASE_URL } from "../Constants";
-
+import { BACKEND_BASE_URL } from '../Constants';
 
 export interface Seller {
   _id: string;
@@ -11,12 +10,10 @@ export interface Seller {
   accessToken: string;
 }
 
-
 export interface LoginResponse {
   seller: Seller;
   accessToken: string;
 }
-
 
 export interface RegistrationResponse {
   email: string;
@@ -26,17 +23,17 @@ export interface RegistrationResponse {
 // Seller Login
 // -----------------
 export async function fetchSellerLogin(
-  emailOrPhone: string = "guru@gmail.com",
-  password: string = "guru123"
+  emailOrPhone: string = 'guru@gmail.com',
+  password: string = 'guru123'
 ): Promise<LoginResponse> {
   const url = `${BACKEND_BASE_URL}/auth/seller/login`;
 
   try {
     const res = await fetch(url, {
-      method: "POST",
-      credentials: "include",
+      method: 'POST',
+      credentials: 'include',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ emailOrPhone, password }),
     });
@@ -50,7 +47,7 @@ export async function fetchSellerLogin(
       accessToken: data.data.accessToken as string,
     };
   } catch (error: any) {
-    throw new Error(error?.message || "Unable to login at the moment");
+    throw new Error(error?.message || 'Unable to login at the moment');
   }
 }
 
@@ -67,9 +64,9 @@ export async function fetchSellerRegistration(
 
   try {
     const res = await fetch(url, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ fullName, email, phone, password }),
     });
@@ -84,6 +81,6 @@ export async function fetchSellerRegistration(
       email: data.data.email as string,
     };
   } catch (error: any) {
-    throw new Error(error?.message || "Unable to register at the moment");
+    throw new Error(error?.message || 'Unable to register at the moment');
   }
 }

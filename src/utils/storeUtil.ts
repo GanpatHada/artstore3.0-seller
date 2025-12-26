@@ -6,7 +6,7 @@ export function generateTestAccountNumber() {
 }
 
 export function generateTestIfsc() {
-  const bankCode = "TEST";
+  const bankCode = 'TEST';
   const branchCode = Math.random().toString(36).substring(2, 8).toUpperCase();
   return `${bankCode}0${branchCode}`;
 }
@@ -19,8 +19,8 @@ export function generateTestAadhaarNumber() {
 }
 
 export function generateTestPanNumber() {
-  let pan = "";
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let pan = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   for (let i = 0; i < 5; i++) {
     pan += characters.charAt(Math.floor(Math.random() * characters.length));
   }
@@ -34,24 +34,24 @@ export function generateTestPanNumber() {
 export function generateTestGstNumber() {
   const stateCode = Math.floor(Math.random() * 37) + 1;
   const pan = generateTestPanNumber();
-  const entityNumber = "1";
-  const defaultChar = "Z";
+  const entityNumber = '1';
+  const defaultChar = 'Z';
   const checksum = Math.floor(Math.random() * 10);
   return `${stateCode}${pan}${entityNumber}${defaultChar}${checksum}`;
 }
 
 export function generateRandomStreet() {
   const streetNames = [
-    "Maple",
-    "Oak",
-    "Pine",
-    "Cedar",
-    "Elm",
-    "Washington",
-    "Main",
-    "Church",
+    'Maple',
+    'Oak',
+    'Pine',
+    'Cedar',
+    'Elm',
+    'Washington',
+    'Main',
+    'Church',
   ];
-  const streetTypes = ["Street", "Avenue", "Boulevard", "Lane", "Road"];
+  const streetTypes = ['Street', 'Avenue', 'Boulevard', 'Lane', 'Road'];
   const houseNumber = Math.floor(Math.random() * 200) + 1;
   const streetName =
     streetNames[Math.floor(Math.random() * streetNames.length)];
@@ -64,40 +64,42 @@ export function buildStoreFormData(state: any) {
   const formData = new FormData();
 
   // business
-  formData.append("businessName", state.businessName.value);
-  formData.append("businessType", state.businessType.value);
+  formData.append('businessName', state.businessName.value);
+  formData.append('businessType', state.businessType.value);
 
   if (state.businessLogo.value instanceof File) {
-    formData.append("businessLogo", state.businessLogo.value);
-  } else if (typeof state.businessLogo.value === 'string' && state.businessLogo.value !== '') {
-    formData.append("businessLogo", state.businessLogo.value);
+    formData.append('businessLogo', state.businessLogo.value);
+  } else if (
+    typeof state.businessLogo.value === 'string' &&
+    state.businessLogo.value !== ''
+  ) {
+    formData.append('businessLogo', state.businessLogo.value);
   }
 
   if (state.gstin.value) {
-    formData.append("gstin", state.gstin.value);
+    formData.append('gstin', state.gstin.value);
   }
 
   // owner & contact
-  formData.append("ownerName", state.ownerName.value);
-  formData.append("contactEmail", state.contactEmail.value);
-  formData.append("contactPhone", state.contactPhone.value);
+  formData.append('ownerName', state.ownerName.value);
+  formData.append('contactEmail', state.contactEmail.value);
+  formData.append('contactPhone', state.contactPhone.value);
 
   // address (flat)
-  formData.append("street", state.street.value);
-  formData.append("city", state.city.value);
-  formData.append("state", state.state.value);
-  formData.append("postalCode", state.postalCode.value);
-  formData.append("country", state.country.value);
+  formData.append('street', state.street.value);
+  formData.append('city', state.city.value);
+  formData.append('state', state.state.value);
+  formData.append('postalCode', state.postalCode.value);
+  formData.append('country', state.country.value);
 
   // bank details (flat)
-  formData.append("accountHolderName", state.accountHolderName.value);
-  formData.append("accountNumber", state.accountNumber.value);
-  formData.append("ifscCode", state.ifscCode.value);
+  formData.append('accountHolderName', state.accountHolderName.value);
+  formData.append('accountNumber', state.accountNumber.value);
+  formData.append('ifscCode', state.ifscCode.value);
 
   // kyc
-  formData.append("aadhaarNumber", state.aadhaarNumber.value);
-  formData.append("panNumber", state.panNumber.value);
+  formData.append('aadhaarNumber', state.aadhaarNumber.value);
+  formData.append('panNumber', state.panNumber.value);
 
   return formData;
 }
-

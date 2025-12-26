@@ -8,29 +8,28 @@
   position: relative;
 }
 
-#main-nav a{
-    background-color: transparent;
+#main-nav a {
+  background-color: transparent;
 }
 
-a#main-logo img{
- height: 1.25rem;
+a#main-logo img {
+  height: 1.25rem;
   filter: invert(100) brightness(10);
 }
 
-#main-nav section:last-child{
-    display: flex;
-    gap: 2rem;
-    align-items: center;
-    position: absolute;
-    right: 1rem;
+#main-nav section:last-child {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  position: absolute;
+  right: 1rem;
 }
 
-#main-nav section:last-child a{
-    color: white;
-    font-size: 1.4rem;
-    display: flex;
+#main-nav section:last-child a {
+  color: white;
+  font-size: 1.4rem;
+  display: flex;
 }
-
 
 a#user-profile {
   height: 2rem;
@@ -40,7 +39,7 @@ a#user-profile {
 }
 
 #user-image {
-  height: 100%; 
+  height: 100%;
   object-fit: cover;
   overflow: hidden;
 }

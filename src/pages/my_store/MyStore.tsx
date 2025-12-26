@@ -1,20 +1,22 @@
-import React, { useEffect, useState } from "react";
-import type { StoreType } from "../../types/store.types";
-import { useSeller } from "../../contexts/SellerContext";
-import { getStoreDetails } from "../../services/storeService";
-import toast from "react-hot-toast";
-import "./MyStore.css";
-import defaultLogo from "../../assets/logoPlaceholder.png";
-import { useNavigate } from "react-router-dom";
-import { AuthError } from "../../services/tokenService";
+import React, { useEffect, useState } from 'react';
+import type { StoreType } from '../../types/store.types';
+import { useSeller } from '../../contexts/SellerContext';
+import { getStoreDetails } from '../../services/storeService';
+import toast from 'react-hot-toast';
+import './MyStore.css';
+import defaultLogo from '../../assets/logoPlaceholder.png';
+import { useNavigate } from 'react-router-dom';
+import { AuthError } from '../../services/tokenService';
 
 export const StoreNotFound: React.FC = () => {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   return (
     <div id="store-not-found">
       <h1>Store not found</h1>
       <p>You have not created any store yet</p>
-      <button onClick={()=>navigate("/store-form")} className="primary-btn">Create Store</button>
+      <button onClick={() => navigate('/store-form')} className="primary-btn">
+        Create Store
+      </button>
     </div>
   );
 };
@@ -24,8 +26,10 @@ const Field: React.FC<{ label: string; value: string | null | undefined }> = ({
   value,
 }) => (
   <div className="my-store-field">
-    <label><h4>{label}</h4></label>
-    <p>{value || "N/A"}</p>
+    <label>
+      <h4>{label}</h4>
+    </label>
+    <p>{value || 'N/A'}</p>
   </div>
 );
 
@@ -43,12 +47,12 @@ const MyStore: React.FC = () => {
           setStore(data);
         } catch (err: any) {
           if (err instanceof AuthError) {
-            toast.error("Session expired. Please login again.");
-            navigate("/login", { replace: true });
+            toast.error('Session expired. Please login again.');
+            navigate('/login', { replace: true });
             return;
           }
           console.error(err);
-          toast.error(err?.message || "Failed to load store");
+          toast.error(err?.message || 'Failed to load store');
         } finally {
           setLoading(false);
         }
@@ -60,7 +64,6 @@ const MyStore: React.FC = () => {
     loadStore();
   }, [seller, login, navigate]);
 
-
   if (loading) return <div>Loading...</div>;
   if (!loading && !store) return <StoreNotFound />;
 
@@ -68,10 +71,7 @@ const MyStore: React.FC = () => {
     <div id="my-store">
       <header>
         <h1>Store Details</h1>
-        <button
-          className="primary-btn"
-          onClick={() => navigate("/store-form")}
-        >
+        <button className="primary-btn" onClick={() => navigate('/store-form')}>
           Edit Details
         </button>
       </header>
@@ -98,7 +98,6 @@ const MyStore: React.FC = () => {
       <section>
         <header>
           <span>Owner Details</span>
-
         </header>
         <main>
           <Field label="Owner Name" value={store?.ownerName} />
@@ -110,7 +109,6 @@ const MyStore: React.FC = () => {
       <section>
         <header>
           <span>Address</span>
-
         </header>
         <main>
           <Field label="Street" value={store?.address.street} />
@@ -124,7 +122,6 @@ const MyStore: React.FC = () => {
       <section>
         <header>
           <span>Bank Details</span>
-
         </header>
         <main>
           <Field
@@ -142,7 +139,6 @@ const MyStore: React.FC = () => {
       <section>
         <header>
           <span>Identity</span>
-
         </header>
         <main>
           <Field label="Aadhaar Number" value={store?.aadhaarNumber} />

@@ -1,10 +1,8 @@
-import React, { useState } from "react";
-import { useStoreFormContext } from "../../../../contexts/StoreContext";
-import {
-  getLocationByPincode,
-} from "../../../../services/storeService";
-import "./Address.css";
-import { generateRandomStreet } from "../../../../utils/storeUtil";
+import React, { useState } from 'react';
+import { useStoreFormContext } from '../../../../contexts/StoreContext';
+import { getLocationByPincode } from '../../../../services/storeService';
+import './Address.css';
+import { generateRandomStreet } from '../../../../utils/storeUtil';
 
 const Address: React.FC = () => {
   const { state, dispatch } = useStoreFormContext();
@@ -12,8 +10,8 @@ const Address: React.FC = () => {
 
   const handleFillRandomStreet = () => {
     dispatch({
-      type: "SET_FIELD_VALUE",
-      field: "street",
+      type: 'SET_FIELD_VALUE',
+      field: 'street',
       payload: generateRandomStreet(),
     });
   };
@@ -25,36 +23,36 @@ const Address: React.FC = () => {
     try {
       setLoading(true);
       dispatch({
-        type: "CLEAR_FIELD_ERROR",
-        field: "postalCode",
+        type: 'CLEAR_FIELD_ERROR',
+        field: 'postalCode',
       });
 
       const location = await getLocationByPincode(postalCode);
 
       dispatch({
-        type: "SET_FIELD_VALUE",
-        field: "city",
+        type: 'SET_FIELD_VALUE',
+        field: 'city',
         payload: location.city,
       });
       dispatch({
-        type: "SET_FIELD_VALUE",
-        field: "state",
+        type: 'SET_FIELD_VALUE',
+        field: 'state',
         payload: location.state,
       });
       dispatch({
-        type: "SET_FIELD_VALUE",
-        field: "country",
+        type: 'SET_FIELD_VALUE',
+        field: 'country',
         payload: location.country,
       });
     } catch (error) {
       dispatch({
-        type: "SET_FIELD_ERROR",
-        field: "postalCode",
-        payload: "Invalid or unsupported PIN code",
+        type: 'SET_FIELD_ERROR',
+        field: 'postalCode',
+        payload: 'Invalid or unsupported PIN code',
       });
-      dispatch({ type: "SET_FIELD_VALUE", field: "city", payload: "" });
-      dispatch({ type: "SET_FIELD_VALUE", field: "state", payload: "" });
-      dispatch({ type: "SET_FIELD_VALUE", field: "country", payload: "" });
+      dispatch({ type: 'SET_FIELD_VALUE', field: 'city', payload: '' });
+      dispatch({ type: 'SET_FIELD_VALUE', field: 'state', payload: '' });
+      dispatch({ type: 'SET_FIELD_VALUE', field: 'country', payload: '' });
     } finally {
       setLoading(false);
     }
@@ -77,8 +75,8 @@ const Address: React.FC = () => {
             value={state.postalCode.value}
             onChange={(e) =>
               dispatch({
-                type: "SET_FIELD_VALUE",
-                field: "postalCode",
+                type: 'SET_FIELD_VALUE',
+                field: 'postalCode',
                 payload: e.target.value,
               })
             }
@@ -100,8 +98,8 @@ const Address: React.FC = () => {
               value={state.street.value}
               onChange={(e) =>
                 dispatch({
-                  type: "SET_FIELD_VALUE",
-                  field: "street",
+                  type: 'SET_FIELD_VALUE',
+                  field: 'street',
                   payload: e.target.value,
                 })
               }
@@ -124,7 +122,7 @@ const Address: React.FC = () => {
           </label>
           <input
             type="text"
-            value={loading ? "Fetching ..." : state.city.value}
+            value={loading ? 'Fetching ...' : state.city.value}
             readOnly
           />
           {state.city.error && <p className="error">{state.city.error}</p>}
@@ -137,7 +135,7 @@ const Address: React.FC = () => {
           </label>
           <input
             type="text"
-            value={loading ? "Fetching ..." : state.state.value}
+            value={loading ? 'Fetching ...' : state.state.value}
             readOnly
           />
           {state.state.error && <p className="error">{state.state.error}</p>}
@@ -150,7 +148,7 @@ const Address: React.FC = () => {
           </label>
           <input
             type="text"
-            value={loading ? "Fetching ..." : state.country.value}
+            value={loading ? 'Fetching ...' : state.country.value}
             readOnly
           />
           {state.country.error && (

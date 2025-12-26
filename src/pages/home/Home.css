@@ -1,40 +1,38 @@
-#home{
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+#home {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
-#home > main{
-    flex: 1;
-    max-width: 1500px;
-    width: 100%;
-    margin: auto;
-    padding: 1rem;
-    
+#home > main {
+  flex: 1;
+  max-width: 1500px;
+  width: 100%;
+  margin: auto;
+  padding: 1rem;
 }
 
-.initializer{
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
+.initializer {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
 }
 
-.initializer #spinner{
-    width: 50%;
-    max-width: 100px;
+.initializer #spinner {
+  width: 50%;
+  max-width: 100px;
 }
-.initializer #logo{
-    position: absolute;
-    height: 1.6rem;
-
+.initializer #logo {
+  position: absolute;
+  height: 1.6rem;
 }
 
-.initializer p{
-    position: absolute;
-    bottom: 2rem;
-    text-align: center;
-    font-size: 1.1rem;
+.initializer p {
+  position: absolute;
+  bottom: 2rem;
+  text-align: center;
+  font-size: 1.1rem;
 }
