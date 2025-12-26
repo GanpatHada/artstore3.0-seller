@@ -52,6 +52,9 @@
 }
 #store-form > section > main{
   padding: 1rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 #store-form .buttons {
   display: flex;
