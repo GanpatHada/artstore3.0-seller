@@ -7,6 +7,7 @@
   width: 100vw;
   margin: auto;
 }
+
 #store-form input[type='text'] {
   border: 1px solid #d8d8d8;
   padding: 0.5rem;
@@ -62,11 +63,20 @@
   gap: 0.5rem;
   margin: 1rem 0rem;
 }
+#store-form .buttons:disabled {
+  cursor: not-allowed;
+}
 #store-form .buttons button {
   border-radius: 0.5rem;
-  padding: 0.75rem 1.25rem;
+  height: 2.5rem;
+  width: fit-content;
+  padding: 0rem 1rem;
   font-size: 0.9rem;
   width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .fill-random-button {
@@ -87,4 +97,6 @@
 #save-store-details-btn {
   background-color: var(--primary-color);
   color: white;
+  display: flex;
+  align-items: center;
 }

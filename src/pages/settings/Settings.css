@@ -117,6 +117,9 @@ input#profileImage {
   cursor: pointer;
   font-size: 0.9rem;
   transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   &:hover {
     background-color: rgb(0, 149, 160);
   }

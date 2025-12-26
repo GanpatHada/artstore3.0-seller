@@ -6,6 +6,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { AuthError } from '../../services/tokenService';
 import { logout as logoutSeller } from '../../services/sellerService';
 import { useNavigate } from 'react-router-dom';
+import { Oval } from 'react-loader-spinner';
 
 const Profile = () => {
   const { seller, dispatch, login, logout } = useSeller();
@@ -182,7 +183,21 @@ const Profile = () => {
           disabled={isUpdating}
           className="btn-update"
         >
-          {isUpdating ? 'Updating...' : 'Update Profile'}
+          {isUpdating ? (
+            <>
+              Updating...
+              <Oval
+                height={20}
+                width={20}
+                color="white"
+                secondaryColor="skyblue"
+                strokeWidth={6}
+                ariaLabel="updating"
+              />
+            </>
+          ) : (
+            'Update Profile'
+          )}
         </button>
       </div>
     </section>

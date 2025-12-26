@@ -17,11 +17,13 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import type { StoreType } from '../../types/store.types';
 import { AuthError } from '../../services/tokenService';
+import { Oval } from 'react-loader-spinner';
 
 const StoreForm: React.FC = () => {
   const navigate = useNavigate();
   const { validateStoreForm, state, dispatch } = useStoreFormContext();
   const { seller, login } = useSeller();
+  const [loading, setLoading] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
 
   useEffect(() => {
@@ -75,6 +77,7 @@ const StoreForm: React.FC = () => {
     if (!validateStoreForm()) return;
     const formData: any = buildStoreFormData(state);
     try {
+      setLoading(true);
       if (isEditMode) {
         await editStore(seller, login, formData);
         toast.success('Store updated successfully');
@@ -90,6 +93,8 @@ const StoreForm: React.FC = () => {
         return;
       }
       toast.error(error.message || 'Something went wrong');
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -102,10 +107,33 @@ const StoreForm: React.FC = () => {
       <Identity />
 
       <div className="buttons">
-        <button id="save-store-details-btn" onClick={handleSubmit}>
-          {isEditMode ? 'Save details' : 'Create Store'}
+        <button
+          id="save-store-details-btn"
+          onClick={handleSubmit}
+          disabled={loading}
+        >
+          {loading ? (
+            <>
+              {isEditMode ? 'Saving...' : 'Creating...'}
+              <Oval
+                height={25}
+                width={25}
+                color="white"
+                secondaryColor="whitesmoke"
+                strokeWidth={6}
+                ariaLabel="loading"
+              />
+            </>
+          ) : isEditMode ? (
+            'Save details'
+          ) : (
+            'Create Store'
+          )}
         </button>
-        <button onClick={handleReset}>Reset</button>
+
+        <button onClick={handleReset} disabled={loading}>
+          Reset
+        </button>
       </div>
     </div>
   );
