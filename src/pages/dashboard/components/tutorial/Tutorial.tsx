@@ -9,7 +9,7 @@ const Tutorial: React.FC = () => {
         <h3>Tutorial</h3>
       </header>
       <main>
-        <iframe src="https://www.youtube.com/embed/75V1bTrsXnw"></iframe>
+        <iframe src="https://www.youtube.com/embed/2aHpUiMlPLs"></iframe>
         <Link to={'/help'}>see FAQS</Link>
       </main>
     </div>
